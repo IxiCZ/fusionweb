@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+
+<!--TODO actefory controlle -->
+<h:form id="categoryList">
+	<h:outputText escape="false" value="#{bundle.ListCategoryEmpty}"
+		rendered="#{categoryController.items.rowCount == 0}" />
+	<h:panelGroup rendered="#{categoryController.items.rowCount > 0}">
+		<h:dataTable value="#{categoryController.items}" var="item">hu
+                    <h:column>
+				<h:commandLink action="#{productController.prepareList}"
+					value="#{item.name}"
+					actionListener="#{navigationListener.category(item)}">
+					<f:setPropertyActionListener
+						target="#{productController.categoryId}" value="#{item.id}" />
+				</h:commandLink>
+			</h:column>
+		</h:dataTable>
+	</h:panelGroup>
+</h:form>
+</html>

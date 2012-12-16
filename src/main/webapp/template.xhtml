@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:util="http://java.sun.com/jsf/composite/util"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+	<meta charset="utf-8" />
+
+	<title>Drusion shop <ui:insert name="title" />
+	</title>
+	<h:outputStylesheet library="css" name="layout.css" />
+	<h:outputScript library="js" name="util.js" />
+
+	<!-- TODO create -->
+	<link rel="shortcut icon" type="image/x-icon"
+		href="#{request.contextPath}/resources/img/logo-small.ico" />
+</h:head>
+
+<h:body>
+
+
+	<div id="topbar">
+		<ui:insert name="topbar">
+			<ui:include src="/common/topBar.xhtml" />
+		</ui:insert>
+
+	</div>
+
+	<div id="container">
+		<!-- header -->
+		<header id="header">
+			<ui:insert name="topheader">
+				<ui:include src="/common/topPanel.xhtml" />
+			</ui:insert>
+		</header>
+		<div id="wrapper" class="clearfix">
+
+			<br />
+			<nav id="sideMenu">
+				<ui:insert name="sideMenu">
+					<ui:include src="/common/sideMenu.xhtml" />
+				</ui:insert>
+			</nav>
+
+
+			<!-- CONTENT -->
+			<section id="mainPart">
+				<ui:insert name="body">
+				</ui:insert>
+			</section>
+
+			<div id="messagePanel">
+				<h:outputLink value="#"
+					rendered="#{! empty facesContext.maximumSeverity}"
+					onclick="document.getElementById('messagePanel').style.display = 'none';"
+					style="color:darkgreen; float: right">(x)</h:outputLink>
+				<h:messages errorClass="errorMessage" infoClass="infoMessage"
+					layout="list" />
+			</div>
+
+
+
+		</div>
+	</div>
+
+</h:body>
+</html>
