@@ -12,7 +12,8 @@
     </ui:define>
 
     <ui:define name="body">
-        Hello
+        <h:outputText value="#{defaultLayoutController.mainProduct.name}"
+				rendered="#{defaultLayoutController.mainProduct != null}" styleClass="mainProductTitle"/>
     </ui:define> 
 
 </ui:composition>

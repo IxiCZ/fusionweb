@@ -2,10 +2,13 @@ package cz.ixi.fusionweb.drools.rules;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.ejb.DependsOn;
+import javax.ejb.EJB;
 import javax.ejb.Lock;
 import javax.ejb.LockType;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import javax.inject.Inject;
 
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseConfiguration;
@@ -18,6 +21,9 @@ import org.drools.conf.EventProcessingOption;
 import org.drools.io.impl.ClassPathResource;
 import org.drools.runtime.StatefulKnowledgeSession;
 
+import cz.ixi.fusionweb.ejb.ProductBean;
+import cz.ixi.fusionweb.web.layout.DefaultLayoutController;
+
 /**
  * Class which initialize drools working memory from rules and provides methods
  * to use it.
@@ -25,10 +31,17 @@ import org.drools.runtime.StatefulKnowledgeSession;
 @Singleton
 @Startup
 @Lock(LockType.READ)
+@DependsOn("StartupDBConfigBean")
 public class DroolsResourcesBean {
 
     private StatefulKnowledgeSession ksession;
+    
+    @Inject
+    private DefaultLayoutController defaultLayout;
 
+    @EJB
+    private ProductBean products;
+    
     @PostConstruct
     public void init() {
 	KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
@@ -40,6 +53,8 @@ public class DroolsResourcesBean {
 		    System.err.println(kerror);
 		}
 	    }
+	} else {
+	    System.out.println("No errors in kbuilder.");
 	}
 	KnowledgeBaseConfiguration config = KnowledgeBaseFactory.newKnowledgeBaseConfiguration();
 	config.setOption(EventProcessingOption.STREAM);
@@ -47,6 +62,9 @@ public class DroolsResourcesBean {
 	KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase(config);
 	kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
 	ksession = kbase.newStatefulKnowledgeSession();
+	
+	ksession.insert(defaultLayout);
+	ksession.insert(products);
 
 	System.out.println("ksession created");
     }

@@ -1,8 +1,53 @@
 package cz.ixi.fusionweb.drools.rules;
 
+import cz.ixi.fusionweb.drools.model.NavigationEvent;
+import cz.ixi.fusionweb.drools.model.ProductNavigationEvent;
+import cz.ixi.fusionweb.web.layout.DefaultLayoutController;
+import cz.ixi.fusionweb.entities.Product;
+import cz.ixi.fusionweb.ejb.ProductBean;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.List;
+
+declare MostVisited
+   number : long
+end
+
+declare NavigationEvent
+	@role(event)
+end
+
 rule "print what is inserted"
 when
 	$o: Object()
 then
 	System.out.println("Found fact: " + $o);
+end
+
+rule "insert first MostVisited"
+salience 10
+when
+	not (MostVisited())
+then
+	insert(new MostVisited());
+end
+
+rule "change main product if there is better"
+when
+	 $dlc : DefaultLayoutController()
+	 $pb : ProductBean()
+	 $mv : MostVisited()
+     $ids : Set() from accumulate( ProductNavigationEvent( $id : id ),  collectSet($id) )
+     $distinctId : Integer() from $ids
+     $idResults : Long( longValue > $mv.getNumber()) from accumulate ($ne : ProductNavigationEvent(id == $distinctId), count($ne))       
+     eval ($idResults > $mv.getNumber())        
+then
+  	modify($mv){
+  		setNumber($idResults);
+  	}
+  	modify($dlc){
+  		setMainProduct($pb.find($distinctId));
+  	}
 end

@@ -13,7 +13,7 @@ import cz.ixi.fusionweb.entities.ProductCategory;
  */
 @Singleton
 @Startup
-public class StatupDBConfigBean {
+public class StartupDBConfigBean {
 
     @EJB
     private ProductCategoryBean categories;
