@@ -13,6 +13,7 @@ import cz.ixi.fusionweb.entities.Product;
  */
 @Named(value = "defaultLayoutController")
 @ApplicationScoped
+//@Singleton
 public class DefaultLayoutController implements Serializable  {
 
 

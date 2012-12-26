@@ -17,10 +17,12 @@ import org.drools.builder.KnowledgeBuilder;
 import org.drools.builder.KnowledgeBuilderError;
 import org.drools.builder.KnowledgeBuilderFactory;
 import org.drools.builder.ResourceType;
+import org.drools.compiler.PackageBuilderConfiguration;
 import org.drools.conf.EventProcessingOption;
 import org.drools.io.impl.ClassPathResource;
 import org.drools.runtime.StatefulKnowledgeSession;
 
+import cz.ixi.fusionweb.drools.functions.MostVisitedFunction;
 import cz.ixi.fusionweb.ejb.ProductBean;
 import cz.ixi.fusionweb.web.layout.DefaultLayoutController;
 
@@ -31,12 +33,13 @@ import cz.ixi.fusionweb.web.layout.DefaultLayoutController;
 @Singleton
 @Startup
 @Lock(LockType.READ)
-@DependsOn("StartupDBConfigBean")
+@DependsOn({"StartupDBConfigBean", "StartupLayoutsBean"})
 public class DroolsResourcesBean {
 
     private StatefulKnowledgeSession ksession;
     
     @Inject
+    //@EJB 
     private DefaultLayoutController defaultLayout;
 
     @EJB
@@ -44,9 +47,12 @@ public class DroolsResourcesBean {
     
     @PostConstruct
     public void init() {
-	KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
+	PackageBuilderConfiguration pkgConf = new PackageBuilderConfiguration();
+        pkgConf.addAccumulateFunction("mostVisited", MostVisitedFunction.class);
+	
+	KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder(pkgConf);
 	kbuilder.add(new ClassPathResource("rules.drl", getClass()), ResourceType.DRL);
-
+	
 	if (kbuilder.hasErrors()) {
 	    if (kbuilder.getErrors().size() > 0) {
 		for (KnowledgeBuilderError kerror : kbuilder.getErrors()) {
@@ -65,6 +71,8 @@ public class DroolsResourcesBean {
 	
 	ksession.insert(defaultLayout);
 	ksession.insert(products);
+	
+	
 
 	System.out.println("ksession created");
     }

@@ -18,6 +18,7 @@ import cz.ixi.fusionweb.ejb.ProductBean;
 public class StartupLayoutsBean {
 
     @Inject
+    //@EJB     
     private DefaultLayoutController defaultLayout;
     
     @EJB 
