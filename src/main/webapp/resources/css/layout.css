@@ -135,3 +135,31 @@ span.detailHeaderBig{
     font-weight: bold;
 }
 
+a.logLink:link, a.logLink:visited {
+    color: #06376c;
+    font-weight: bold;
+    text-decoration: none;
+    position: right;
+}
+
+a.logLink:hover, a.logLink:hover {
+    color: #6A94D4;
+    font-weight: bold;
+    text-decoration: underline;
+    position: right;
+}
+
+.menuHeadingText{
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #05274D;
+}
+
+.errorMessage {
+    color: #FF1F2E;
+    font-weight: bold;
+}
+.infoMessage {
+    color: #007A04;
+    font-weight: bold;
+}   

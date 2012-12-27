@@ -4,6 +4,19 @@
                 xmlns:util="http://java.sun.com/jsf/composite/components/util">
 
 
- <div align="right" >Here will be log in.</div>
+ <div align="right">
+		<h:link outcome="/common/login" value="Log in"
+			rendered="#{userController.logged == false}" styleClass="logLink" />
+
+		<h:outputText value="Logged as: "
+			rendered="#{userController.logged}" />
+		<b><h:outputText value="#{userController.user.username}"
+			rendered="#{userController.logged}" /></b>
+		<br />
+		<h:form rendered="#{userController.logged}" >
+		<h:commandLink action="#{userController.logout()}" value="Odhlásit se"
+			styleClass="logLink" />
+		</h:form>
+	</div>
     
 </ui:composition>

@@ -1,12 +1,17 @@
 package cz.ixi.fusionweb.ejb;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 
+import cz.ixi.fusionweb.entities.Administrator;
 import cz.ixi.fusionweb.entities.Product;
 import cz.ixi.fusionweb.entities.ProductCategory;
+import cz.ixi.fusionweb.entities.Role;
 
 /**
  * Fills the database during the startup.
@@ -19,6 +24,11 @@ public class StartupDBConfigBean {
     private ProductCategoryBean categories;
     @EJB
     private ProductBean products;
+    @EJB
+    private AdministratorBean administrators;
+  
+    @EJB
+    private UserBean users;
 
     @PostConstruct
     public void createData() {
@@ -68,5 +78,14 @@ public class StartupDBConfigBean {
 
 	products.create(samsungGalaxy);
 	products.create(iPhone);
+	
+	
+	// USERS:
+	// administrators:
+	Set<Role> administratorRole = new HashSet<Role>();
+	administratorRole.add(Role.ADMINISTRATOR);
+	Administrator hugo = new Administrator(administratorRole, "hugo", "1234");
+	
+	administrators.create(hugo);
     }
 }
