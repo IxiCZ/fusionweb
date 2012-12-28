@@ -1,50 +1,51 @@
+
 body {
 	margin: 0;
 	padding: 0;
-	background-color: #6A94D4;
+	background-color: #CCDEFF;
 	font-family: Verdana, sans-serif;
 	font-size: 0.9em;
 }
 
+
 #header {
 	text-align: center;
-	color: #0F4DA8;
+	color: #355BA1;
 }
 
 #container {
 	margin: 0 auto;
-	padding: 0 20px 10px 20px;
-	border: 1px solid #666666;
-	width: 915px;
-	min-height: 700px;
-	background: #FFFFFF;
+	padding: 0 15px 10px 15px;
+    width:943px;
+	min-height: 700px;;	
+	background-color:transparent;
+    background-position:0px 0px;
+    background-repeat:repeat-y;
+    background-image:url(../resources/images/side-mini-shade.png);	
 }
 
 #sideMenu {
 	font-size: 0.9em;
-	border: 1px solid #666666;
-	background: #C1D4E8;
+	margin-left: 5px;
+	background: #E3EDFF;
 	float: left;
-	padding: 5px;
 	width: 200px;
 }
 
 #mainPart {
-	padding: 5px;
 	margin-left: 230px;
 }
-
 
 #footer {
 	font-size: 0.85em;
 	background-color: #FFFFFF;;
-	width: 780px;
-	height: 20px;
+	width: 968px;
+	
+	height: 0px;
 	text-align: center;
-	border-style: outset;
-	border-color: #052F6D;
-	margin: auto;
-	margin-top: 10px;
+	border-bottom-style: solid;
+	border-color: #B1B9C7;
+	margin: 0 auto;
 }
 
 code {
@@ -52,22 +53,22 @@ code {
 }
 
 span.invalid {
-	padding-left: 3px;
 	color: red;
 }
 
 
 #sideMenu a:link, #sideMenu a:visited {
-    color: #06376c;
+    color: #1C335E;
     font-weight: bold;
     text-decoration: none;
-
+	margin: 10px;
 }
 
 #sideMenu a:link:hover, #sideMenu a:visited:hover {
     color: #6A94D4;
     font-weight: bold;
     text-decoration: underline;
+    margin: 10px;
 }
 
 #sideMenu li{
@@ -109,7 +110,7 @@ td.center {
 }
 
 a.productsLink:link, a.productsLink:visited {
-    color: #06376c;
+    color: #1C335E;
     font-weight: bold;
     text-decoration: none;
 }
@@ -136,7 +137,7 @@ span.detailHeaderBig{
 }
 
 a.logLink:link, a.logLink:visited {
-    color: #06376c;
+    color: #1C335E;
     font-weight: bold;
     text-decoration: none;
     position: right;

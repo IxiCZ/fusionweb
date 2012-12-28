@@ -51,20 +51,23 @@
 			<section id="mainPart">
 				<ui:insert name="body">
 				</ui:insert>
+				<div id="messagePanel">
+					<h:outputLink value="#"
+						rendered="#{! empty facesContext.maximumSeverity}"
+						onclick="document.getElementById('messagePanel').style.display = 'none';"
+						style="color:darkgreen; float: right">(x)</h:outputLink>
+					<h:messages errorClass="errorMessage" infoClass="infoMessage"
+						layout="list" />
+				</div>
 			</section>
 
-			<div id="messagePanel">
-				<h:outputLink value="#"
-					rendered="#{! empty facesContext.maximumSeverity}"
-					onclick="document.getElementById('messagePanel').style.display = 'none';"
-					style="color:darkgreen; float: right">(x)</h:outputLink>
-				<h:messages errorClass="errorMessage" infoClass="infoMessage"
-					layout="list" />
-			</div>
+
+
 
 
 		</div>
 	</div>
+	<div id="footer" />
 
 </h:body>
 </html>
