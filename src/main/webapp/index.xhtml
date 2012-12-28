@@ -14,6 +14,7 @@
     <ui:define name="body">
         <h:outputText value="#{defaultLayoutController.mainProduct.name}"
 				rendered="#{defaultLayoutController.mainProduct != null}" styleClass="mainProductTitle"/>
+		<h:graphicImage value="/image?id=#{defaultLayoutController.mainProduct.id}" rendered="#{defaultLayoutController.mainProduct != null}"/>		
     </ui:define> 
 
 </ui:composition>

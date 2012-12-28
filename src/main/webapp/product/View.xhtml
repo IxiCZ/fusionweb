@@ -13,6 +13,10 @@
             <h:form>
               <h:outputText value="#{productController.selected.name}" title="#{bundle.ViewProductTitle_name}" styleClass="detailHeaderBig" />
      				<br /><br /><!-- TODO IMAGE -->
+     				<h:outputText value="#{bundle.ViewProductLabel_img}"/>
+                    
+                    <h:graphicImage value="/image?id=#{productController.selected.id}" />
+     				
                     <h:outputText value="#{bundle.ViewProductLabel_price}" styleClass="detailHeaders" /> <br />
                     <h:outputText value="#{productController.selected.price}" title="#{bundle.ViewProductTitle_price}"/><br /><br />
                     <h:outputText value="#{bundle.ViewProductLabel_description}" styleClass="detailHeaders" /> <br />
