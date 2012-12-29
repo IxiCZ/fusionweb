@@ -2,6 +2,9 @@ package cz.ixi.fusionweb.ejb;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -12,6 +15,8 @@ import org.apache.commons.io.IOUtils;
 
 import cz.ixi.fusionweb.entities.Administrator;
 import cz.ixi.fusionweb.entities.Customer;
+import cz.ixi.fusionweb.entities.Order;
+import cz.ixi.fusionweb.entities.OrderItem;
 import cz.ixi.fusionweb.entities.Product;
 import cz.ixi.fusionweb.entities.ProductCategory;
 
@@ -30,6 +35,11 @@ public class StartupDBConfigBean {
     private AdministratorBean administrators;
     @EJB
     private CustomerBean customers;
+    @EJB
+    private OrderBean orders;
+    @EJB
+    private OrderItemBean orderItems;
+     
 
     @PostConstruct
     public void createData() {
@@ -109,6 +119,16 @@ public class StartupDBConfigBean {
 	// customers
 	Customer rick = new Customer("rick", "1234", "Richie", "Rich", "richie@rich.com", "Villa Riccardo", "Florence");
 	customers.create(rick);
+	
+	
+	// ORDERS:
+	Order rickOrder = new Order(customers.getCustomerByUsername("rick"), 2.0, new Date());    
+        List<OrderItem> items = new ArrayList<OrderItem>();
+        items.add(new OrderItem (rickOrder, ultraDell, 2));
+        items.add(new OrderItem (rickOrder, samsungGalaxy, 1));
+        rickOrder.setOrderItemList(items);
+        
+        orders.create(rickOrder);
     }
 
     private byte[] loadImage(String name) {
