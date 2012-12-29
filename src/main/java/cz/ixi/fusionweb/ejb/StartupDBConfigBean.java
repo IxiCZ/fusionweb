@@ -2,8 +2,6 @@ package cz.ixi.fusionweb.ejb;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -13,9 +11,9 @@ import javax.ejb.Startup;
 import org.apache.commons.io.IOUtils;
 
 import cz.ixi.fusionweb.entities.Administrator;
+import cz.ixi.fusionweb.entities.Customer;
 import cz.ixi.fusionweb.entities.Product;
 import cz.ixi.fusionweb.entities.ProductCategory;
-import cz.ixi.fusionweb.entities.Role;
 
 /**
  * Fills the database during the startup.
@@ -30,9 +28,8 @@ public class StartupDBConfigBean {
     private ProductBean products;
     @EJB
     private AdministratorBean administrators;
-
     @EJB
-    private UserBean users;
+    private CustomerBean customers;
 
     @PostConstruct
     public void createData() {
@@ -106,11 +103,12 @@ public class StartupDBConfigBean {
 
 	// USERS:
 	// administrators:
-	Set<Role> administratorRole = new HashSet<Role>();
-	administratorRole.add(Role.ADMINISTRATOR);
-	Administrator hugo = new Administrator(administratorRole, "hugo", "1234");
-
+	Administrator hugo = new Administrator( "hugo", "1234", "Hugo", "Coconut", "hugo@coconut.com", "Mysterious Island", "Atlantic Ocean");
 	administrators.create(hugo);
+	
+	// customers
+	Customer rick = new Customer("rick", "1234", "Richie", "Rich", "richie@rich.com", "Villa Riccardo", "Florence");
+	customers.create(rick);
     }
 
     private byte[] loadImage(String name) {

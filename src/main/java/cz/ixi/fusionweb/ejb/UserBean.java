@@ -8,6 +8,7 @@ import javax.persistence.Query;
 import cz.ixi.fusionweb.entities.User;
 
 /**
+ * EJB stateless bean handling users as general.
  */
 @Stateless
 public class UserBean extends AbstractFacade<User> {
@@ -29,6 +30,7 @@ public class UserBean extends AbstractFacade<User> {
      * @param username of user to be returned
      * @return user of given username, null if doesn't exist
      */
+    // TODO: rewrite to use name query?
     public User getUserByUsername(String username) {
 	Query createQuery = this.em.createQuery("SELECT u FROM User u WHERE u.username = :username");
 	createQuery.setParameter("username", username);
