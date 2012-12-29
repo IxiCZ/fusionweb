@@ -6,7 +6,9 @@ import javax.persistence.PersistenceContext;
 
 import cz.ixi.fusionweb.entities.OrderItem;
 
-
+/**
+ * EJB stateless bean handling order items.
+ */
 @Stateless
 public class OrderItemBean extends AbstractFacade<OrderItem> {
 

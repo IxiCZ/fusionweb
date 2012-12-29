@@ -9,6 +9,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+/**
+ * EJB stateless bean handling orders.
+ */
 @Stateless
 public class OrderBean extends AbstractFacade<Order>
         implements Serializable {

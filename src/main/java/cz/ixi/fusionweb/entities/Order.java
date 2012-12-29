@@ -21,7 +21,9 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 
-
+/**
+ * Order entity.
+ */
 @Entity
 @Table(name = "PRODUCT_ORDER")
 @NamedQueries({

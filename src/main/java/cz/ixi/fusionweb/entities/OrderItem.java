@@ -13,6 +13,9 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+/**
+ * Order item entity.
+ */
 @Entity
 @Table(name = "ORDER_ITEM")
 @NamedQueries({
