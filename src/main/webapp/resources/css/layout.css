@@ -86,26 +86,31 @@ td.center {
     text-decoration: none;
 }
 
-.book-table{   
+.product-table{   
 	border-collapse:collapse;
+	border: 1px solid #C1D4E8;
+	
 }
+
+.product-table-text-column{   
+	border-collapse:collapse;
+	border: 1px solid #C1D4E8;
+	width: 500px;
+	padding: 20px;
+} 
  
-.book-table-header{
+.product-table-header{
 	text-align:center;
 	background:none repeat scroll 0 0 #C1D4E8;
 	border:1px solid #C1D4E8;
 	padding:10px;
 }
  
-.book-table-odd-row{
-	text-align:center;
-	background:none repeat scroll 0 0 #FFFFFFF;
-	border: 1px solid #C1D4E8
+.product-table-odd-row{
+	border: 1px solid #C1D4E8;
 }
  
-.book-table-even-row{
-	text-align:center;
-	background:none repeat scroll 0 0 #EDF2F7;
+.product-table-even-row{
 	border: 1px solid #C1D4E8
 }
 
@@ -163,4 +168,26 @@ a.logLink:hover, a.logLink:hover {
 .infoMessage {
     color: #007A04;
     font-weight: bold;
-}   
+}
+
+input {
+    background-color: #E3EDFF;
+    border: solid 1px #000000;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+input[type=submit] {
+    font-weight: bold;
+}
+
+.addToCart{
+	float: right;
+	border: none;
+}
+
+.bold{
+	font-weight: bold;
+}
