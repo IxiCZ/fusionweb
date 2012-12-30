@@ -107,6 +107,13 @@ public class ProductController implements Serializable {
 
 	return PageNavigation.VIEW; 
     }
+    
+    public String prepareView(Product product) {
+   	current = product;
+
+   	return PRODUCT + PageNavigation.VIEW; 
+       }
+    
 
     public PageNavigation prepareCreate() {
 	current = new Product();

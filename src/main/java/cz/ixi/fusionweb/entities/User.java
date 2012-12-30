@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Set;
-import javax.persistence.Basic;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -22,6 +22,8 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.apache.commons.codec.binary.Base64;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 /**
  * User entity.
@@ -44,6 +46,7 @@ public class User implements Serializable {
     @ElementCollection
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "UserRoles", joinColumns =
     @JoinColumn(name = "User_username"))
     private Set<Role> roles;
