@@ -123,9 +123,6 @@ a.productsLink:hover,a.productsLink:hover {
 	text-decoration: underline;
 }
 
-span.detailHeaders {
-	font-weight: bold;
-}
 
 span.detailHeaderBig {
 	font-weight: bold;
@@ -175,8 +172,21 @@ input.addToCart {
 	-webkit-border-radius: 10px;
 	border-radius: 10px;
 	font-size: 14px;
-    font-weight: bold;
+	font-weight: bold;
 }
+
+
+
+input.addToCartDetail {
+	background-color: #E3EDFF;
+	border: solid 1px #000000;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	font-size: 14px;
+	font-weight: bold;
+}
+
 
 input.circular {
 	background-color: #E3EDFF;
@@ -185,16 +195,15 @@ input.circular {
 	-webkit-border-radius: 10px;
 	border-radius: 10px;
 	font-size: 14px;
-    font-weight: bold;
+	font-weight: bold;
 }
 
 /*
 input[type=submit] {
 
 }*/
-
-input.shoppingCartTableQuantityText  {
-	width:30px;
+input.shoppingCartTableQuantityText {
+	width: 30px;
 	text-align: center;
 	margin-left: 10px;
 }
@@ -223,7 +232,6 @@ input.shoppingCartTableQuantityText  {
 	float: left;
 }
 
-
 a.shoppingCartTableLowerText:link,a.shoppingCartTableLowerText:visited {
 	color: #1C335E;
 	font-weight: bold;
@@ -249,4 +257,19 @@ a.shoppingCartTableLowerText:hover,a.shoppingCartTableLowerText:hover {
 	text-align: right;
 	float: right;
 	margin-right: 30px;
+}
+
+.productDetailHeader {
+	color: #355BA1;
+	font-weight: bold;
+	font-size: 1.3em;
+}
+
+.productDetailImage {
+	float: left;
+	padding: 6px 10px 6px 0px;
+}
+
+.productDetailMiniHeaders {
+	font-weight: bold;
 }
