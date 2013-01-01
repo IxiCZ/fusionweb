@@ -23,6 +23,11 @@
         <welcome-file>index.xhtml</welcome-file>
     </welcome-file-list>
     
+    <error-page>
+    	<exception-type>javax.faces.application.ViewExpiredException</exception-type>
+   	 	<location>/index.xhtml</location>
+	</error-page>
+    
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>test-only</web-resource-name>
