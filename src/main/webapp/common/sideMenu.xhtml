@@ -5,10 +5,15 @@
 	xmlns:f="http://java.sun.com/jsf/core">
 
 
-<!--TODO actefory controlle -->
+<!--TODO category controlle -->
 <h:form id="categoryList">
+<br />
 	<h:outputText escape="false" value="#{bundle.ListCategoryEmpty}"
 		rendered="#{categoryController.items.rowCount == 0}" />
+	<h:outputText escape="false" value="#{bundle.ProductCategories_title}"
+		rendered="#{categoryController.items.rowCount != 0}"
+		styleClass="produductCategoriesTitle" />
+	<br /><br />
 	<h:panelGroup rendered="#{categoryController.items.rowCount > 0}">
 		<h:dataTable value="#{categoryController.items}" var="item">hu
                     <h:column>
