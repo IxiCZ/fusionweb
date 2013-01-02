@@ -24,20 +24,31 @@ body {
 	background-image: url(../resources/images/side-mini-shade.png);
 }
 
-#sideMenu {
+.sideMenu {
 	font-size: 0.9em;
-	margin-left: 5px;
 	background: #E3EDFF;
-	float: left;
 	width: 200px;
 }
 
-.produductCategoriesTitle{
-	text-decoration: underline;
-	font-weight: bold;
+.side {
+	margin-left: 5px;
+	float: left;
+}
+
+.productMenuTitle {
+	text-decoration: underline; font-weight : bold;
 	font-size: 1.1em;
 	color: #1E3561;
 	margin-left: 25px;
+	font-weight: bold;
+}
+
+.customerMenuTitle {
+	text-decoration: underline; font-weight : bold;
+	font-size: 1.1em;
+	color: #1E3561;
+	margin-left: 60px;
+	font-weight: bold;
 }
 
 #mainPart {
@@ -63,14 +74,14 @@ span.invalid {
 	color: red;
 }
 
-#sideMenu a:link,#sideMenu a:visited {
+.sideMenu a:link,.sideMenu a:visited {
 	color: #1C335E;
 	font-weight: bold;
 	text-decoration: none;
 	margin: 10px;
 }
 
-#sideMenu a:link:hover,#sideMenu a:visited:hover {
+.sideMenu a:link:hover,.sideMenu a:visited:hover {
 	color: #6A94D4;
 	font-weight: bold;
 	text-decoration: underline;
@@ -131,7 +142,6 @@ a.productsLink:hover,a.productsLink:hover {
 	text-decoration: underline;
 }
 
-
 span.detailHeaderBig {
 	font-weight: bold;
 	text-align: center;
@@ -183,8 +193,6 @@ input.addToCart {
 	font-weight: bold;
 }
 
-
-
 input.addToCartDetail {
 	background-color: #E3EDFF;
 	border: solid 1px #000000;
@@ -194,7 +202,6 @@ input.addToCartDetail {
 	font-size: 14px;
 	font-weight: bold;
 }
-
 
 input.circular {
 	background-color: #E3EDFF;

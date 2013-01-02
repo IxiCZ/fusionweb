@@ -40,11 +40,21 @@
 		<div id="wrapper" class="clearfix">
 
 			<br />
-			<nav id="sideMenu">
-				<ui:insert name="sideMenu">
-					<ui:include src="/common/sideMenu.xhtml" />
-				</ui:insert>
-			</nav>
+			<div class="side">
+
+				<nav class="sideMenu">
+					<ui:insert name="sideMenu">
+						<ui:include src="/common/sideMenu.xhtml" />
+					</ui:insert>
+				</nav>
+				<br />
+				<nav class="sideMenu" >
+					<ui:insert name="customerSideMenu" >
+						<ui:include src="/customer/customerSideMenu.xhtml"  />
+					</ui:insert>
+				</nav>
+			</div>
+
 
 
 			<!-- CONTENT -->
