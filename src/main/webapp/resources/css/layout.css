@@ -153,6 +153,50 @@ span.detailHeaderBig {
 	font-weight: bold;
 }
 
+.mainProductHeader {
+	font-size: 1.5em;
+	font-weight: bold;
+	color: #FF9D00;
+}
+
+.mainProductBlock{
+	text-align: center;	
+}
+
+.mainProductImage{
+	text-align: center;	
+	float: left;
+	margin-left: 60px;
+	
+}
+
+.mainProductPrice{
+	margin-right: 120px;
+	font-weight: bold;
+	font-size: 1.3em;
+}
+
+.addToCartMainProduct{
+	margin-right: 120px;
+}
+
+
+a.mainProductTitle:link,a.mainProductTitle:visited {
+	color: #1C335E;
+	font-weight: bold;
+	text-decoration: none;
+	margin-left: 15px;
+}
+
+a.mainProductTitle:hover,a.mainProductTitle:hover {
+	color: #6A94D4;
+	font-weight: bold;
+	text-decoration: underline;
+	margin-left: 15px;
+}
+
+
+
 a.logLink:link,a.logLink:visited {
 	color: #1C335E;
 	font-weight: bold;
@@ -194,6 +238,16 @@ input.addToCart {
 }
 
 input.addToCartDetail {
+	background-color: #E3EDFF;
+	border: solid 1px #000000;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+input.addToCartMainProduct {
 	background-color: #E3EDFF;
 	border: solid 1px #000000;
 	-moz-border-radius: 10px;

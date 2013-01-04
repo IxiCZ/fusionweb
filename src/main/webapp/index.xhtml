@@ -1,20 +1,52 @@
-<ui:composition 
-    xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core"
-    template="/template.xhtml"
-    xmlns:util="http://java.sun.com/jsf/composite/util"
-    xmlns:c="http://java.sun.com/jsp/jstl/core">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" template="/template.xhtml"
+	xmlns:util="http://java.sun.com/jsf/composite/util"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-    <ui:define name="title">
+	<ui:define name="title">
         Home
     </ui:define>
 
-    <ui:define name="body">
-        <h:outputText value="#{defaultLayoutController.mainProduct.name}"
-				rendered="#{defaultLayoutController.mainProduct != null}" styleClass="mainProductTitle"/>
-		<h:graphicImage value="/image?id=#{defaultLayoutController.mainProduct.id}" rendered="#{defaultLayoutController.mainProduct != null}"/>		
-    </ui:define> 
+	<ui:define name="body">
+
+		<h:form rendered="#{defaultLayoutController.mainProduct != null}">
+			<h:outputText value="#{bundle.MainProduct_header}"
+				styleClass="mainProductHeader" />
+			<br />
+			<br />
+			<h:panelGroup layout="block" styleClass="mainProductBlock">
+
+				<h:commandLink
+					action="#{productController.prepareView(defaultLayoutController.mainProduct)}"
+					actionListener="#{navigationListener.product(defaultLayoutController.mainProduct)}"
+					value="#{defaultLayoutController.mainProduct.name}"
+					styleClass="mainProductTitle" />
+				<br />
+				<h:graphicImage
+					value="/image?id=#{defaultLayoutController.mainProduct.id}"
+					styleClass="mainProductImage" />
+				<br />
+				<br />
+				<br />
+				<br />
+				<br />
+				<br />
+				<h:outputText value="#{defaultLayoutController.mainProduct.price}"
+					title="#{bundle.ViewProductTitle_price}"
+					styleClass="mainProductPrice">
+					<f:convertNumber currencySymbol="$" type="currency" />
+				</h:outputText>
+				<br />
+				<br />
+				<br />
+				<h:commandButton
+					action="#{shoppingCart.addItem(defaultLayoutController.mainProduct)}"
+					value="#{bundle.AddToCart}" styleClass="addToCartMainProduct" />
+			</h:panelGroup>
+		</h:form>
+
+	</ui:define>
 
 </ui:composition>
