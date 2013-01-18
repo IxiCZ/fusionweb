@@ -5,6 +5,17 @@
 
 
 	<div align="right">
+
+		<h:form rendered="#{userController.logged == false}">
+			<h:commandLink action="#{userController.loginRick()}" value="Rick"
+				styleClass="logLink" />
+		</h:form>
+
+		<h:form rendered="#{userController.logged == false}">
+			<h:commandLink action="#{userController.loginHugo()}" value="Hugo"
+				styleClass="logLink" />
+		</h:form>
+
 		<h:link outcome="/common/login" value="Log in"
 			rendered="#{userController.logged == false}" styleClass="logLink" />
 
