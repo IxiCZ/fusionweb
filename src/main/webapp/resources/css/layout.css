@@ -53,6 +53,15 @@ body {
 	font-weight: bold;
 }
 
+.administratorMenuTitle {
+	text-decoration: underline;
+	font-weight: bold;
+	font-size: 1.1em;
+	color: #1E3561;
+	margin-left: 40px;
+	font-weight: bold;
+}
+
 #mainPart {
 	margin-left: 230px;
 }
