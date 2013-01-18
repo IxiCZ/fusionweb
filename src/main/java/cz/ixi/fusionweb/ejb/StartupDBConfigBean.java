@@ -122,10 +122,14 @@ public class StartupDBConfigBean {
 	
 	
 	// ORDERS:
-	Order rickOrder = new Order(customers.getCustomerByUsername("rick"), 2.0, new Date());    
+	Order rickOrder = new Order(customers.getCustomerByUsername("rick"), 0, new Date());    
         List<OrderItem> items = new ArrayList<OrderItem>();
-        items.add(new OrderItem (rickOrder, ultraDell, 2));
-        items.add(new OrderItem (rickOrder, samsungGalaxy, 1));
+        OrderItem orderedDellsByRick = new OrderItem (rickOrder, ultraDell, 2);
+        items.add(orderedDellsByRick);
+        OrderItem orderedSamsungByRick = new OrderItem (rickOrder, samsungGalaxy, 1);
+        items.add(orderedSamsungByRick);
+        rickOrder.setAmount(orderedDellsByRick.getQuantity()*orderedDellsByRick.getProduct().getPrice()
+        	+ orderedSamsungByRick.getQuantity()*orderedSamsungByRick.getProduct().getPrice());
         rickOrder.setOrderItemList(items);
         
         orders.create(rickOrder);

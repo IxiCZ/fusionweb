@@ -19,33 +19,30 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "ORDER_ITEM")
 @NamedQueries({
-    @NamedQuery(name = "OrderItem.findAll",query = "SELECT o FROM OrderItem o")
+    @NamedQuery(name = "OrderItem.findAll", query = "SELECT o FROM OrderItem o"),
+    @NamedQuery(name = "OrderItem.findByOrderId", query = "SELECT o FROM OrderItem o WHERE o.order.id = :orderId")
 })
 public class OrderItem implements Serializable {
-    
-    private static final long serialVersionUID = 1L;
 
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
-    
     @JoinColumn(name = "ORDER_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Order order;
-    
     @JoinColumn(name = "PRODUCT_ID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Product product;
-    
     @Basic(optional = false)
     @Column(name = "QUANTITY")
     private int quantity;
 
     public OrderItem() {
     }
-    
+
     public OrderItem(Order order, Product product, int quantity) {
         this.order = order;
         this.product = product;
@@ -58,7 +55,7 @@ public class OrderItem implements Serializable {
         this.product = product;
         this.quantity = quantity;
     }
-    
+
     public int getQuantity() {
         return quantity;
     }
@@ -90,8 +87,6 @@ public class OrderItem implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
-    
-    
 
     @Override
     public int hashCode() {

@@ -10,14 +10,13 @@
 		<h:form>
 
 			<h:outputText value="#{bundle.ListCustomerOrderTitle}"
-				styleClass="shoppingCartHeader" />
+				styleClass="generalHeader" />
 			<br />
 			<br />
 			<h:dataTable
 				value="#{orderController.getMyOrders(userController.user)}"
 				var="item" rowClasses="generalFirstRow, generalSecondRow"
-				styleClass="myOrdersTable" cellpadding="2"
-				cellspacing="4">
+				styleClass="myOrdersTable" cellpadding="2" cellspacing="4">
 				<h:column>
 					<f:facet name="header">
 						<h:outputText value="#{bundle.ListCustomerOrderTitle_id}" />
@@ -48,6 +47,12 @@
 					<h:outputText value="#{item.dateCreated}">
 						<f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
 					</h:outputText>
+				</h:column>
+
+				<h:column>
+
+					<h:commandLink action="#{orderItemController.prepareView(item)}"
+						value="Detail" styleClass="productsLink" />
 				</h:column>
 			</h:dataTable>
 		</h:form>

@@ -1,0 +1,61 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" template="/template.xhtml"
+	xmlns:util="http://java.sun.com/jsf/composite/util"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:define name="body">
+		<h:form>
+
+
+			<h:outputText value="#{bundle.ListOrderDetailTitle_Header}"
+				styleClass="generalHeader" />
+			<br />
+			<br />
+			<h:outputText value="#{bundle.ListOrderDetailTitle_Created}"
+				styleClass="bold" />
+			<h:outputText value="#{orderItemController.currentOrder.dateCreated}">
+				<f:convertDateTime pattern="HH:mm:ss dd/MM/yyyy" />
+			</h:outputText>
+			<br />
+			<h:outputText value="#{bundle.ListOrderDetailTitle_Total}"
+				styleClass="bold" />
+			<h:outputText value="#{orderItemController.currentOrder.amount}">
+				<f:convertNumber currencySymbol="$" type="currency" />
+			</h:outputText>
+			<br />
+			<br />
+			<h:dataTable value="#{orderItemController.items}" var="item"
+				cellpadding="2" cellspacing="4" rowClasses="firstRow, secondRow">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="#{bundle.ListOrderDetailTitle_qty}" />
+					</f:facet>
+					<h:outputText value="#{item.quantity}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="#{bundle.ListOrderDetailTitle_product}" />
+					</f:facet>
+					<h:commandLink
+						action="#{productController.prepareView(item.product)}"
+						actionListener="#{navigationListener.product(item.product)}"
+						value="#{item.product.name}" styleClass="productsLink" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="#{bundle.ListOrderDetailTitle_price}" />
+					</f:facet>
+					<h:outputText value="#{item.product.price * item.quantity}">
+						<f:convertNumber currencySymbol="$" type="currency" />
+					</h:outputText>
+				</h:column>
+			</h:dataTable>
+
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+

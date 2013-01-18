@@ -5,6 +5,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import cz.ixi.fusionweb.entities.OrderItem;
+import java.util.List;
 
 /**
  * EJB stateless bean handling order items.
@@ -21,5 +22,13 @@ public class OrderItemBean extends AbstractFacade<OrderItem> {
 
     protected EntityManager getEntityManager() {
         return em;
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<OrderItem> findOrderItemsByOrder(int orderId) {
+        List<OrderItem> details = getEntityManager().createNamedQuery("OrderItem.findByOrderId")
+                .setParameter("orderId", orderId).getResultList();
+
+        return details;
     }
 }

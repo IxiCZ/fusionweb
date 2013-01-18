@@ -84,10 +84,10 @@ public class ProductController implements Serializable {
     }
 
     public String prepareList() {
-  	recreateModel();
+	recreateModel();
 
-  	return  PRODUCT + PageNavigation.LIST;
-      }
+	return PRODUCT + PageNavigation.LIST;
+    }
 
     public PageNavigation done() {
 	recreateModel();
@@ -105,15 +105,15 @@ public class ProductController implements Serializable {
 	current = (Product) getItems().getRowData();
 	selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
 
-	return PageNavigation.VIEW; 
+	return PageNavigation.VIEW;
     }
-    
-    public String prepareView(Product product) {
-   	current = product;
 
-   	return PRODUCT + PageNavigation.VIEW; 
-       }
-    
+    public String prepareView(Product product) {
+	System.out.println("prepVie prod: " + product);
+	current = product;
+
+	return PRODUCT + PageNavigation.VIEW;
+    }
 
     public PageNavigation prepareCreate() {
 	current = new Product();
@@ -130,29 +130,27 @@ public class ProductController implements Serializable {
     }
 
     public PageNavigation create() {
- 	try {
- 	    getFacade().create(current);
- 	    JsfUtil.addSuccessMessage(ResourceBundle.getBundle(BUNDLE).getString("ProductCreated"));
- 	    recreateModel();
+	try {
+	    getFacade().create(current);
+	    JsfUtil.addSuccessMessage(ResourceBundle.getBundle(BUNDLE).getString("ProductCreated"));
+	    recreateModel();
 
- 	     setStep(2);
- 	    
- 	    return prepareCreate();
- 	} catch (Exception e) {
- 	    JsfUtil.addErrorMessage(e, ResourceBundle.getBundle(BUNDLE).getString("PersistenceErrorOccured"));
+	    setStep(2);
 
- 	    return null;
- 	}
-     }
+	    return prepareCreate();
+	} catch (Exception e) {
+	    JsfUtil.addErrorMessage(e, ResourceBundle.getBundle(BUNDLE).getString("PersistenceErrorOccured"));
 
-     public PageNavigation prepareEdit() {
- 	current = (Product) getItems().getRowData();
- 	selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+	    return null;
+	}
+    }
 
- 	return PageNavigation.EDIT;
-     }
+    public PageNavigation prepareEdit() {
+	current = (Product) getItems().getRowData();
+	selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
 
-
+	return PageNavigation.EDIT;
+    }
 
     public PageNavigation update() {
 	try {
@@ -175,6 +173,7 @@ public class ProductController implements Serializable {
 
 	return PageNavigation.LIST;
     }
+
     public PageNavigation destroyAndView() {
 	performDestroy();
 	recreateModel();
@@ -198,6 +197,7 @@ public class ProductController implements Serializable {
 	    JsfUtil.addErrorMessage(e, ResourceBundle.getBundle(BUNDLE).getString("PersistenceErrorOccured"));
 	}
     }
+
     private void updateCurrentItem() {
 	int count = getFacade().count();
 
@@ -229,7 +229,6 @@ public class ProductController implements Serializable {
 	items = null;
     }
 
-
     public PageNavigation next() {
 	getPagination().nextPage();
 	recreateModel();
@@ -251,7 +250,6 @@ public class ProductController implements Serializable {
     public SelectItem[] getItemsAvailableSelectOne() {
 	return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
-
 
     /**
      * @return the categoryId
