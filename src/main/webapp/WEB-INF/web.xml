@@ -48,6 +48,17 @@
         </auth-constraint>
     </security-constraint>
     
+     <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>orderDetail</web-resource-name>
+            <url-pattern>/orderDetail/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>CUSTOMER</role-name>
+            <role-name>ADMINISTRATOR</role-name>
+        </auth-constraint>
+    </security-constraint>
+    
 	  <login-config>
 	        <auth-method>FORM</auth-method>
 	        <form-login-config>
