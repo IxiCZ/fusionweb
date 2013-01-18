@@ -20,9 +20,9 @@ import cz.ixi.fusionweb.web.util.AbstractPaginationHelper;
 import cz.ixi.fusionweb.web.util.JsfUtil;
 import cz.ixi.fusionweb.web.util.PageNavigation;
 
-@ManagedBean(name = "categoryController")
+@ManagedBean(name = "productCategoryController")
 @SessionScoped
-public class CategoryController implements Serializable {
+public class ProductCategoryController implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -30,12 +30,14 @@ public class CategoryController implements Serializable {
 
     @EJB
     private ProductCategoryBean ejbFacade;
+    
     private AbstractPaginationHelper pagination;
     private ProductCategory current;
     private DataModel<ProductCategory> items = null;
+    private DataModel<ProductCategory> allItems = null;
     private int selectedItemIndex;
 
-    public CategoryController() {
+    public ProductCategoryController() {
     }
 
     public ProductCategory getSelected() {
@@ -71,7 +73,7 @@ public class CategoryController implements Serializable {
     }
 
     public PageNavigation prepareList() {
-	recreateModel();
+	recreateLocalModel();
 
 	return PageNavigation.LIST;
     }
@@ -94,7 +96,7 @@ public class CategoryController implements Serializable {
 	try {
 	    getFacade().create(current);
 	    JsfUtil.addSuccessMessage(ResourceBundle.getBundle(BUNDLE).getString("CategoryCreated"));
-	    recreateModel();
+	    recreateWholeModel();
 
 	    return prepareCreate();
 	} catch (Exception e) {
@@ -128,21 +130,21 @@ public class CategoryController implements Serializable {
 	current = (ProductCategory) getItems().getRowData();
 	selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
 	performDestroy();
-	recreateModel();
+	recreateWholeModel();
 
 	return PageNavigation.LIST;
     }
 
     public PageNavigation destroyAndView() {
 	performDestroy();
-	recreateModel();
+	recreateWholeModel();
 	updateCurrentItem();
 
 	if (selectedItemIndex >= 0) {
 	    return PageNavigation.VIEW;
 	} else {
 	    // all items were removed - go back to list
-	    recreateModel();
+	    recreateWholeModel();
 
 	    return PageNavigation.LIST;
 	}
@@ -183,21 +185,35 @@ public class CategoryController implements Serializable {
 
 	return items;
     }
+    
+    public DataModel<ProductCategory> getAllItems() {
+	if (allItems == null) {
+	    allItems = new ListDataModel<ProductCategory>(getFacade().findAll());
+	}
 
-    private void recreateModel() {
+	return allItems;
+    }
+
+    private void recreateLocalModel() {
 	items = null;
+    }
+    
+
+    private void recreateWholeModel() {
+	allItems = null;
+	recreateLocalModel();
     }
 
     public PageNavigation next() {
 	getPagination().nextPage();
-	recreateModel();
+	recreateLocalModel();
 
 	return PageNavigation.LIST;
     }
 
     public PageNavigation previous() {
 	getPagination().previousPage();
-	recreateModel();
+	recreateLocalModel();
 
 	return PageNavigation.LIST;
     }
@@ -219,7 +235,7 @@ public class CategoryController implements Serializable {
 		return null;
 	    }
 
-	    CategoryController controller = (CategoryController) facesContext.getApplication().getELResolver()
+	    ProductCategoryController controller = (ProductCategoryController) facesContext.getApplication().getELResolver()
 		    .getValue(facesContext.getELContext(), null, "categoryController");
 
 	    return controller.ejbFacade.find(getKey(value));
@@ -251,7 +267,7 @@ public class CategoryController implements Serializable {
 		return getStringKey(o.getId());
 	    } else {
 		throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName()
-			+ "; expected type: " + CategoryController.class.getName());
+			+ "; expected type: " + ProductCategoryController.class.getName());
 	    }
 	}
     }

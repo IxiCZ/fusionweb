@@ -2,14 +2,13 @@ package cz.ixi.fusionweb.web.util;
 
 import javax.faces.model.DataModel;
 
-
 public abstract class AbstractPaginationHelper {
     public static final int DEFAULT_SIZE = 10;
     private transient int page;
     private transient int pageSize;
 
     public AbstractPaginationHelper(int pageSize) {
-        this.pageSize = pageSize;
+	this.pageSize = pageSize;
     }
 
     public abstract int getItemsCount();
@@ -17,45 +16,45 @@ public abstract class AbstractPaginationHelper {
     public abstract DataModel<?> createPageDataModel();
 
     public int getPageFirstItem() {
-        return page * pageSize;
+	return page * pageSize;
     }
 
     public int getPageLastItem() {
-        int i = (getPageFirstItem() + pageSize) - 1;
-        int count = getItemsCount() - 1;
+	int i = (getPageFirstItem() + pageSize) - 1;
+	int count = getItemsCount() - 1;
 
-        if (i > count) {
-            i = count;
-        }
+	if (i > count) {
+	    i = count;
+	}
 
-        if (i < 0) {
-            i = 0;
-        }
+	if (i < 0) {
+	    i = 0;
+	}
 
-        return i;
+	return i;
     }
 
     public boolean isHasNextPage() {
-        return (((page + 1) * pageSize) + 1) <= getItemsCount();
+	return (((page + 1) * pageSize) + 1) <= getItemsCount();
     }
 
     public void nextPage() {
-        if (isHasNextPage()) {
-            page++;
-        }
+	if (isHasNextPage()) {
+	    page++;
+	}
     }
 
     public boolean isHasPreviousPage() {
-        return page > 0;
+	return page > 0;
     }
 
     public void previousPage() {
-        if (isHasPreviousPage()) {
-            page--;
-        }
+	if (isHasPreviousPage()) {
+	    page--;
+	}
     }
 
     public int getPageSize() {
-        return pageSize;
+	return pageSize;
     }
 }

@@ -9,14 +9,14 @@
 	<h:form id="categoryList">
 		<br />
 		<h:outputText escape="false" value="#{bundle.ListCategoryEmpty}"
-			rendered="#{categoryController.items.rowCount == 0}" />
+			rendered="#{productCategoryController.allItems.rowCount == 0}" />
 		<h:outputText escape="false" value="#{bundle.ProductCategories_title}"
-			rendered="#{categoryController.items.rowCount != 0}"
+			rendered="#{productCategoryController.allItems.rowCount != 0}"
 			styleClass="productMenuTitle" />
 		<br />
 		<br />
-		<h:panelGroup rendered="#{categoryController.items.rowCount > 0}">
-			<h:dataTable value="#{categoryController.items}" var="item">
+		<h:panelGroup rendered="#{productCategoryController.allItems.rowCount > 0}">
+			<h:dataTable value="#{productCategoryController.allItems}" var="item">
                     <h:column>
 					<h:commandLink action="#{productController.prepareList}"
 						value="#{item.name}"

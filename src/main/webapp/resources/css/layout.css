@@ -356,3 +356,27 @@ a.shoppingCartTableLowerText:hover,a.shoppingCartTableLowerText:hover {
 	font-size: 1.1em;
 }
 
+
+a.generalLink:link,a.generalLink:visited {
+	color: #1C335E;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+a.generalLink:hover,a.generalLink:hover {
+	color: #6A94D4;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+.commandButtons {
+    margin-left: 0px;
+    padding: 3px 15px;
+}
+
+.commandButtons li {
+    list-style: none;
+    display: inline;
+
+}
+
