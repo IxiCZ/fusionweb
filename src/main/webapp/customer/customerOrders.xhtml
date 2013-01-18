@@ -7,7 +7,50 @@
 
 
 	<ui:define name="body">
-		
+		<h:form>
+
+			<h:outputText value="#{bundle.ListCustomerOrderTitle}"
+				styleClass="shoppingCartHeader" />
+			<br />
+			<br />
+			<h:dataTable
+				value="#{orderController.getMyOrders(userController.user)}"
+				var="item" rowClasses="generalFirstRow, generalSecondRow"
+				styleClass="myOrdersTable" cellpadding="2"
+				cellspacing="4">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="#{bundle.ListCustomerOrderTitle_id}" />
+					</f:facet>
+
+					<h:outputText value="#{item.id}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="#{bundle.ListCustomerOrderTitle_orderStatus}" />
+					</f:facet>
+
+					<h:outputText value="#{item.orderStatus}" />
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="#{bundle.ListCustomerOrderTitle_amount}" />
+					</f:facet>
+					<h:outputText value="#{item.amount}">
+						<f:convertNumber currencySymbol="$" type="currency" />
+					</h:outputText>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="#{bundle.ListCustomerOrderTitle_dateCreated}" />
+					</f:facet>
+					<h:outputText value="#{item.dateCreated}">
+						<f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+					</h:outputText>
+				</h:column>
+			</h:dataTable>
+		</h:form>
 	</ui:define>
 
 

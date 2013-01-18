@@ -36,7 +36,8 @@ body {
 }
 
 .productMenuTitle {
-	text-decoration: underline; font-weight : bold;
+	text-decoration: underline;
+	font-weight: bold;
 	font-size: 1.1em;
 	color: #1E3561;
 	margin-left: 25px;
@@ -44,7 +45,8 @@ body {
 }
 
 .customerMenuTitle {
-	text-decoration: underline; font-weight : bold;
+	text-decoration: underline;
+	font-weight: bold;
 	font-size: 1.1em;
 	color: #1E3561;
 	margin-left: 60px;
@@ -159,27 +161,25 @@ span.detailHeaderBig {
 	color: #FF9D00;
 }
 
-.mainProductBlock{
-	text-align: center;	
+.mainProductBlock {
+	text-align: center;
 }
 
-.mainProductImage{
-	text-align: center;	
+.mainProductImage {
+	text-align: center;
 	float: left;
 	margin-left: 60px;
-	
 }
 
-.mainProductPrice{
+.mainProductPrice {
 	margin-right: 120px;
 	font-weight: bold;
 	font-size: 1.3em;
 }
 
-.addToCartMainProduct{
+.addToCartMainProduct {
 	margin-right: 120px;
 }
-
 
 a.mainProductTitle:link,a.mainProductTitle:visited {
 	color: #1C335E;
@@ -194,8 +194,6 @@ a.mainProductTitle:hover,a.mainProductTitle:hover {
 	text-decoration: underline;
 	margin-left: 15px;
 }
-
-
 
 a.logLink:link,a.logLink:visited {
 	color: #1C335E;
@@ -342,3 +340,10 @@ a.shoppingCartTableLowerText:hover,a.shoppingCartTableLowerText:hover {
 .productDetailMiniHeaders {
 	font-weight: bold;
 }
+
+.generalHeader {
+	color: #355BA1;
+	font-weight: bold;
+	font-size: 1.1em;
+}
+
