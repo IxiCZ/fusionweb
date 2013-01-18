@@ -1,0 +1,32 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" template="/template.xhtml"
+	xmlns:util="http://java.sun.com/jsf/composite/util"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:define name="body">
+		<h:form>
+			<h:outputText value="#{bundle.EditCategoryTitle}"
+				styleClass="generalHeader" />
+			<br />
+			<br />
+			<h:outputLabel value="#{bundle.EditCategoryLabel_name}" for="name" />
+			<h:inputText id="name"
+				value="#{productCategoryController.selected.name}"
+				title="#{bundle.EditCategoryTitle_name}" required="true"
+				requiredMessage="#{bundle.EditCategoryRequiredMessage_name}" />
+			<br />
+			<br />
+			<h:commandLink action="#{productCategoryController.update}"
+				value="#{bundle.EditCategorySaveLink}" styleClass="generalLink" />
+			<br />
+			<h:commandLink action="#{productCategoryController.destroyAndView}"
+				value="#{bundle.ViewCategoryDestroyLink}" styleClass="generalLink"
+				rendered="#{productCategoryController.productCountInSelected == 0}" />
+			<br />
+			<h:commandLink action="#{productCategoryController.prepareList}"
+				value="#{bundle.ViewCategoryShowAllLink}" styleClass="generalLink" />
+		</h:form>
+	</ui:define>
+</ui:composition>

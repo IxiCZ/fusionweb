@@ -48,6 +48,10 @@ public class ProductCategoryController implements Serializable {
 
 	return current;
     }
+    
+    public long getProductCountInSelected() {
+	return ejbFacade.productCountInCategory(current.getId());
+    }
 
     private ProductCategoryBean getFacade() {
 	return ejbFacade;
