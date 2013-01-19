@@ -70,6 +70,10 @@ public class ProductController implements Serializable {
 	    pagination = new AbstractPaginationHelper(AbstractPaginationHelper.DEFAULT_SIZE) {
 		@Override
 		public int getItemsCount() {
+		    if (categoryId != -1) {
+			return (int) getFacade().countInCategory(categoryId);
+		    }
+		    
 		    return getFacade().count();
 		}
 

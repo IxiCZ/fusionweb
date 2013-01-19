@@ -18,36 +18,42 @@
 				rendered="#{productController.items.rowCount == 0}" />
 
 			<h:dataTable value="#{productController.items}"
-				rowClasses="product-table-odd-row, product-table-even-row" columnClasses="first,product-table-text-column" var="item" border="0"
-				cellpadding="2" cellspacing="0" rules="none" styleClass="product-table"
+				rowClasses="product-table-odd-row, product-table-even-row"
+				columnClasses="first,product-table-text-column" var="item"
+				border="0" cellpadding="2" cellspacing="0" rules="none"
+				styleClass="product-table"
 				rendered="#{productController.items.rowCount > 0}">
-			
-						<h:column>
-							<h:graphicImage value="/image?id=#{item.id}" height="125"
-								width="125" />
-						</h:column>
-						<h:column >
-							<h:commandLink action="#{productController.prepareView}"
-								actionListener="#{navigationListener.product(item)}"
-								value="#{item.name}" styleClass="productsLink" />
-							<br />
-							<br />
+				<h:column>
+					<h:graphicImage value="/image?id=#{item.id}" height="125"
+						width="125" />
+				</h:column>
+				<h:column>
+					<h:commandLink action="#{productController.prepareView}"
+						actionListener="#{navigationListener.product(item)}"
+						value="#{item.name}" styleClass="productsLink" />
+					<br />
+					<br />
+					<h:outputLabel for="price" styleClass="bold"
+						value="#{bundle.ListProductTitle_price}: " />
+					<h:outputText id="price" value="#{item.price}">
+						<f:convertNumber currencySymbol="$" type="currency" />
+					</h:outputText>
 
-							<h:outputLabel for="price" styleClass="bold"
-								value="#{bundle.ListProductTitle_price}: " />
-							<h:outputText id="price" value="#{item.price}">
-								<f:convertNumber currencySymbol="$" type="currency" />
-							</h:outputText>
-
-							<h:panelGrid styleClass="addToCart" >
-								<h:commandButton action="#{shoppingCart.addItem(item)}"
-									value="#{bundle.AddToCart}" styleClass="addToCart"
-									style="margin-top:10px;" />
-							</h:panelGrid>
-						</h:column>
-			
-
+					<h:panelGrid styleClass="addToCart">
+						<h:commandButton action="#{shoppingCart.addItem(item)}"
+							value="#{bundle.AddToCart}" styleClass="addToCart"
+							style="margin-top:10px;" />
+					</h:panelGrid>
+				</h:column>
 			</h:dataTable>
+			<ul class="commandButtons">
+				<li><h:commandLink action="#{productController.previous}"
+						value="#{bundle.Previous}" styleClass="generalLink"
+						rendered="#{productController.pagination.hasPreviousPage}" /></li>
+				<li><h:commandLink action="#{productController.next}"
+						value="#{bundle.Next}" styleClass="generalLink"
+						rendered="#{productController.pagination.hasNextPage}" /></li>
+			</ul>
 		</h:form>
 	</ui:define>
 </ui:composition>

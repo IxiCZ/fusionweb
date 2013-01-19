@@ -75,4 +75,17 @@ public class ProductBean extends AbstractFacade<Product> {
 	return (Long) createQuery.getSingleResult();
     }
 
+    /**
+     * Returns count of products in given category.
+     * 
+     * @param categoryId category id
+     * @return count of products in given category
+     */
+    public long countInCategory(int categoryId) {
+	Query createQuery = this.em.createQuery("SELECT COUNT(p) FROM Product p WHERE p.category.id = :id");
+	createQuery.setParameter("id", categoryId);
+
+	return (Long) createQuery.getSingleResult();
+    }
+
 }
