@@ -32,6 +32,10 @@ public abstract class AbstractFacade<T> {
 	getEntityManager().merge(entity);
     }
 
+    public T merge(T entity) {
+	return getEntityManager().merge(entity);
+    }
+
     public void remove(T entity) {
 	getEntityManager().remove(getEntityManager().merge(entity));
     }
@@ -39,13 +43,14 @@ public abstract class AbstractFacade<T> {
     public void remove(Number id) {
 	getEntityManager().remove(find(id));
     }
-    
+
     public T find(Object id) {
 	return getEntityManager().find(entityClass, id);
     }
 
     public List<T> findAll() {
-	javax.persistence.criteria.CriteriaQuery<T> cq = getEntityManager().getCriteriaBuilder().createQuery(entityClass);
+	javax.persistence.criteria.CriteriaQuery<T> cq = getEntityManager().getCriteriaBuilder().createQuery(
+		entityClass);
 	cq.select(cq.from(entityClass));
 
 	return getEntityManager().createQuery(cq).getResultList();
@@ -53,14 +58,15 @@ public abstract class AbstractFacade<T> {
 
     @SuppressWarnings("unchecked")
     public List<T> findRange(int[] range) {
-	javax.persistence.criteria.CriteriaQuery<T> cq = getEntityManager().getCriteriaBuilder().createQuery(entityClass);
+	javax.persistence.criteria.CriteriaQuery<T> cq = getEntityManager().getCriteriaBuilder().createQuery(
+		entityClass);
 	cq.select(cq.from(entityClass));
 
 	javax.persistence.Query q = getEntityManager().createQuery(cq);
 	q.setMaxResults(range[1] - range[0]);
 	q.setFirstResult(range[0]);
 
-	return  q.getResultList();
+	return q.getResultList();
     }
 
     @SuppressWarnings("unchecked")

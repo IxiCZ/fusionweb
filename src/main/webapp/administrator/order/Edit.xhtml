@@ -1,0 +1,96 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" template="/template.xhtml"
+	xmlns:util="http://java.sun.com/jsf/composite/util"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:define name="body">
+		<h:form>
+			<h:outputText value="#{bundle.EditCustomerOrderTitle}"
+				styleClass="generalHeader" />
+			<br />
+			<br />
+			<h:panelGrid columns="2">
+				<h:outputLabel value="#{bundle.EditCustomerOrderLabel_amount}"
+					for="amount" styleClass="bold" />
+				<h:inputText id="amount" value="#{orderController.selected.amount}"
+					title="#{bundle.EditCustomerOrderTitle_amount}" required="true"
+					requiredMessage="#{bundle.EditCustomerOrderRequiredMessage_amount}" />
+				<h:outputLabel value="#{bundle.EditCustomerOrderLabel_dateCreated}"
+					for="dateCreated" styleClass="bold" />
+				<h:inputText id="dateCreated"
+					value="#{orderController.selected.dateCreated}"
+					title="#{bundle.EditCustomerOrderTitle_dateCreated}"
+					required="true"
+					requiredMessage="#{bundle.EditCustomerOrderRequiredMessage_dateCreated}">
+					<f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+				</h:inputText>
+				<h:outputLabel value="#{bundle.EditCustomerOrderLabel_orderStatus}"
+					for="orderStatus" styleClass="bold" />
+				<h:selectOneMenu id="orderStatus"
+					value="#{orderController.selected.orderStatus}"
+					title="#{bundle.EditCustomerOrderTitle_orderStatus}"
+					required="true"
+					requiredMessage="#{bundle.EditCustomerOrderRequiredMessage_orderStatus}">
+					<f:selectItems
+						value="#{orderController.statusItemsAvailableSelectOne()}" />
+				</h:selectOneMenu>
+				<h:outputLabel value="#{bundle.EditCustomerOrderLabel_customer}"
+					for="customer" styleClass="bold" />
+				<h:selectOneMenu id="customer"
+					value="#{orderController.selected.customer}"
+					title="#{bundle.EditCustomerOrderTitle_customer}" required="true"
+					requiredMessage="#{bundle.EditCustomerOrderRequiredMessage_customer}">
+					<f:selectItems
+						value="#{customerController.itemsAvailableSelectOne}" />
+				</h:selectOneMenu>
+			</h:panelGrid>
+			<h:dataTable value="#{orderController.selected.orderItemList}"
+				styleClass="shoppingCartTable" var="item" border="0" cellpadding="2"
+				cellspacing="0">
+
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="#{bundle.Cart_Item}"
+							styleClass="shoppingCartTableHeader" />
+					</f:facet>
+					<h:commandLink
+						action="#{productController.prepareView(item.product)}"
+						actionListener="#{navigationListener.product(item.product)}"
+						value="#{item.product.name}" styleClass="productsLink" />
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="#{bundle.Cart_Quantity}"
+							styleClass="shoppingCartTableHeader" />
+					</f:facet>
+					<h:inputText id="price" value="#{item.quantity}" required="true"
+						requiredMessage="#{bundle.EditProductRequiredMessage_price}"
+						styleClass="shoppingCartTableQuantityText">
+
+					</h:inputText>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="#{bundle.Cart_Price}"
+							styleClass="shoppingCartTableHeader" />
+					</f:facet>
+
+					<h:outputText value="#{item.product.price * item.quantity}">
+						<f:convertNumber currencySymbol="$" type="currency" />
+					</h:outputText>
+				</h:column>
+			</h:dataTable>
+			<br />
+			<br />
+			<h:commandLink action="#{orderController.update}"
+				value="#{bundle.EditProductSaveLink}" styleClass="generalLink" />
+			<br />
+			<h:commandLink action="#{orderController.destroyAndView}"
+				value="#{bundle.ViewProductDestroyLink}" styleClass="generalLink" />
+			<br />
+		</h:form>
+	</ui:define>
+</ui:composition>

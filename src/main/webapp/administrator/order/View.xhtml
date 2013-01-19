@@ -1,0 +1,98 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" template="/template.xhtml"
+	xmlns:util="http://java.sun.com/jsf/composite/util"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:define name="body">
+		<h:form>
+			<h:outputText value="#{bundle.ViewOrderTitle}"
+				styleClass="generalHeader" />
+			<br />
+			<br />
+			<h:panelGrid columns="2">
+				<h:outputText value="#{bundle.ViewCustomerOrderLabel_id}"
+					styleClass="bold" />
+				<h:outputText value="#{orderController.selected.id}"
+					title="#{bundle.ViewCustomerOrderTitle_id}" />
+				<h:outputText value="#{bundle.ViewCustomerOrderLabel_amount}"
+					styleClass="bold" />
+				<h:outputText value="#{orderController.selected.amount}">
+					<f:convertNumber currencySymbol="$" type="currency" />
+				</h:outputText>
+				<h:outputText value="#{bundle.ViewCustomerOrderLabel_dateCreated}"
+					styleClass="bold" />
+				<h:outputText value="#{orderController.selected.dateCreated}"
+					title="#{bundle.ViewCustomerOrderTitle_dateCreated}">
+					<f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+				</h:outputText>
+				<h:outputText value="#{bundle.ViewCustomerOrderLabel_orderStatus}"
+					styleClass="bold" />
+				<h:outputText value="#{orderController.selected.orderStatus}"
+					title="#{bundle.ViewCustomerOrderTitle_orderStatus}" />
+				<h:outputText value="#{bundle.ViewCustomerOrderLabel_customer}"
+					styleClass="bold" />
+				<h:outputText
+					value="#{orderController.selected.customer.firstname} #{orderController.selected.customer.lastname}"
+					title="#{bundle.ViewCustomerOrderTitle_customer}" />
+			</h:panelGrid>
+			<h:dataTable 
+				value="#{orderController.selected.orderItemList}"
+				styleClass="shoppingCartTable" var="item" border="0" cellpadding="2"
+				cellspacing="0">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="#{bundle.Cart_Item}"
+							styleClass="shoppingCartTableHeader" />
+					</f:facet>
+					<h:commandLink
+						action="#{productController.prepareView(item.product)}"
+						value="#{item.product.name}" styleClass="productsLink" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="#{bundle.Cart_Quantity}"
+							styleClass="shoppingCartTableHeader" />
+					</f:facet>
+					<h:outputText id="price" value="#{item.quantity}" />
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="#{bundle.Cart_Price}"
+							styleClass="shoppingCartTableHeader" />
+					</f:facet>
+
+					<h:outputText value="#{item.product.price * item.quantity}">
+						<f:convertNumber currencySymbol="$" type="currency" />
+					</h:outputText>
+				</h:column>
+			</h:dataTable>
+			<br />
+			<br />
+			<br />
+			<h:commandLink
+				action="#{orderController.markOrderAs(orderController.selected, orderController.statusPaid)}"
+				value="#{bundle.ListCustomerOrderMarkAsPaid}"
+				styleClass="generalLink" />
+			<h:outputText value=" | " />
+			<h:commandLink
+				action="#{orderController.markOrderAs(orderController.selected, orderController.statusSent)}"
+				value="#{bundle.ListCustomerOrderMarkAsSent}"
+				styleClass="generalLink" />
+			<h:outputText value=" | " />
+			<h:commandLink
+				action="#{orderController.markOrderAs(orderController.selected, orderController.statusCancelled)}"
+				value="#{bundle.ListCustomerOrderCancelLink}"
+				styleClass="generalLink" />
+			<br />
+			<br />
+			<h:commandLink action="Edit" value="#{bundle.ViewProductEditLink}"
+				styleClass="generalLink" />
+			<h:outputText value=" | " />
+			<h:commandLink action="#{orderController.destroyAndView}"
+				value="#{bundle.ViewProductDestroyLink}" styleClass="generalLink" />
+		</h:form>
+	</ui:define>
+</ui:composition>

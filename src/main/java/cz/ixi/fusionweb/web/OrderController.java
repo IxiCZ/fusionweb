@@ -1,6 +1,8 @@
 package cz.ixi.fusionweb.web;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -15,8 +17,11 @@ import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
 
+import org.hibernate.Hibernate;
+
 import cz.ixi.fusionweb.ejb.OrderBean;
 import cz.ixi.fusionweb.entities.Order;
+import cz.ixi.fusionweb.entities.OrderItem;
 import cz.ixi.fusionweb.entities.OrderStatus;
 import cz.ixi.fusionweb.entities.User;
 import cz.ixi.fusionweb.web.util.AbstractPaginationHelper;
@@ -29,6 +34,7 @@ public class OrderController implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private static final String BUNDLE = "/Bundle";
+
     @EJB
     private OrderBean ejbFacade;
     private AbstractPaginationHelper pagination;
@@ -52,6 +58,18 @@ public class OrderController implements Serializable {
 
     private OrderBean getFacade() {
 	return ejbFacade;
+    }
+
+    public OrderStatus getStatusPaid() {
+	return OrderStatus.PAID;
+    }
+
+    public OrderStatus getStatusSent() {
+	return OrderStatus.SENT;
+    }
+
+    public OrderStatus getStatusCancelled() {
+	return OrderStatus.CANCELLED;
     }
 
     public AbstractPaginationHelper getPagination() {
@@ -82,8 +100,39 @@ public class OrderController implements Serializable {
     public PageNavigation prepareView() {
 	current = (Order) getItems().getRowData();
 	selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+	current = ejbFacade.merge(current);
+	Hibernate.initialize(current.getOrderItemList());
 
 	return PageNavigation.VIEW;
+    }
+
+    public PageNavigation prepareEdit() {
+	current = (Order) getItems().getRowData();
+	selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+	current = ejbFacade.merge(current);
+	Hibernate.initialize(current.getOrderItemList());
+
+	return PageNavigation.EDIT;
+    }
+
+    public PageNavigation update() {
+	double total = 0d;
+	for (Iterator<OrderItem> it = current.getOrderItemList().iterator(); it.hasNext();) {
+	    OrderItem oi = it.next();
+	    total += oi.getProduct().getPrice() * oi.getQuantity();
+	}
+	current.setAmount(total);
+
+	try {
+	    getFacade().merge(current);
+	    JsfUtil.addSuccessMessage(ResourceBundle.getBundle(BUNDLE).getString("CustomerOrderUpdated"));
+
+	    return PageNavigation.VIEW;
+	} catch (Exception e) {
+	    JsfUtil.addErrorMessage(e, ResourceBundle.getBundle(BUNDLE).getString("PersistenceErrorOccured"));
+
+	    return null;
+	}
     }
 
     public PageNavigation prepareCreate() {
@@ -106,26 +155,6 @@ public class OrderController implements Serializable {
 	}
     }
 
-    public PageNavigation prepareEdit() {
-	current = (Order) getItems().getRowData();
-	selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-
-	return PageNavigation.EDIT;
-    }
-
-    public PageNavigation update() {
-	try {
-	    getFacade().edit(current);
-	    JsfUtil.addSuccessMessage(ResourceBundle.getBundle(BUNDLE).getString("CustomerOrderUpdated"));
-
-	    return PageNavigation.VIEW;
-	} catch (Exception e) {
-	    JsfUtil.addErrorMessage(e, ResourceBundle.getBundle(BUNDLE).getString("PersistenceErrorOccured"));
-
-	    return null;
-	}
-    }
-
     public PageNavigation destroy() {
 	current = (Order) getItems().getRowData();
 	selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
@@ -135,14 +164,20 @@ public class OrderController implements Serializable {
 	return PageNavigation.LIST;
     }
 
-    public PageNavigation cancelOrder() {
+    public PageNavigation markOrderAsFromList(OrderStatus status) {
 	current = (Order) getItems().getRowData();
 	selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-	current.setOrderStatus(OrderStatus.CANCELLED);
-	ejbFacade.edit(current);
-	recreateModel();
+	markOrderAs(current, status);
 
 	return PageNavigation.LIST;
+    }
+
+    public PageNavigation markOrderAs(Order order, OrderStatus status) {
+	order.setOrderStatus(status);
+	ejbFacade.edit(order);
+	recreateModel();
+
+	return PageNavigation.VIEW;
     }
 
     public List<Order> getMyOrders(User user) {
@@ -236,6 +271,15 @@ public class OrderController implements Serializable {
 
     public SelectItem[] getItemsAvailableSelectOne() {
 	return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
+    }
+
+    public SelectItem[] statusItemsAvailableSelectOne() {
+	List<OrderStatus> statuses = new ArrayList<OrderStatus>();
+	statuses.add(OrderStatus.NEW);
+	statuses.add(OrderStatus.PAID);
+	statuses.add(OrderStatus.SENT);
+	statuses.add(OrderStatus.CANCELLED);
+	return JsfUtil.getSelectItems(statuses, true);
     }
 
     /**

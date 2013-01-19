@@ -64,16 +64,23 @@
 							value="#{bundle.ListCustomerOrderViewLink}"
 							styleClass="generalLink" />
 						<h:outputText value=" | " />
-						<h:commandLink action="#{orderController.prepareView}"
+						<h:commandLink action="#{orderController.prepareEdit}"
+							value="#{bundle.ListCustomerOrderEditLink}"
+							styleClass="generalLink" />
+						<h:outputText value=" | " />
+						<h:commandLink
+							action="#{orderController.markOrderAsFromList(orderController.statusPaid)}"
 							value="#{bundle.ListCustomerOrderMarkAsPaid}"
 							styleClass="generalLink" />
 						<h:outputText value=" | " />
-						<h:commandLink action="#{orderController.cancelOrder}"
-							value="#{bundle.ListCustomerOrderCancelLink}"
+						<h:commandLink
+							action="#{orderController.markOrderAsFromList(orderController.statusSent)}"
+							value="#{bundle.ListCustomerOrderMarkAsSent}"
 							styleClass="generalLink" />
 						<h:outputText value=" | " />
-						<h:commandLink action="#{orderController.destroy}"
-							value="#{bundle.ListCustomerOrderDestroyLink}"
+						<h:commandLink
+							action="#{orderController.markOrderAsFromList(orderController.statusCancelled)}"
+							value="#{bundle.ListCustomerOrderCancelLink}"
 							styleClass="generalLink" />
 					</h:column>
 				</h:dataTable>

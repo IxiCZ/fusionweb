@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.DecimalMin;
 
 /**
  * Order item entity.
@@ -38,6 +39,7 @@ public class OrderItem implements Serializable {
     private Product product;
     @Basic(optional = false)
     @Column(name = "QUANTITY")
+    @DecimalMin(value = "1", message = "The minimal quantity is 1.")
     private int quantity;
 
     public OrderItem() {
