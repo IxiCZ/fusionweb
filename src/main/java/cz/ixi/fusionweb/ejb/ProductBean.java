@@ -34,11 +34,6 @@ public class ProductBean extends AbstractFacade<Product> {
 	return em;
     }
 
-    @Override
-    public void remove(Product entity) {
-	em.remove(find(entity.getId()));
-    }
-
     /**
      * Returns list of products in given category by range.
      * 

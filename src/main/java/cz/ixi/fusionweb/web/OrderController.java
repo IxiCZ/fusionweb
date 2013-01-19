@@ -178,7 +178,7 @@ public class OrderController implements Serializable {
 
     private void performDestroy() {
 	try {
-	    getFacade().remove(current);
+	    getFacade().remove(current.getId());
 	    JsfUtil.addSuccessMessage(ResourceBundle.getBundle(BUNDLE).getString("CustomerOrderDeleted"));
 	} catch (Exception e) {
 	    JsfUtil.addErrorMessage(e, ResourceBundle.getBundle(BUNDLE).getString("PersistenceErrorOccured"));

@@ -203,7 +203,7 @@ public class ProductController implements Serializable {
     private void performDestroy() {
 	try {
 	    System.out.println("name " + current.getName());
-	    getFacade().remove(current);
+	    getFacade().remove(current.getId());
 	    JsfUtil.addSuccessMessage(ResourceBundle.getBundle(BUNDLE).getString("ProductDeleted"));
 	} catch (Exception e) {
 	    JsfUtil.addErrorMessage(e, ResourceBundle.getBundle(BUNDLE).getString("PersistenceErrorOccured"));
