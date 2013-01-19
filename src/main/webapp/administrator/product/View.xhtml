@@ -1,0 +1,48 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" template="/template.xhtml"
+	xmlns:util="http://java.sun.com/jsf/composite/util"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:define name="body">
+		<h:form>
+			<h:outputText value="#{bundle.ViewProductTitle}"
+				styleClass="generalHeader" />
+			<br />
+			<br />
+			<h:panelGrid columns="2">
+				<h:outputText value="#{bundle.ViewProductLabel_id}"
+					styleClass="bold" />
+				<h:outputText value="#{productController.selected.id}"
+					title="#{bundle.ViewProductTitle_id}" />
+				<h:outputText value="#{bundle.ViewProductLabel_name}"
+					styleClass="bold" />
+				<h:outputText value="#{productController.selected.name}"
+					title="#{bundle.ViewProductTitle_name}" />
+				<h:outputText value="#{bundle.ViewProductLabel_price}"
+					styleClass="bold" />
+				<h:outputText value="#{productController.selected.price}"
+					title="#{bundle.ViewProductTitle_price}" />
+				<h:outputText value="#{bundle.ViewProductLabel_description}"
+					styleClass="bold" />
+				<h:outputText value="#{productController.selected.description}"
+					title="#{bundle.ViewProductTitle_description}" />
+				<h:outputText value="#{bundle.ViewProductLabel_category}"
+					styleClass="bold" />
+				<h:outputText value="#{productController.selected.category.name}"
+					title="#{bundle.ViewProductTitle_category}" />
+				<h:outputText value="#{bundle.ViewProductLabel_img}"
+					styleClass="bold" />
+
+				<h:graphicImage value="/image?id=#{productController.selected.id}" />
+			</h:panelGrid>
+			<h:commandLink action="Edit" value="#{bundle.ViewProductEditLink}"
+				styleClass="generalLink" />
+			<br />
+			<h:commandLink action="#{productController.destroyAndView}"
+				value="#{bundle.ViewProductDestroyLink}" styleClass="generalLink"
+				rendered="#{productController.orderItemsOfProduct == 0}" />
+		</h:form>
+	</ui:define>
+</ui:composition>

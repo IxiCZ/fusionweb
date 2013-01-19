@@ -70,7 +70,6 @@ public class FileUploadServlet extends HttpServlet {
                         return;
                     }
 
-                    //final String newFilename = MD5Util.generateMD5(fileName) + extension;    //id + extension;
                     product.setImgSrc(b);
                     product.setImg(fileName);
                     productBean.edit(product);

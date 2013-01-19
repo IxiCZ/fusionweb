@@ -59,6 +59,11 @@ public class ProductController implements Serializable {
     private ProductBean getFacade() {
 	return ejbFacade;
     }
+    
+    public long getOrderItemsOfProduct(){
+	return ejbFacade.orderItemsOfProduct(current.getId());
+    }
+    
 
     public AbstractPaginationHelper getPagination() {
 	if (pagination == null) {
@@ -193,6 +198,7 @@ public class ProductController implements Serializable {
 
     private void performDestroy() {
 	try {
+	    System.out.println("name " + current.getName());
 	    getFacade().remove(current);
 	    JsfUtil.addSuccessMessage(ResourceBundle.getBundle(BUNDLE).getString("ProductDeleted"));
 	} catch (Exception e) {
