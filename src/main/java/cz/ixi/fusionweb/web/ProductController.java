@@ -27,6 +27,7 @@ public class ProductController implements Serializable {
     private static final long serialVersionUID = 1L;
     private static final String BUNDLE = "/Bundle";
     private static final String PRODUCT = "/product/";
+    private static final String ADMINISTRATOR_PRODUCT = "/administrator/product/";
 
     @EJB
     private ProductBean ejbFacade;
@@ -50,9 +51,9 @@ public class ProductController implements Serializable {
 
     public String showAll() {
 	recreateModel();
-	categoryId = 0; // show all products
+	categoryId = -1; // show all products
 
-	return "product/List";
+	return ADMINISTRATOR_PRODUCT + PageNavigation.LIST;
     }
 
     private ProductBean getFacade() {
@@ -69,7 +70,7 @@ public class ProductController implements Serializable {
 
 		@Override
 		public DataModel<Product> createPageDataModel() {
-		    if (categoryId != 0) {
+		    if (categoryId != -1) {
 			return new ListDataModel<Product>(getFacade().findByCategory(
 				new int[] { getPageFirstItem(), getPageFirstItem() + getPageSize() }, categoryId));
 		    }

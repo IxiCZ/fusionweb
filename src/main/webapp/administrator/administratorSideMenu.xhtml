@@ -12,6 +12,10 @@
 			styleClass="administratorMenuTitle" />
 		<br />
 		<br />
+		<h:commandLink action="${productController.showAll()}"
+			value="#{bundle.Products_title}">
+		</h:commandLink>
+		<br />
 		<h:commandLink action="/administrator/productCategory/List"
 			value="#{bundle.ProductCategories_title}">
 		</h:commandLink>

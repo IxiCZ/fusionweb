@@ -1,0 +1,90 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" template="/template.xhtml"
+	xmlns:util="http://java.sun.com/jsf/composite/util"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+
+	<ui:define name="body">
+		<h:form>
+			<h:outputText escape="false" value="#{bundle.ListProductTitle}"
+				styleClass="generalHeader" />
+			<br />
+			<br />
+			<h:commandLink action="#{productController.prepareCreate}"
+				value="#{bundle.ListProductCreateLink}" styleClass="generalLink">
+				<f:param name="step" value="1" />
+			</h:commandLink>
+			<br />
+			<br />
+			<h:outputText escape="false" value="#{bundle.ListProductEmpty}"
+				rendered="#{productController.items.rowCount == 0}" />
+			<h:panelGroup rendered="#{productController.items.rowCount > 0}">
+
+				<h:dataTable value="#{productController.items}" var="item"
+					cellpadding="2" cellspacing="0"
+					rowClasses="generalOddRow, generalEvenRow">
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="#{bundle.ListProductTitle_id}" />
+						</f:facet>
+						<h:outputText value="#{item.id}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="#{bundle.ListProductTitle_name}" />
+						</f:facet>
+						<h:outputText value="#{item.name}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="#{bundle.ListProductTitle_price}" />
+						</f:facet>
+						<h:outputText value="#{item.price}">
+							<f:convertNumber currencySymbol="$" type="currency"
+								minFractionDigits="2" pattern="##,##" />
+						</h:outputText>
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="#{bundle.ListProductTitle_category}" />
+						</f:facet>
+						<h:outputText value="#{item.category.name}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="#{bundle.ListProductTitle_img}" />
+						</f:facet>
+						<h:graphicImage value="/image?id=#{item.id}" height="100"
+							width="100" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value=" " />
+						</f:facet>
+						<h:commandLink action="#{productController.prepareView}"
+							value="#{bundle.ListProductViewLink}" styleClass="generalLink" />
+						<h:outputText value=" " />
+						<h:commandLink action="#{productController.prepareEdit}"
+							value="#{bundle.ListProductEditLink}" styleClass="generalLink" />
+						<h:outputText value=" " />
+						<h:commandLink action="#{productController.destroy}"
+							value="#{bundle.ListProductDestroyLink}" styleClass="generalLink" />
+					</h:column>
+				</h:dataTable>
+				<ul class="commandButtons">
+					<li><h:commandLink action="#{productController.previous}"
+							value="#{bundle.Previous}" styleClass="generalLink"
+							rendered="#{productController.pagination.hasPreviousPage}" /></li>
+					<li><h:commandLink action="#{productController.next}"
+							value="#{bundle.Next}" styleClass="generalLink"
+							rendered="#{productController.pagination.hasNextPage}" /></li>
+				</ul>
+			</h:panelGroup>
+
+		</h:form>
+	</ui:define>
+
+
+</ui:composition>
