@@ -1,0 +1,94 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" template="/template.xhtml"
+	xmlns:util="http://java.sun.com/jsf/composite/util"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+
+	<ui:define name="body">
+		<h:form>
+			<h:outputText escape="false" value="#{bundle.CustomerOrders_title}"
+				styleClass="generalHeader" />
+			<br />
+			<br />
+			<h:outputText escape="false" value="#{bundle.ListCustomerOrderEmpty}"
+				rendered="#{orderController.items.rowCount == 0}" />
+			<h:panelGroup rendered="#{orderController.items.rowCount > 0}">
+				<h:dataTable value="#{orderController.items}" var="item"
+					cellpadding="2" cellspacing="4"
+					rowClasses="generalOddRow, generalEvenRow">
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="#{bundle.ListCustomerOrderTitle_id}" />
+						</f:facet>
+						<h:outputText value="#{item.id}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="#{bundle.ListCustomerOrderTitle_amount}" />
+						</f:facet>
+						<h:outputText value="#{item.amount}">
+							<f:convertNumber currencySymbol="$" type="currency" />
+						</h:outputText>
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText
+								value="#{bundle.ListCustomerOrderTitle_dateCreated}" />
+						</f:facet>
+						<h:outputText value="#{item.dateCreated}">
+							<f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+						</h:outputText>
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText
+								value="#{bundle.ListCustomerOrderTitle_orderStatus}" />
+						</f:facet>
+						<h:outputText value="#{item.orderStatus}" />
+
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="#{bundle.ListCustomerOrderTitle_customer}" />
+						</f:facet>
+						<h:outputText
+							value="#{item.customer.firstname} #{item.customer.lastname}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value=" " />
+						</f:facet>
+						<h:commandLink action="#{orderController.prepareView}"
+							value="#{bundle.ListCustomerOrderViewLink}"
+							styleClass="generalLink" />
+						<h:outputText value=" | " />
+						<h:commandLink action="#{orderController.prepareView}"
+							value="#{bundle.ListCustomerOrderMarkAsPaid}"
+							styleClass="generalLink" />
+						<h:outputText value=" | " />
+						<h:commandLink action="#{orderController.cancelOrder}"
+							value="#{bundle.ListCustomerOrderCancelLink}"
+							styleClass="generalLink" />
+						<h:outputText value=" | " />
+						<h:commandLink action="#{orderController.destroy}"
+							value="#{bundle.ListCustomerOrderDestroyLink}"
+							styleClass="generalLink" />
+					</h:column>
+				</h:dataTable>
+				<ul class="commandButtons">
+					<li><h:commandLink action="#{orderController.previous}"
+							value="#{bundle.Previous}" styleClass="generalLink"
+							rendered="#{orderController.pagination.hasPreviousPage}" /></li>
+					<li><h:commandLink action="#{orderController.next}"
+							value="#{bundle.Next}" styleClass="generalLink"
+							rendered="#{orderController.pagination.hasNextPage}" /></li>
+				</ul>
+			</h:panelGroup>
+
+		</h:form>
+	</ui:define>
+
+
+</ui:composition>

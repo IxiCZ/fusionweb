@@ -1,10 +1,11 @@
 package cz.ixi.fusionweb.web;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -23,9 +24,10 @@ import cz.ixi.fusionweb.web.util.JsfUtil;
 import cz.ixi.fusionweb.web.util.PageNavigation;
 
 @Named(value = "orderController")
-@RequestScoped
-public class OrderController {
+@SessionScoped
+public class OrderController implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     private static final String BUNDLE = "/Bundle";
     @EJB
     private OrderBean ejbFacade;
@@ -40,274 +42,260 @@ public class OrderController {
     }
 
     public Order getSelected() {
-        if (current == null) {
-            current = new Order();
-            selectedItemIndex = -1;
-        }
+	if (current == null) {
+	    current = new Order();
+	    selectedItemIndex = -1;
+	}
 
-        return current;
+	return current;
     }
 
     private OrderBean getFacade() {
-        return ejbFacade;
+	return ejbFacade;
     }
 
     public AbstractPaginationHelper getPagination() {
-        if (pagination == null) {
-            pagination = new AbstractPaginationHelper(10) {
-                @Override
-                public int getItemsCount() {
-                    return getFacade()
-                            .count();
-                }
+	if (pagination == null) {
+	    pagination = new AbstractPaginationHelper(AbstractPaginationHelper.DEFAULT_SIZE) {
+		@Override
+		public int getItemsCount() {
+		    return getFacade().count();
+		}
 
-                @Override
-                public DataModel<Order> createPageDataModel() {
-                    return new ListDataModel<Order>(
-                            getFacade().findRange(
-                            new int[]{
-                                getPageFirstItem(),
-                                getPageFirstItem()
-                                + getPageSize()
-                            }));
-                }
-            };
-        }
+		@Override
+		public DataModel<Order> createPageDataModel() {
+		    return new ListDataModel<Order>(getFacade().findRange(
+			    new int[] { getPageFirstItem(), getPageFirstItem() + getPageSize() }));
+		}
+	    };
+	}
 
-        return pagination;
+	return pagination;
     }
 
     public PageNavigation prepareList() {
-        recreateModel();
+	recreateModel();
 
-        return PageNavigation.LIST;
+	return PageNavigation.LIST;
     }
 
     public PageNavigation prepareView() {
-        current = (Order) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+	current = (Order) getItems().getRowData();
+	selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
 
-        return PageNavigation.VIEW;
+	return PageNavigation.VIEW;
     }
 
     public PageNavigation prepareCreate() {
-        current = new Order();
-        selectedItemIndex = -1;
+	current = new Order();
+	selectedItemIndex = -1;
 
-        return PageNavigation.CREATE;
+	return PageNavigation.CREATE;
     }
 
     public PageNavigation create() {
-        try {
-            getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle(BUNDLE).getString("CustomerOrderCreated"));
+	try {
+	    getFacade().create(current);
+	    JsfUtil.addSuccessMessage(ResourceBundle.getBundle(BUNDLE).getString("CustomerOrderCreated"));
 
-            return prepareCreate();
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle(BUNDLE).getString("PersistenceErrorOccured"));
+	    return prepareCreate();
+	} catch (Exception e) {
+	    JsfUtil.addErrorMessage(e, ResourceBundle.getBundle(BUNDLE).getString("PersistenceErrorOccured"));
 
-            return null;
-        }
+	    return null;
+	}
     }
 
     public PageNavigation prepareEdit() {
-        current = (Order) getItems()
-                .getRowData();
-        selectedItemIndex = pagination.getPageFirstItem()
-                + getItems()
-                .getRowIndex();
+	current = (Order) getItems().getRowData();
+	selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
 
-        return PageNavigation.EDIT;
+	return PageNavigation.EDIT;
     }
 
     public PageNavigation update() {
-        try {
-            getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle(BUNDLE).getString("CustomerOrderUpdated"));
+	try {
+	    getFacade().edit(current);
+	    JsfUtil.addSuccessMessage(ResourceBundle.getBundle(BUNDLE).getString("CustomerOrderUpdated"));
 
-            return PageNavigation.VIEW;
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle(BUNDLE).getString("PersistenceErrorOccured"));
+	    return PageNavigation.VIEW;
+	} catch (Exception e) {
+	    JsfUtil.addErrorMessage(e, ResourceBundle.getBundle(BUNDLE).getString("PersistenceErrorOccured"));
 
-            return null;
-        }
+	    return null;
+	}
     }
 
     public PageNavigation destroy() {
-        current = (Order) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        performDestroy();
-        recreateModel();
+	current = (Order) getItems().getRowData();
+	selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+	performDestroy();
+	recreateModel();
 
-        return PageNavigation.LIST;
+	return PageNavigation.LIST;
     }
 
     public PageNavigation cancelOrder() {
-        current = (Order) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        current.setOrderStatus(OrderStatus.CANCELLED);
-        ejbFacade.edit(current);
-        recreateModel();
+	current = (Order) getItems().getRowData();
+	selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+	current.setOrderStatus(OrderStatus.CANCELLED);
+	ejbFacade.edit(current);
+	recreateModel();
 
-        return PageNavigation.LIST;
+	return PageNavigation.LIST;
     }
 
     public List<Order> getMyOrders(User user) {
-        if (user != null) {
-            myOrders = getFacade().getOrderByCustomerUsername(user.getUsername());
+	if (user != null) {
+	    myOrders = getFacade().getOrderByCustomerUsername(user.getUsername());
 
-            if (myOrders.isEmpty()) {
-                return null;
-            } else {
-                return myOrders;
-            }
-        } else {
-            JsfUtil.addErrorMessage("Current user is not authenticated. Please do login before accessing your orders.");
+	    if (myOrders.isEmpty()) {
+		return null;
+	    } else {
+		return myOrders;
+	    }
+	} else {
+	    JsfUtil.addErrorMessage("Current user is not authenticated. Please do login before accessing your orders.");
 
-            return null;
-        }
+	    return null;
+	}
     }
 
     public PageNavigation destroyAndView() {
-        performDestroy();
-        recreateModel();
-        updateCurrentItem();
+	performDestroy();
+	recreateModel();
+	updateCurrentItem();
 
-        if (selectedItemIndex >= 0) {
-            return PageNavigation.VIEW;
-        } else {
-            // all items were removed - go back to list
-            recreateModel();
+	if (selectedItemIndex >= 0) {
+	    return PageNavigation.VIEW;
+	} else {
+	    // all items were removed - go back to list
+	    recreateModel();
 
-            return PageNavigation.LIST;
-        }
+	    return PageNavigation.LIST;
+	}
     }
 
     private void performDestroy() {
-        try {
-            getFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle(BUNDLE).getString("CustomerOrderDeleted"));
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle(BUNDLE).getString("PersistenceErrorOccured"));
-        }
+	try {
+	    getFacade().remove(current);
+	    JsfUtil.addSuccessMessage(ResourceBundle.getBundle(BUNDLE).getString("CustomerOrderDeleted"));
+	} catch (Exception e) {
+	    JsfUtil.addErrorMessage(e, ResourceBundle.getBundle(BUNDLE).getString("PersistenceErrorOccured"));
+	}
     }
 
     private void updateCurrentItem() {
-        int count = getFacade().count();
+	int count = getFacade().count();
 
-        if (selectedItemIndex >= count) {
-            // selected index cannot be bigger than number of items:
-            selectedItemIndex = count - 1;
+	if (selectedItemIndex >= count) {
+	    // selected index cannot be bigger than number of items:
+	    selectedItemIndex = count - 1;
 
-            // go to previous page if last page disappeared:
-            if (pagination.getPageFirstItem() >= count) {
-                pagination.previousPage();
-            }
-        }
+	    // go to previous page if last page disappeared:
+	    if (pagination.getPageFirstItem() >= count) {
+		pagination.previousPage();
+	    }
+	}
 
-        if (selectedItemIndex >= 0) {
-            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
-        }
+	if (selectedItemIndex >= 0) {
+	    current = getFacade().findRange(new int[] { selectedItemIndex, selectedItemIndex + 1 }).get(0);
+	}
     }
 
     @SuppressWarnings("unchecked")
     public DataModel<Order> getItems() {
-        if (items == null) {
-            items = (DataModel<Order>) getPagination().createPageDataModel();
-        }
+	if (items == null) {
+	    items = (DataModel<Order>) getPagination().createPageDataModel();
+	}
 
-        return items;
+	return items;
     }
 
     private void recreateModel() {
-        items = null;
+	items = null;
     }
 
     public PageNavigation next() {
-        getPagination().nextPage();
-        recreateModel();
+	getPagination().nextPage();
+	recreateModel();
 
-        return PageNavigation.LIST;
+	return PageNavigation.LIST;
     }
 
     public PageNavigation previous() {
-        getPagination().previousPage();
-        recreateModel();
+	getPagination().previousPage();
+	recreateModel();
 
-        return PageNavigation.LIST;
+	return PageNavigation.LIST;
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
-        return JsfUtil.getSelectItems(
-                ejbFacade.findAll(),
-                false);
+	return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
     }
 
     public SelectItem[] getItemsAvailableSelectOne() {
-        return JsfUtil.getSelectItems(
-                ejbFacade.findAll(),
-                true);
+	return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
 
     /**
      * @return the searchString
      */
     public String getSearchString() {
-        return searchString;
+	return searchString;
     }
 
     /**
-     * @param searchString the searchString to set
+     * @param searchString
+     *            the searchString to set
      */
     public void setSearchString(String searchString) {
-        this.searchString = searchString;
+	this.searchString = searchString;
     }
 
     @FacesConverter(forClass = Order.class)
     public static class CustomerOrderControllerConverter implements Converter {
 
-        @Override
-        public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
-            if ((value == null) || (value.length() == 0)) {
-                return null;
-            }
+	@Override
+	public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
+	    if ((value == null) || (value.length() == 0)) {
+		return null;
+	    }
 
-            OrderController controller = (OrderController) facesContext.getApplication().
-                    getELResolver().getValue(facesContext.getELContext(),null,"customerOrderController");
+	    OrderController controller = (OrderController) facesContext.getApplication().getELResolver()
+		    .getValue(facesContext.getELContext(), null, "customerOrderController");
 
-            return controller.ejbFacade.find(getKey(value));
-        }
+	    return controller.ejbFacade.find(getKey(value));
+	}
 
-        java.lang.Integer getKey(String value) {
-            java.lang.Integer key;
-            key = Integer.valueOf(value);
+	java.lang.Integer getKey(String value) {
+	    java.lang.Integer key;
+	    key = Integer.valueOf(value);
 
-            return key;
-        }
+	    return key;
+	}
 
-        String getStringKey(java.lang.Integer value) {
-            StringBuilder sb = new StringBuilder();
-            sb.append(value);
+	String getStringKey(java.lang.Integer value) {
+	    StringBuilder sb = new StringBuilder();
+	    sb.append(value);
 
-            return sb.toString();
-        }
+	    return sb.toString();
+	}
 
-        @Override
-        public String getAsString(FacesContext facesContext, UIComponent component, Object object) {
-            if (object == null) {
-                return null;
-            }
+	@Override
+	public String getAsString(FacesContext facesContext, UIComponent component, Object object) {
+	    if (object == null) {
+		return null;
+	    }
 
-            if (object instanceof Order) {
-                Order o = (Order) object;
+	    if (object instanceof Order) {
+		Order o = (Order) object;
 
-                return getStringKey(o.getId());
-            } else {
-                throw new IllegalArgumentException(
-                        "object " + object + " is of type "
-                        + object.getClass().getName() + "; expected type: "
-                        + OrderController.class.getName());
-            }
-        }
+		return getStringKey(o.getId());
+	    } else {
+		throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName()
+			+ "; expected type: " + OrderController.class.getName());
+	    }
+	}
     }
 }
