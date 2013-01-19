@@ -20,7 +20,8 @@
 			<br />
 			<h:panelGroup>
 				<h:dataTable value="#{productCategoryController.items}" var="item"
-					cellpadding="2" cellspacing="4"
+					cellpadding="2" cellspacing="8" styleClass="generalTable" 
+					rowClasses="generalOddRow, generalEvenRow"
 					rendered="#{productCategoryController.items.rowCount > 0}">
 					<h:column>
 						<f:facet name="header">

@@ -356,7 +356,6 @@ a.shoppingCartTableLowerText:hover,a.shoppingCartTableLowerText:hover {
 	font-size: 1.1em;
 }
 
-
 a.generalLink:link,a.generalLink:visited {
 	color: #1C335E;
 	font-weight: bold;
@@ -369,14 +368,22 @@ a.generalLink:hover,a.generalLink:hover {
 	text-decoration: underline;
 }
 
+
+.generalOddRow {
+	background-color: #EDF3FF;
+
+}
+
+.generalEvenRow {
+	background-color: white;
+}
+
 .commandButtons {
-    margin-left: 0px;
-    padding: 3px 15px;
+	margin-left: 0px;
+	padding: 3px 15px;
 }
 
 .commandButtons li {
-    list-style: none;
-    display: inline;
-
+	list-style: none;
+	display: inline;
 }
-
