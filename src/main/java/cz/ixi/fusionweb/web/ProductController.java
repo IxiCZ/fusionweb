@@ -85,6 +85,7 @@ public class ProductController implements Serializable {
     }
 
     public String prepareList() {
+	pagination = null;
 	recreateModel();
 
 	return PRODUCT + PageNavigation.LIST;
@@ -110,7 +111,6 @@ public class ProductController implements Serializable {
     }
 
     public String prepareView(Product product) {
-	System.out.println("prepVie prod: " + product);
 	current = product;
 
 	return PRODUCT + PageNavigation.VIEW;
@@ -131,6 +131,7 @@ public class ProductController implements Serializable {
     }
 
     public PageNavigation create() {
+	System.out.println("clic create");
 	try {
 	    getFacade().create(current);
 	    JsfUtil.addSuccessMessage(ResourceBundle.getBundle(BUNDLE).getString("ProductCreated"));
@@ -138,7 +139,7 @@ public class ProductController implements Serializable {
 
 	    setStep(2);
 
-	    return prepareCreate();
+	    return PageNavigation.CREATE;
 	} catch (Exception e) {
 	    JsfUtil.addErrorMessage(e, ResourceBundle.getBundle(BUNDLE).getString("PersistenceErrorOccured"));
 
@@ -193,7 +194,7 @@ public class ProductController implements Serializable {
     private void performDestroy() {
 	try {
 	    getFacade().remove(current);
-	    JsfUtil.addSuccessMessage(ResourceBundle.getBundle(BUNDLE).getString("CategoryDeleted"));
+	    JsfUtil.addSuccessMessage(ResourceBundle.getBundle(BUNDLE).getString("ProductDeleted"));
 	} catch (Exception e) {
 	    JsfUtil.addErrorMessage(e, ResourceBundle.getBundle(BUNDLE).getString("PersistenceErrorOccured"));
 	}

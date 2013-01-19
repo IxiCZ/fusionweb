@@ -240,7 +240,7 @@ public class ProductCategoryController implements Serializable {
 	    }
 
 	    ProductCategoryController controller = (ProductCategoryController) facesContext.getApplication().getELResolver()
-		    .getValue(facesContext.getELContext(), null, "categoryController");
+		    .getValue(facesContext.getELContext(), null, "productCategoryController");
 
 	    return controller.ejbFacade.find(getKey(value));
 	}

@@ -1,0 +1,69 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" template="/template.xhtml"
+	xmlns:util="http://java.sun.com/jsf/composite/util"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:define name="body">
+			<h:outputText value="#{bundle.CreateProductTitle} #{productController.step}"
+				styleClass="generalHeader" />
+			<br />
+			<br />
+			<h:panelGroup layout="block" id="step1"
+				rendered="#{productController.step == 1}">
+				<h:outputText value="Step 1 - Add a new product" styleClass="bold" />
+				<h:form>
+					<br />
+					<h:panelGrid columns="2">
+						<h:outputLabel value="#{bundle.CreateProductLabel_name}"
+							for="name" />
+						<h:inputText id="name" value="#{productController.selected.name}"
+							title="#{bundle.CreateProductTitle_name}" required="true"
+							requiredMessage="#{bundle.CreateProductRequiredMessage_name}" />
+						<h:outputLabel value="#{bundle.CreateProductLabel_price}"
+							for="price" />
+						<h:inputText id="price"
+							value="#{productController.selected.price}"
+							title="#{bundle.CreateProductTitle_price}" required="true"
+							requiredMessage="#{bundle.CreateProductRequiredMessage_price}" />
+						<h:outputLabel value="#{bundle.CreateProductLabel_description}"
+							for="description" />
+						<h:inputText id="description"
+							value="#{productController.selected.description}"
+							title="#{bundle.CreateProductTitle_description}" required="true"
+							requiredMessage="#{bundle.CreateProductRequiredMessage_description}" />
+						<h:outputLabel value="#{bundle.CreateProductLabel_category}"
+							for="category" />
+						<h:selectOneMenu id="category"
+							value="#{productController.selected.category}"
+							title="#{bundle.CreateProductTitle_category}" required="true"
+							requiredMessage="#{bundle.CreateProductRequiredMessage_category}">
+							<f:selectItems
+								value="#{productCategoryController.itemsAvailableSelectOne}" />
+						</h:selectOneMenu>
+					</h:panelGrid>
+					<br />
+					<br />
+					<h:commandLink action="#{productController.create}"
+						value="#{bundle.CreateProductSaveLink}" styleClass="generalLink" />
+				</h:form>
+			</h:panelGroup>
+			
+			<h:panelGroup layout="block" id="step2"
+				rendered="#{productController.step == 2}">
+				<h:outputText value="Step 2 - Upload the product image"
+					style="font-size:20px;" />
+				<br />
+				<f:verbatim>
+					<form
+						action="/FusionWeb/fileUpload?productID=#{productController.selected.id}"
+						enctype="multipart/form-data" method="post">
+						<label>#{bundle.CreateProductLabel_img}</label> <input
+							id="uploadFile" type="file" name="uploadFile" /> <input
+							type="submit" onclick="return validateUpload()" value="Next" />
+					</form>
+				</f:verbatim>
+			</h:panelGroup>
+	</ui:define>
+</ui:composition>
