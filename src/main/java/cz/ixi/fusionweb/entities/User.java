@@ -54,11 +54,11 @@ public class User implements Serializable {
     @Id
     @Basic(optional = false)
     @Column(name = "USERNAME")
+    @Size(min = 3, max = 100, message = "{person.username}")
     private String username;
     
-    // TODO: message to bundle
     @NotNull
-    @Size(min = 3, max = 100, message = "Length of the password must be 3-100.")
+    @Size(min = 3, max = 100, message = "{person.password}")
     private String password;
     
     @Basic(optional = false)

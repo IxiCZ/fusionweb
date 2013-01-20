@@ -19,6 +19,11 @@
 		<h:link outcome="/common/login" value="Log in"
 			rendered="#{userController.logged == false}" styleClass="logLink" />
 
+		<h:form rendered="#{userController.logged == false}">
+			<h:commandLink action="#{customerController.prepareRegistration()}"
+				value="Register" styleClass="logLink" />
+		</h:form>
+
 		<h:outputText value="Logged as: " rendered="#{userController.logged}" />
 		<b><h:outputText value="#{userController.user.username}"
 				rendered="#{userController.logged}" /></b> <br />

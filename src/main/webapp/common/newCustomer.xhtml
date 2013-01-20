@@ -1,0 +1,62 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" template="/template.xhtml"
+	xmlns:util="http://java.sun.com/jsf/composite/util"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:define name="body">
+		<h:form>
+			<h:outputText value="#{bundle.NewCustomer_Title}"
+				styleClass="generalHeader" />
+			<br />
+			<br />
+			<h:panelGrid columns="2">
+				<h:outputLabel value="#{bundle.CreateCustomerLabel_firstname}"
+					for="firstname" styleClass="bold"/>
+				<h:inputText id="firstname"
+					value="#{customerController.selected.firstname}"
+					title="#{bundle.CreateCustomerTitle_firstname}" required="true"
+					requiredMessage="#{bundle.CreateCustomerRequiredMessage_firstname}" />
+				<h:outputLabel value="#{bundle.CreateCustomerLabel_lastname}"
+					for="lastname" styleClass="bold"/>
+				<h:inputText id="lastname"
+					value="#{customerController.selected.lastname}"
+					title="#{bundle.CreateCustomerTitle_lastname}" required="true"
+					requiredMessage="#{bundle.CreateCustomerRequiredMessage_lastname}" />
+				<h:outputLabel value="#{bundle.CreateCustomerLabel_email}"
+					for="email" styleClass="bold"/>
+				<h:inputText id="email" value="#{customerController.selected.email}"
+					title="#{bundle.CreateCustomerTitle_email}" required="true"
+					requiredMessage="#{bundle.CreateCustomerRequiredMessage_email}" />
+				<h:outputLabel value="#{bundle.CreateCustomerLabel_address}"
+					for="address" styleClass="bold"/>
+				<h:inputText id="address"
+					value="#{customerController.selected.address}"
+					title="#{bundle.CreateCustomerTitle_address}" required="true"
+					requiredMessage="#{bundle.CreateCustomerRequiredMessage_address}" />
+				<h:outputLabel value="#{bundle.CreateCustomerLabel_city}" for="city" styleClass="bold"/>
+				<h:inputText id="city" value="#{customerController.selected.city}"
+					title="#{bundle.CreateCustomerTitle_city}" required="true"
+					requiredMessage="#{bundle.CreateCustomerRequiredMessage_city}" />
+				<h:outputLabel value="#{bundle.CreateCustomerLabel_username}"
+					for="username" styleClass="bold"/>
+				<h:inputText id="username"
+					value="#{customerController.selected.username}"
+					title="#{bundle.CreateCustomerTitle_username}" required="true"
+					requiredMessage="#{bundle.CreateCustomerRequiredMessage_username}" />
+				<h:outputLabel value="#{bundle.CreateCustomerLabel_password}"
+					for="password" styleClass="bold"/>
+				<h:inputSecret id="password"
+					value="#{customerController.selected.password}"
+					title="#{bundle.CreateCustomerTitle_password}" required="true"
+					requiredMessage="#{bundle.CreateCustomerRequiredMessage_password}" />
+
+			</h:panelGrid>
+			<br />
+			<br />
+			<h:commandLink action="#{customerController.create}"
+				value="#{bundle.CreateCustomerSaveLink}"  styleClass="generalLink"  />
+		</h:form>
+	</ui:define>
+</ui:composition>

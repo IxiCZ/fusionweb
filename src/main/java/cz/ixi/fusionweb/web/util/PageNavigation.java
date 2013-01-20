@@ -9,7 +9,7 @@ public enum PageNavigation {
     LIST("List"),
     EDIT("Edit"),
     VIEW("View"),
-    INDEX("index"),
+    INDEX("/index"),
     SEARCH("Search");
 
     private String text;
