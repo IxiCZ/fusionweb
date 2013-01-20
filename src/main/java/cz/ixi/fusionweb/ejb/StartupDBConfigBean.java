@@ -15,6 +15,7 @@ import org.apache.commons.io.IOUtils;
 
 import cz.ixi.fusionweb.entities.Administrator;
 import cz.ixi.fusionweb.entities.Customer;
+import cz.ixi.fusionweb.entities.DiscussionEntry;
 import cz.ixi.fusionweb.entities.Order;
 import cz.ixi.fusionweb.entities.OrderItem;
 import cz.ixi.fusionweb.entities.Product;
@@ -39,7 +40,8 @@ public class StartupDBConfigBean {
     private OrderBean orders;
     @EJB
     private OrderItemBean orderItems;
-     
+    @EJB
+    private DiscussionEntryBean discussionEntries;
 
     @PostConstruct
     public void createData() {
@@ -88,7 +90,7 @@ public class StartupDBConfigBean {
 			+ "Wall-mountable design (VESA 75mm x 75mm)");
 	coby.setImg("coby-ledtv.jpg");
 	coby.setImgSrc(loadImage("coby-ledtv.jpg"));
-	
+
 	products.create(coby);
 
 	// in mobiles category
@@ -98,7 +100,7 @@ public class StartupDBConfigBean {
 			+ "16 GB storage,1 GB RAM,Dimensions: 136.6 x 70.6 x 8.6mm");
 	samsungGalaxy.setImg("samsung-galaxy-s3.jpg");
 	samsungGalaxy.setImgSrc(loadImage("samsung-galaxy-s3.jpg"));
-	
+
 	Product iPhone = new Product(
 		mobiles,
 		"Apple iPhone 4 16GB (Black) - AT&T",
@@ -113,26 +115,38 @@ public class StartupDBConfigBean {
 
 	// USERS:
 	// administrators:
-	Administrator hugo = new Administrator( "hugo", "1234", "Hugo", "Coconut", "hugo@coconut.com", "Mysterious Island", "Atlantic Ocean");
+	Administrator hugo = new Administrator("hugo", "1234", "Hugo", "Coconut", "hugo@coconut.com",
+		"Mysterious Island", "Atlantic Ocean");
 	administrators.create(hugo);
-	
+
 	// customers
 	Customer rick = new Customer("rick", "1234", "Richie", "Rich", "richie@rich.com", "Villa Riccardo", "Florence");
 	customers.create(rick);
-	
-	
+
 	// ORDERS:
-	Order rickOrder = new Order(customers.getCustomerByUsername("rick"), 0, new Date());    
-        List<OrderItem> items = new ArrayList<OrderItem>();
-        OrderItem orderedDellsByRick = new OrderItem (rickOrder, ultraDell, 2);
-        items.add(orderedDellsByRick);
-        OrderItem orderedSamsungByRick = new OrderItem (rickOrder, samsungGalaxy, 1);
-        items.add(orderedSamsungByRick);
-        rickOrder.setAmount(orderedDellsByRick.getQuantity()*orderedDellsByRick.getProduct().getPrice()
-        	+ orderedSamsungByRick.getQuantity()*orderedSamsungByRick.getProduct().getPrice());
-        rickOrder.setOrderItemList(items);
-        
-        orders.create(rickOrder);
+	Order rickOrder = new Order(customers.getCustomerByUsername("rick"), 0, new Date());
+	List<OrderItem> items = new ArrayList<OrderItem>();
+	OrderItem orderedDellsByRick = new OrderItem(rickOrder, ultraDell, 2);
+	items.add(orderedDellsByRick);
+	OrderItem orderedSamsungByRick = new OrderItem(rickOrder, samsungGalaxy, 1);
+	items.add(orderedSamsungByRick);
+	rickOrder.setAmount(orderedDellsByRick.getQuantity() * orderedDellsByRick.getProduct().getPrice()
+		+ orderedSamsungByRick.getQuantity() * orderedSamsungByRick.getProduct().getPrice());
+	rickOrder.setOrderItemList(items);
+
+	orders.create(rickOrder);
+
+	// DISCUSSION
+	DiscussionEntry firstEntryForDell = new DiscussionEntry(ultraDell, new Date(), rick, "Great product",
+		"Must have this one!");
+	discussionEntries.create(firstEntryForDell);
+
+	// List<DiscussionEntry> discussionEntriesDell = new
+	// ArrayList<DiscussionEntry>();
+	// discussionEntriesDell.add();
+	// ultraDell.setDiscussionEntries(discussionEntriesDell);
+
+	// products.edit(ultraDell);
     }
 
     private byte[] loadImage(String name) {
