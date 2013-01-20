@@ -14,6 +14,8 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 
+import org.hibernate.Hibernate;
+
 import cz.ixi.fusionweb.ejb.ProductBean;
 import cz.ixi.fusionweb.entities.Product;
 import cz.ixi.fusionweb.web.util.AbstractPaginationHelper;
@@ -115,12 +117,15 @@ public class ProductController implements Serializable {
     public PageNavigation prepareView() {
 	current = (Product) getItems().getRowData();
 	selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+	current = ejbFacade.merge(current);
+	Hibernate.initialize(current.getDiscussionEntries());
 
 	return PageNavigation.VIEW;
     }
 
     public String prepareView(Product product) {
-	current = product;
+	current = ejbFacade.merge(product);
+	Hibernate.initialize(current.getDiscussionEntries());
 
 	return PRODUCT + PageNavigation.VIEW;
     }

@@ -56,6 +56,10 @@ public class DiscussionEntry implements Serializable {
     @Column(name = "TEXT", nullable = false, length = 1000)
     private String text;
 
+    
+    public DiscussionEntry() {
+    }
+    
     public DiscussionEntry(Product product, Date dateCreated, User user, String title, String text) {
 	super();
 	this.product = product;

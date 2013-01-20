@@ -21,7 +21,8 @@
 
 			<h:graphicImage value="/image?id=#{productController.selected.id}"
 				styleClass="productDetailImage" />
-			<br /><br />
+			<br />
+			<br />
 			<h:commandButton
 				action="#{shoppingCart.addItem(productController.selected)}"
 				value="#{bundle.AddToCart}" styleClass="addToCartDetail" />
@@ -41,8 +42,25 @@
 			<br />
 			<h:outputText value="#{productController.selected.description}"
 				title="#{bundle.ViewProductTitle_description}" />
+			<br />
+			<br />
+			<h:outputText value="Discussion:" />
+			<br />
 
-
+			<h:dataTable value="#{productController.selected.discussionEntries}"
+				var="item" border="0" cellpadding="2" cellspacing="0" rules="none" >
+				<h:column>
+					<h:outputText value="Made by #{item.user.username}" styleClass="bold" />
+					<br />
+					<h:outputText value="at #{item.dateCreated}" />
+				</h:column>
+				<h:column>
+					<h:outputText value="#{item.title}" styleClass="bold" />
+					<br />
+					<br />
+					<h:outputText value="#{item.text}" />
+				</h:column>
+			</h:dataTable>
 		</h:form>
 	</ui:define>
 </ui:composition>
