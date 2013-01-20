@@ -58,10 +58,11 @@ public class ProductBean extends AbstractFacade<Product> {
     }
 
     /**
-     * Returns how many order items is associated with this product. 
+     * Returns how many order items is associated with this product.
      * 
-     * @param productCategoryId given product
-     * @return  how many order items is associated the product.
+     * @param productCategoryId
+     *            given product
+     * @return how many order items is associated the product.
      */
     public long orderItemsOfProduct(int productId) {
 	Query createQuery = this.em.createQuery("SELECT COUNT(oi) FROM OrderItem oi WHERE oi.product.id = :id");
@@ -73,7 +74,8 @@ public class ProductBean extends AbstractFacade<Product> {
     /**
      * Returns count of products in given category.
      * 
-     * @param categoryId category id
+     * @param categoryId
+     *            category id
      * @return count of products in given category
      */
     public long countInCategory(int categoryId) {
@@ -81,6 +83,41 @@ public class ProductBean extends AbstractFacade<Product> {
 	createQuery.setParameter("id", categoryId);
 
 	return (Long) createQuery.getSingleResult();
+    }
+
+    /**
+     * Returns list of products by range, where product's name contains given
+     * keyword.
+     * 
+     * @param range
+     *            range
+     * @param keyword
+     *            to be contained in product's name
+     * @return list of products by range, where product's name contains given
+     *         keyword
+     */
+    @SuppressWarnings("unchecked")
+    public List<Product> searchProduct(int[] range, String keyword) {
+	Query query = this.em.createQuery("SELECT p FROM Product p WHERE UPPER(p.name) LIKE :keyword");
+	query.setParameter("keyword", "%" + keyword.toUpperCase() + "%");
+	query.setMaxResults(range[1] - range[0]);
+	query.setFirstResult(range[0]);
+
+	return (List<Product>) query.getResultList();
+    }
+
+    /**
+     * Returns number of products, where product's name contains given keyword.
+     * 
+     * @param keyword
+     *            to be contained in product's name
+     * @return number of products, where product's name contains given keyword.
+     */
+    public long searchProductCount(String keyword) {
+	Query query = this.em.createQuery("SELECT COUNT(p) FROM Product p WHERE UPPER(p.name) LIKE :keyword");
+	query.setParameter("keyword", "%" + keyword.toUpperCase() + "%");
+
+	return (Long) query.getSingleResult();
     }
 
 }

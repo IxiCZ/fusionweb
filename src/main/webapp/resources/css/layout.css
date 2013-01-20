@@ -368,10 +368,8 @@ a.generalLink:hover,a.generalLink:hover {
 	text-decoration: underline;
 }
 
-
 .generalOddRow {
 	background-color: #EDF3FF;
-
 }
 
 .generalEvenRow {
@@ -386,4 +384,8 @@ a.generalLink:hover,a.generalLink:hover {
 .commandButtons li {
 	list-style: none;
 	display: inline;
+}
+
+.white {
+	color: white;
 }
