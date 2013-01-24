@@ -389,3 +389,38 @@ a.generalLink:hover,a.generalLink:hover {
 .white {
 	color: white;
 }
+
+.discussion-table {
+	border: 2px solid #1C335E;
+}
+
+.discussion-table-first-column {
+	border-collapse: collapse;
+	border: 1px solid #1C335E;;
+	width: 100px;
+	padding: 20px;
+}
+
+.discussion-table-second-column {
+	border-collapse: collapse;
+	border: 1px solid #1C335E;
+	padding: 20px;
+	width: 300px;
+}
+
+.discussion-table-odd-row {
+	
+}
+
+.discussion-table-even-row {
+	
+}
+
+.discussionNoComment {
+	font-weight: bold;
+	font-size: 1.05em;
+}
+
+.discussionTextArea {
+	width: 650px;
+}

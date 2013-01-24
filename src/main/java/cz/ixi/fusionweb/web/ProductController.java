@@ -1,6 +1,7 @@
 package cz.ixi.fusionweb.web;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 import javax.ejb.EJB;
@@ -16,8 +17,11 @@ import javax.faces.model.SelectItem;
 
 import org.hibernate.Hibernate;
 
+import cz.ixi.fusionweb.ejb.DiscussionEntryBean;
 import cz.ixi.fusionweb.ejb.ProductBean;
+import cz.ixi.fusionweb.entities.DiscussionEntry;
 import cz.ixi.fusionweb.entities.Product;
+import cz.ixi.fusionweb.entities.User;
 import cz.ixi.fusionweb.web.util.AbstractPaginationHelper;
 import cz.ixi.fusionweb.web.util.JsfUtil;
 import cz.ixi.fusionweb.web.util.PageNavigation;
@@ -33,9 +37,13 @@ public class ProductController implements Serializable {
 
     @EJB
     private ProductBean ejbFacade;
+    @EJB
+    private DiscussionEntryBean discussion;
+
     private AbstractPaginationHelper pagination;
     private DataModel<Product> items = null;
     private Product current;
+    private DiscussionEntry newDiscussionEntry = new DiscussionEntry();
     private int categoryId;
     private int selectedItemIndex;
 
@@ -61,11 +69,26 @@ public class ProductController implements Serializable {
     private ProductBean getFacade() {
 	return ejbFacade;
     }
-    
-    public long getOrderItemsOfProduct(){
+
+    public long getOrderItemsOfProduct() {
 	return ejbFacade.orderItemsOfProduct(current.getId());
     }
-    
+
+    public DiscussionEntry getNewDiscussionEntry() {
+	return newDiscussionEntry;
+    }
+
+    public String addDiscussionEntry(User user) {
+	newDiscussionEntry.setDateCreated(new Date());
+	newDiscussionEntry.setUser(user);
+	newDiscussionEntry.setProduct(getSelected());
+	discussion.create(newDiscussionEntry);
+	current = ejbFacade.find(current.getId());
+	current = ejbFacade.merge(current);
+	Hibernate.initialize(current.getDiscussionEntries());
+	newDiscussionEntry = new DiscussionEntry();
+	return "";
+    }
 
     public AbstractPaginationHelper getPagination() {
 	if (pagination == null) {
@@ -75,7 +98,7 @@ public class ProductController implements Serializable {
 		    if (categoryId != -1) {
 			return (int) getFacade().countInCategory(categoryId);
 		    }
-		    
+
 		    return getFacade().count();
 		}
 

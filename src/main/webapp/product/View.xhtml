@@ -44,23 +44,63 @@
 				title="#{bundle.ViewProductTitle_description}" />
 			<br />
 			<br />
-			<h:outputText value="Discussion:" />
-			<br />
+			<p style="clear: both;">
+				<h:outputText value="#{bundle.ProductDiscussion_NoComments} "
+					rendered="#{productController.selected.discussionEntries.size() == 0}"
+					styleClass="discussionNoComment" />
+				<h:outputText value="#{bundle.ProductDiscussion_LogIn}"
+					rendered="#{!userController.logged}"
+					styleClass="discussionNoComment" />
 
-			<h:dataTable value="#{productController.selected.discussionEntries}"
-				var="item" border="0" cellpadding="2" cellspacing="0" rules="none" >
-				<h:column>
-					<h:outputText value="Made by #{item.user.username}" styleClass="bold" />
+				<h:outputText value="#{bundle.ProdutDiscussion_NewEntryHeader}"
+					rendered="#{userController.logged}"
+					styleClass="discussionNoComment" />
+				<h:panelGrid columns="2" rendered="#{userController.logged}">
+					<h:outputLabel value="#{bundle.ProdutDiscussion_NewEntryTitle}"
+						for="title" styleClass="bold" />
+					<h:inputText id="title" value="#{productController.newDiscussionEntry.title}"
+						title="#{bundle.ProdutDiscussion_NewEntryTitle}" required="true"
+						requiredMessage="#{bundle.ProdutDiscussionRequiredMessage_title}" />
+					<h:outputLabel value="#{bundle.ProdutDiscussion_NewEntryText}"
+						for="text" styleClass="bold" />
+					<h:inputTextarea id="text"
+						value="#{productController.newDiscussionEntry.text}"
+						title="#{bundle.ProdutDiscussion_NewEntryText}" required="true"
+						requiredMessage="#{bundle.ProdutDiscussionRequiredMessage_text}"
+						styleClass="discussionTextArea" />
 					<br />
-					<h:outputText value="at #{item.dateCreated}" />
-				</h:column>
-				<h:column>
-					<h:outputText value="#{item.title}" styleClass="bold" />
+					<h:commandLink action="#{productController.addDiscussionEntry(userController.user)}"
+						value="#{bundle.ProdutDiscussion_Save}" styleClass="generalLink" />
 					<br />
 					<br />
-					<h:outputText value="#{item.text}" />
-				</h:column>
-			</h:dataTable>
+				</h:panelGrid>
+
+				<h:dataTable value="#{productController.selected.discussionEntries}"
+					var="item" cellpadding="2" cellspacing="0"
+					styleClass="discussion-table" width="100%"
+					columnClasses="discussion-table-first-column,discussion-table-second-column"
+					rowClasses="discussion-table-odd-row, discussion-table-even-row"
+					rendered="#{productController.selected.discussionEntries.size() > 0}">
+
+					<f:facet name="header">
+						<h:outputText value="#{bundle.ProductDiscussion_TableHeader}" />
+					</f:facet>
+					<h:column>
+						<h:outputText
+							value="#{bundle.ProductDiscussion_MadeBy} #{item.user.username}"
+							styleClass="bold" />
+						<br />
+						<h:outputText
+							value="#{bundle.ProductDiscussion_At} #{item.dateCreated}" />
+					</h:column>
+					<h:column>
+						<h:outputText value="#{item.title}" styleClass="bold" />
+						<br />
+						<br />
+						<h:outputText value="#{item.text}" />
+					</h:column>
+				</h:dataTable>
+			</p>
 		</h:form>
 	</ui:define>
 </ui:composition>
