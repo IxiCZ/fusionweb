@@ -22,33 +22,31 @@
 
 <h:body>
 	<div id="container">
-
-
+		<!-- TOP BAR WITH LOGIN AND REGISTRATION -->
 		<div id="topbar">
 			<ui:insert name="topbar">
 				<ui:include src="/common/topBar.xhtml" />
 			</ui:insert>
 		</div>
 
-		<!-- header -->
+		<!-- TOP HEADER (PICTURE) -->
 		<header id="header">
 			<ui:insert name="topheader">
 				<ui:include src="/common/topPanel.xhtml" />
 			</ui:insert>
 		</header>
-		
+
+		<!-- SEARCHING -->
 		<div id="searchBar">
 			<ui:insert name="searchBar">
 				<ui:include src="/common/searchBar.xhtml" />
 			</ui:insert>
-
 		</div>
-		
-		<div id="wrapper" class="clearfix">
 
+		<div id="wrapper" class="clearfix">
+			<!-- MENUS -->
 			<br />
 			<div class="side">
-
 				<nav class="sideMenu">
 					<ui:insert name="sideMenu">
 						<ui:include src="/common/sideMenu.xhtml" />
@@ -67,12 +65,12 @@
 				</nav>
 			</div>
 
-
-
-			<!-- CONTENT -->
+			<!-- MAIN CONTENT -->
 			<section id="mainPart">
 				<ui:insert name="body">
 				</ui:insert>
+				<!-- MESSAGES -->
+				<p style="clear: both;">
 				<div id="messagePanel">
 					<h:outputLink value="#"
 						rendered="#{! empty facesContext.maximumSeverity}"
@@ -82,14 +80,8 @@
 						layout="list" />
 				</div>
 			</section>
-
-
-
-
-
 		</div>
 	</div>
 	<div id="footer" />
-
 </h:body>
 </html>
