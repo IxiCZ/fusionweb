@@ -147,14 +147,16 @@ public class StartupDBConfigBean {
 	}
 	discussionEntries.create(new DiscussionEntry(allProducts.get(30), new Date(), frodo, "Looking forward to",
 		"I've just ordered it! I am looking forward to seeing all LOTR characters in HD."));
+
+	Logger.getLogger(StartupDBConfigBean.class.getName()).log(Level.INFO, "Creating initial items in the database finished");
     }
 
     private void createProductsInCatgory(ProductCategory category, String name) {
 	InputStream is = Thread.currentThread().getContextClassLoader()
 		.getResourceAsStream(category.getName() + "/" + name);
 	if (is == null) {
-	    System.out.println("no products file with name: " + name);
-	    // TODO log;
+	    Logger.getLogger(StartupDBConfigBean.class.getName()).log(Level.SEVERE,
+		    "No products file with name: "  + name);
 	    return;
 	}
 	BufferedReader reader = new BufferedReader(new InputStreamReader(is));
@@ -204,14 +206,15 @@ public class StartupDBConfigBean {
 		return IOUtils.toByteArray(is);
 	    }
 	} catch (IOException e) {
-	    // TODO log;
+	    Logger.getLogger(StartupDBConfigBean.class.getName()).log(Level.SEVERE, "Error loading image" + name, e);
 	    e.printStackTrace();
 	} finally {
 	    if (is != null) {
 		try {
 		    is.close();
 		} catch (IOException e) {
-		    // TODO log;
+		    Logger.getLogger(StartupDBConfigBean.class.getName()).log(Level.SEVERE,
+			    "Error closing stream " + name, e);
 		    e.printStackTrace();
 		}
 	    }
