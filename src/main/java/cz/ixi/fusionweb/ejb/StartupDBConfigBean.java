@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -131,12 +133,11 @@ public class StartupDBConfigBean {
 
 	// DISCUSSION
 	for (Product p : allProducts) {
-	    discussionEntries.create(new DiscussionEntry(p, new Date(), will, "Finally!",
-		    "Oh my god! I've been waiting for " + p.getName()
-			    + " for so long to be afordable! There is no better "
+	    discussionEntries
+		    .create(new DiscussionEntry(p, new Date(), will, "Finally!", "Oh my god! I've been waiting for "
+			    + p.getName() + " for so long to be afordable! There is no better "
 			    + p.getCategory().getName().substring(0, p.getCategory().getName().length() - 1)
-			    + ". I cannot express my happiness, that I found it here just for $" + p.getPrice()
-			    + "!!!"));
+			    + ". I cannot express my happiness, that I found it here just for $" + p.getPrice() + "!!!"));
 	}
 	for (Product p : allProducts) {
 	    if (p.getId() % 2 == 0) {
@@ -162,16 +163,16 @@ public class StartupDBConfigBean {
 	    while (line != null) {
 		String[] lineParts = line.split("---");
 		if (lineParts.length != 5) {
-		    System.out.println("products file " + name + " does not have right format (number of parts)");
-		    // TODO log;
+		    Logger.getLogger(StartupDBConfigBean.class.getName()).log(Level.SEVERE,
+			    "Products file " + name + " does not have right format (number of parts).");
 		    return;
 		}
 		double price = 0.0;
 		try {
 		    price = Double.parseDouble(lineParts[1]);
 		} catch (NumberFormatException e) {
-		    System.out.println("products file " + name + "  does not have right format (price)");
-		    // TODO log;
+		    Logger.getLogger(StartupDBConfigBean.class.getName()).log(Level.SEVERE,
+			    "Products file " + name + "  does not have right format (price).");
 		    return;
 		}
 		Product product = new Product(category, lineParts[0], price, lineParts[2]);
@@ -182,18 +183,18 @@ public class StartupDBConfigBean {
 	    }
 
 	} catch (IOException e) {
-	    // TODO log;
+	    Logger.getLogger(StartupDBConfigBean.class.getName()).log(Level.SEVERE, "Error reading " + name, e);
 	    e.printStackTrace();
 	} finally {
 	    if (reader != null) {
 		try {
 		    reader.close();
 		} catch (IOException e) {
-		    // TODO log;
-		    e.printStackTrace();
+		    Logger.getLogger(StartupDBConfigBean.class.getName()).log(Level.SEVERE, "Error closing " + name, e);
 		}
 	    }
 	}
+	Logger.getLogger(StartupDBConfigBean.class.getName()).log(Level.INFO, "Products from " + name + " successfully imported.");
     }
 
     private byte[] loadImage(String name) {
