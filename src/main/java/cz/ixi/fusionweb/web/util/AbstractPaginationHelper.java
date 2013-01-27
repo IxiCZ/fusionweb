@@ -3,7 +3,7 @@ package cz.ixi.fusionweb.web.util;
 import javax.faces.model.DataModel;
 
 public abstract class AbstractPaginationHelper {
-    public static final int DEFAULT_SIZE = 2;
+    public static final int DEFAULT_SIZE = 5;
     private transient int page;
     private transient int pageSize;
 
