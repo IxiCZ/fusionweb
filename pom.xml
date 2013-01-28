@@ -13,7 +13,7 @@
 		<endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<netbeans.hint.deploy.server>gfv3ee6</netbeans.hint.deploy.server>
-		<drools.version>5.4.0.Final</drools.version>
+		<drools.version>5.5.0.Final</drools.version>
 		<hibernate.version>4.1.7.Final</hibernate.version>
 	</properties>
 
@@ -36,7 +36,13 @@
 			<version>2.3.2</version>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
+	 <dependency>
+	  <groupId>junit</groupId>
+	  <artifactId>junit</artifactId>
+	  <version>4.10</version>
+	  <scope>test</scope>
+	 </dependency>
+	 <dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-web-api</artifactId>
 			<version>6.0</version>
