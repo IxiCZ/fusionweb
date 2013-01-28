@@ -50,6 +50,7 @@ public class MostVisitedFunction implements org.drools.runtime.rule.AccumulateFu
      * @see org.drools.base.accumulators.AccumulateFunction#init(java.lang.Object)
      */
     public void init(Serializable context) throws Exception {
+	MaxData.setNavigationEvents(new HashMap<Integer, Integer>());
     }
 
     /* (non-Javadoc)
@@ -57,7 +58,7 @@ public class MostVisitedFunction implements org.drools.runtime.rule.AccumulateFu
      */
     public void accumulate(Serializable context, Object value) {
         NavigationEvent event = (NavigationEvent) value;
-        
+
         if (!MaxData.getNavigationEvents().containsKey(event.getId())){
             MaxData.getNavigationEvents().put(event.getId(), 1);
         } else {

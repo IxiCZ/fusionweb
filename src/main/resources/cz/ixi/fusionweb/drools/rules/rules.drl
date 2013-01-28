@@ -2,40 +2,55 @@ package cz.ixi.fusionweb.drools.rules;
 
 import cz.ixi.fusionweb.drools.model.NavigationEvent;
 import cz.ixi.fusionweb.drools.model.ProductNavigationEvent;
-import cz.ixi.fusionweb.web.layout.DefaultLayoutController;
 import cz.ixi.fusionweb.entities.Product;
-import cz.ixi.fusionweb.ejb.ProductBean;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.List;
+import java.util.Date;
+
 
 declare ProductNavigationEvent
 	@role(event)
 end
 
+declare CurrentMainProduct
+	@role(fact)
+	id : Integer
+end
+
+rule "Choose first main product at the start."
+when
+	not CurrentMainProduct()
+then
+	insert(new CurrentMainProduct(30));
+	channels["defaultLayout"].send(30);
+end
+
 rule "print what is inserted"
+no-loop
 when
 	$o: Object()
 then
 	System.out.println("Found fact: " + $o);
 end
 
-// TODO: add time window, entrypoint and timer
-rule "change main product if there is better one"
+rule "Change main product if there is a better one."
 no-loop
+//timer (int: 30m)
 when
-	exists (ProductNavigationEvent())
-	$dlc : DefaultLayoutController()
-	$products : ProductBean()
-	$mostVisitedProductId : Integer() from accumulate ($pne : ProductNavigationEvent($id : id), mostVisited($pne))
- 	eval ($dlc.getMainProduct().getId() != $mostVisitedProductId)	 
+	exists (ProductNavigationEvent() over window:time(1h) from entry-point "ProductNavigationStream" )
+	$current : CurrentMainProduct()
+	$mostVisitedProductId : Integer() from accumulate ($pne : ProductNavigationEvent($id : id) 
+														      over window:time(1h) 
+														      from entry-point "ProductNavigationStream", 
+														      mostVisited($pne))
+ 	eval ($current.getId() != $mostVisitedProductId)	 
 then
-	System.out.println("Setting of new main product, previous was: " + $dlc.getMainProduct());
-  	modify($dlc){
-  		setMainProduct($products.find($mostVisitedProductId));
-  	}
-    System.out.println("Setting of new main product, new is:       " + $dlc.getMainProduct());
+	modify ($current) {
+		setId($mostVisitedProductId);
+	}
+	channels["defaultLayout"].send($mostVisitedProductId);
 end
 

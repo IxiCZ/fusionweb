@@ -3,7 +3,6 @@ package cz.ixi.fusionweb.drools.rules;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.DependsOn;
-import javax.ejb.EJB;
 import javax.ejb.Lock;
 import javax.ejb.LockType;
 import javax.ejb.Singleton;
@@ -23,7 +22,7 @@ import org.drools.io.impl.ClassPathResource;
 import org.drools.runtime.StatefulKnowledgeSession;
 
 import cz.ixi.fusionweb.drools.functions.MostVisitedFunction;
-import cz.ixi.fusionweb.ejb.ProductBean;
+import cz.ixi.fusionweb.drools.model.ProductNavigationEvent;
 import cz.ixi.fusionweb.web.layout.DefaultLayoutController;
 
 /**
@@ -33,26 +32,22 @@ import cz.ixi.fusionweb.web.layout.DefaultLayoutController;
 @Singleton
 @Startup
 @Lock(LockType.READ)
-@DependsOn({"StartupDBConfigBean", "StartupLayoutsBean"})
+@DependsOn({ "StartupDBConfigBean", "StartupLayoutsBean" })
 public class DroolsResourcesBean {
 
     private StatefulKnowledgeSession ksession;
-    
+
     @Inject
-    //@EJB 
     private DefaultLayoutController defaultLayout;
 
-    @EJB
-    private ProductBean products;
-    
     @PostConstruct
     public void init() {
 	PackageBuilderConfiguration pkgConf = new PackageBuilderConfiguration();
-        pkgConf.addAccumulateFunction("mostVisited", MostVisitedFunction.class);
-	
+	pkgConf.addAccumulateFunction("mostVisited", MostVisitedFunction.class);
+
 	KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder(pkgConf);
 	kbuilder.add(new ClassPathResource("rules.drl", getClass()), ResourceType.DRL);
-	
+
 	if (kbuilder.hasErrors()) {
 	    if (kbuilder.getErrors().size() > 0) {
 		for (KnowledgeBuilderError kerror : kbuilder.getErrors()) {
@@ -68,13 +63,18 @@ public class DroolsResourcesBean {
 	KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase(config);
 	kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
 	ksession = kbase.newStatefulKnowledgeSession();
-	
-	ksession.insert(defaultLayout);
-	ksession.insert(products);
-	
-	
 
+	ksession.registerChannel("defaultLayout", defaultLayout);
+	ksession.fireAllRules();
 	System.out.println("ksession created");
+    }
+
+    @Lock(LockType.WRITE)
+    public void insertFact(ProductNavigationEvent fact) {
+	System.out.println("inserting ProductNavigationEvent fact: " + fact);
+
+	ksession.getWorkingMemoryEntryPoint("ProductNavigationStream").insert(fact);
+	ksession.fireAllRules();
     }
 
     @Lock(LockType.WRITE)
