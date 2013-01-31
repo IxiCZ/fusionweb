@@ -20,6 +20,8 @@ import org.apache.commons.io.IOUtils;
 import cz.ixi.fusionweb.entities.Administrator;
 import cz.ixi.fusionweb.entities.Customer;
 import cz.ixi.fusionweb.entities.DiscussionEntry;
+import cz.ixi.fusionweb.entities.Notification;
+import cz.ixi.fusionweb.entities.NotificationSeverity;
 import cz.ixi.fusionweb.entities.Order;
 import cz.ixi.fusionweb.entities.OrderItem;
 import cz.ixi.fusionweb.entities.Product;
@@ -46,6 +48,8 @@ public class StartupDBConfigBean {
     private OrderItemBean orderItems;
     @EJB
     private DiscussionEntryBean discussionEntries;
+    @EJB
+    private NotificationBean notifications;
 
     @PostConstruct
     public void createData() {
@@ -148,6 +152,9 @@ public class StartupDBConfigBean {
 	discussionEntries.create(new DiscussionEntry(allProducts.get(30), new Date(), frodo, "Looking forward to",
 		"I've just ordered it! I am looking forward to seeing all LOTR characters in HD."));
 
+	notifications.create(new Notification(NotificationSeverity.INFO, new Date(), "first notification"));	
+	notifications.create(new Notification(NotificationSeverity.INFO, new Date(), "second notification"));	
+		
 	Logger.getLogger(StartupDBConfigBean.class.getName()).log(Level.INFO, "Creating initial items in the database finished");
     }
 
