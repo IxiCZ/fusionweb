@@ -424,3 +424,25 @@ a.generalLink:hover,a.generalLink:hover {
 .discussionTextArea {
 	width: 650px;
 }
+
+.notificationsSideMenu {
+	font-size: 0.9em;
+	background: #E3EDFF;
+	width: 200px;
+}
+
+a.notificationsMenuLink:link,a.notificationsMenuLink:visited {
+	color: #CC0300;
+	font-weight: bold;
+	text-decoration: none;
+	margin: 10px;
+	font-size: 1.05em;
+}
+
+a.notificationsMenuLink:HOVER,a.notificationsMenuLink:visited:hover {
+	color: red;
+	font-weight: bold;
+	text-decoration: underline;
+	margin: 10px;
+	font-size: 1.05em;
+}

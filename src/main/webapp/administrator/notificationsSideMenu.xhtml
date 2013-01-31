@@ -1,0 +1,17 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:util="http://java.sun.com/jsf/composite/components/util">
+
+
+
+	<h:form rendered="#{request.isUserInRole('ADMINISTRATOR')}">
+		<h:commandLink action="/administrator/order/List" styleClass="notificationsMenuLink"
+			value="#{bundle.Notifications_Title}">
+		</h:commandLink>
+		<br />
+		<br />
+	</h:form>
+
+</ui:composition>
