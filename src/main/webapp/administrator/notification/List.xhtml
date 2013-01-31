@@ -1,0 +1,76 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" template="/template.xhtml"
+	xmlns:util="http://java.sun.com/jsf/composite/util"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+
+	<ui:define name="body">
+		<h:form>
+			<h:outputText escape="false" value="#{bundle.Notifications_Title}"
+				styleClass="generalHeader" />
+			<br />
+			<br />
+			<h:outputText escape="false" value="#{bundle.ListNotificationEmpty}"
+				rendered="#{notificationController.items.rowCount == 0}" />
+			<h:panelGroup>
+				<h:dataTable value="#{notificationController.items}" var="item"
+					cellpadding="2" cellspacing="8" styleClass="generalTable"
+					rendered="#{notificationController.items.rowCount > 0}"
+					width="100%">
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="#{bundle.ListNotification_DateCreated}" />
+						</f:facet>
+						<h:outputText value="#{item.dateCreated}">
+							<f:convertDateTime pattern="HH:mm:ss dd.MM.yyyy" />
+						</h:outputText>
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="#{bundle.ListNotification_Severity}" />
+						</f:facet>
+						<h:outputText value="#{item.severity}"
+							rendered="#{item.severity == 'SEVERE'}"
+							styleClass="notificationSevere" />
+						<h:outputText value="#{item.severity}"
+							rendered="#{item.severity == 'WARNING'}"
+							styleClass="notificationWarning" />
+						<h:outputText value="#{item.severity}"
+							rendered="#{item.severity == 'INFO'}"
+							styleClass="notificationInfo" />
+						<h:outputText value="#{item.severity}"
+							rendered="#{item.severity == 'USEFUL'}"
+							styleClass="notificationUseful" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="#{bundle.ListNotification_Description}" />
+						</f:facet>
+						<h:outputText value="#{item.description}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="" />
+						</f:facet>
+
+						<h:commandLink action="#{notificationController.destroy}"
+							value="X" styleClass="generalLink" />
+					</h:column>
+				</h:dataTable>
+				<ul class="commandButtons">
+					<li><h:commandLink action="#{notificationController.previous}"
+							value="#{bundle.Previous}" styleClass="generalLink"
+							rendered="#{notificationController.pagination.hasPreviousPage}" /></li>
+					<li><h:commandLink action="#{notificationController.next}"
+							value="#{bundle.Next}" styleClass="generalLink"
+							rendered="#{notificationController.pagination.hasNextPage}" /></li>
+				</ul>
+			</h:panelGroup>
+
+		</h:form>
+	</ui:define>
+
+
+</ui:composition>

@@ -446,3 +446,23 @@ a.notificationsMenuLink:HOVER,a.notificationsMenuLink:visited:hover {
 	margin: 10px;
 	font-size: 1.05em;
 }
+
+.notificationSevere {
+	font-weight: bolder;
+	color: red;
+}
+
+.notificationWarning {
+	font-weight: bolder;
+	color: orange;
+}
+
+.notificationInfo {
+	font-weight: bolder;
+	color: blue;
+}
+
+.notificationUseful {
+	font-weight: bolder;
+	color: green;
+}

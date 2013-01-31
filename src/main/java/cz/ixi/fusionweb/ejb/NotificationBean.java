@@ -30,7 +30,7 @@ public class NotificationBean extends AbstractFacade<Notification> {
     @SuppressWarnings("unchecked")
     @Override
     public List<Notification> findAll() {
-	Query createQuery = this.em.createQuery("SELECT n FROM Notification n ORDER BY n.dateCreated, n.id DESC");
+	Query createQuery = this.em.createQuery("SELECT n FROM Notification n ORDER BY n.dateCreated DESC");
 
 	return createQuery.getResultList();
 
@@ -38,7 +38,7 @@ public class NotificationBean extends AbstractFacade<Notification> {
 
     @SuppressWarnings("unchecked")
     public List<Notification> findRange(int[] range) {
-	Query createQuery = this.em.createQuery("SELECT n FROM Notification n ORDER BY n.dateCreated, n.id DESC");
+	Query createQuery = this.em.createQuery("SELECT n FROM Notification n ORDER BY n.dateCreated DESC");
 	createQuery.setMaxResults(range[1] - range[0]);
 	createQuery.setFirstResult(range[0]);
 

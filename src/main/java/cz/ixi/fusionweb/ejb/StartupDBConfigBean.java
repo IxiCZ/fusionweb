@@ -152,10 +152,32 @@ public class StartupDBConfigBean {
 	discussionEntries.create(new DiscussionEntry(allProducts.get(30), new Date(), frodo, "Looking forward to",
 		"I've just ordered it! I am looking forward to seeing all LOTR characters in HD."));
 
-	notifications.create(new Notification(NotificationSeverity.INFO, new Date(), "first notification"));	
-	notifications.create(new Notification(NotificationSeverity.INFO, new Date(), "second notification"));	
-		
-	Logger.getLogger(StartupDBConfigBean.class.getName()).log(Level.INFO, "Creating initial items in the database finished");
+	for (int i = 1; i <= 25; i++) {
+	    Notification note = new Notification(
+		    NotificationSeverity.INFO,
+		    new Date(),
+		    i
+			    + ". notification. Some user did domething that should be noticed and be responded to with determination and force so horrible that the ser won't ever do such thing again.");
+
+	    if (i % 3 == 0) {
+		note.setSeverity(NotificationSeverity.WARNING);
+	    }
+	    if (i % 4 == 0) {
+		note.setSeverity(NotificationSeverity.SEVERE);
+	    }
+	    if (i % 5 == 0) {
+		note.setSeverity(NotificationSeverity.USEFUL);
+	    }
+	    notifications.create(note);
+	    try {
+		Thread.sleep(1000);
+	    } catch (InterruptedException e) {
+		e.printStackTrace();
+	    }
+	}
+
+	Logger.getLogger(StartupDBConfigBean.class.getName()).log(Level.INFO,
+		"Creating initial items in the database finished");
     }
 
     private void createProductsInCatgory(ProductCategory category, String name) {
@@ -163,7 +185,7 @@ public class StartupDBConfigBean {
 		.getResourceAsStream(category.getName() + "/" + name);
 	if (is == null) {
 	    Logger.getLogger(StartupDBConfigBean.class.getName()).log(Level.SEVERE,
-		    "No products file with name: "  + name);
+		    "No products file with name: " + name);
 	    return;
 	}
 	BufferedReader reader = new BufferedReader(new InputStreamReader(is));
@@ -203,7 +225,8 @@ public class StartupDBConfigBean {
 		}
 	    }
 	}
-	Logger.getLogger(StartupDBConfigBean.class.getName()).log(Level.INFO, "Products from " + name + " successfully imported.");
+	Logger.getLogger(StartupDBConfigBean.class.getName()).log(Level.INFO,
+		"Products from " + name + " successfully imported.");
     }
 
     private byte[] loadImage(String name) {
