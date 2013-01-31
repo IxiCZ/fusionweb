@@ -46,7 +46,9 @@ public class DroolsResourcesBean {
 	pkgConf.addAccumulateFunction("mostVisited", MostVisitedFunction.class);
 
 	KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder(pkgConf);
-	kbuilder.add(new ClassPathResource("rules.drl", getClass()), ResourceType.DRL);
+	kbuilder.add(new ClassPathResource("imports-and-declarations.drl", getClass()), ResourceType.DRL);
+	kbuilder.add(new ClassPathResource("main-product.drl", getClass()), ResourceType.DRL);
+	kbuilder.add(new ClassPathResource("track-debug.drl", getClass()), ResourceType.DRL);
 
 	if (kbuilder.hasErrors()) {
 	    if (kbuilder.getErrors().size() > 0) {

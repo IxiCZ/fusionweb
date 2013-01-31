@@ -1,25 +1,5 @@
 package cz.ixi.fusionweb.drools.rules;
 
-import cz.ixi.fusionweb.drools.model.NavigationEvent;
-import cz.ixi.fusionweb.drools.model.ProductNavigationEvent;
-import cz.ixi.fusionweb.entities.Product;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.List;
-import java.util.Date;
-
-
-declare ProductNavigationEvent
-	@role(event)
-end
-
-declare CurrentMainProduct
-	@role(fact)
-	id : Integer
-end
-
 rule "Choose first main product at the start."
 when
 	not CurrentMainProduct()

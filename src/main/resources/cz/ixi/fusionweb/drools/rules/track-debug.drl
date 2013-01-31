@@ -1,0 +1,12 @@
+package cz.ixi.fusionweb.drools.rules;
+
+
+rule "Retracts any navigation event "
+no-loop
+when
+	$o: Object()
+then
+	System.out.println("Found fact: " + $o);
+end
+
+
