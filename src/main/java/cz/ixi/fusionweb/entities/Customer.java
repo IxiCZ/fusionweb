@@ -57,6 +57,6 @@ public class Customer extends User implements Serializable {
 
     @Override
     public String toString() {
-	return getLastname() + " " + getFirstname();
+	return getUsername() + " (" + getLastname() + " " + getFirstname() + ")";
     }
 }

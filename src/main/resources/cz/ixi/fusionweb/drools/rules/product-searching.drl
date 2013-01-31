@@ -1,0 +1,34 @@
+package cz.ixi.fusionweb.drools.rules;
+
+
+
+rule "Insert searched text event"
+when
+	ProductSearchUnsuccessfulEvent($searchedText : searchedText)
+	not SearchedText(text == $searchedText)
+then
+	System.out.println("Inserted new searched text event with text: " + $searchedText);
+	insert(new SearchedText( $searchedText));
+end
+
+rule "Retract searched text event"
+when
+
+	$searched : SearchedText($text : text)
+	not ProductSearchUnsuccessfulEvent(searchedText == $text)
+then
+	System.out.println("retr: " + $text);
+	retract($searched);
+end
+
+
+
+rule "Too many unsuccessful seach events"
+no-loop
+when
+	
+	$searchedText: SearchedText($text: text)
+	$mothers : ArrayList(size > 4) from collect( ProductSearchUnsuccessfulEvent( searchedText == $text)  )
+then
+	System.out.println("searched more than 4" + $text);
+end

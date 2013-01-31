@@ -2,6 +2,9 @@ package cz.ixi.fusionweb.drools.rules;
 
 import cz.ixi.fusionweb.drools.model.NavigationEvent;
 import cz.ixi.fusionweb.drools.model.ProductNavigationEvent;
+import cz.ixi.fusionweb.drools.model.ProductSearchEvent;
+import cz.ixi.fusionweb.drools.model.ProductSearchUnsuccessfulEvent;
+import cz.ixi.fusionweb.drools.model.ProductSearchSuccessfulEvent;
 import cz.ixi.fusionweb.entities.Product;
 
 import java.util.ArrayList;
@@ -11,9 +14,31 @@ import java.util.List;
 import java.util.Date;
 
 
+declare NavigationEvent
+	@role(event)
+end
+
 declare ProductNavigationEvent
 	@role(event)
 end
+
+declare ProductSearchEvent
+	@role(event)
+end
+
+declare ProductSearchSuccessfulEvent 
+	@role(event)
+end
+
+declare ProductSearchUnsuccessfulEvent 
+	@role(event)
+end
+
+declare SearchedText
+	@role(fact)
+	text : String
+end
+
 
 declare CurrentMainProduct
 	@role(fact)

@@ -23,7 +23,9 @@ public class RulesCompileTest {
 	KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder(pkgConf);
 	kbuilder.add(new ClassPathResource("imports-and-declarations.drl", getClass()), ResourceType.DRL);
 	kbuilder.add(new ClassPathResource("main-product.drl", getClass()), ResourceType.DRL);
-	kbuilder.add(new ClassPathResource("track-debug.drl", getClass()), ResourceType.DRL);
+	kbuilder.add(new ClassPathResource("product-searching.drl", getClass()), ResourceType.DRL);
+	
+	// kbuilder.add(new ClassPathResource("track-debug.drl", getClass()), ResourceType.DRL);
 
 	Assert.assertFalse(kbuilder.getErrors().toString(), kbuilder.hasErrors());
     }

@@ -8,14 +8,6 @@ then
 	channels["defaultLayout"].send(30);
 end
 
-rule "print what is inserted"
-no-loop
-when
-	$o: Object()
-then
-	System.out.println("Found fact: " + $o);
-end
-
 rule "Change main product if there is a better one."
 no-loop
 //timer (int: 30m)

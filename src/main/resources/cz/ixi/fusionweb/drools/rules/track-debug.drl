@@ -10,3 +10,29 @@ then
 end
 
 
+
+rule "searching fact"
+no-loop
+when
+	$searched: ProductSearchEvent()
+then
+	System.out.println("Found ProductSearchEvent: " + $searched);
+end
+
+
+rule "searching fact s"
+no-loop
+when
+	$searched: ProductSearchSuccessfulEvent()
+then
+	System.out.println("Found ProductSearchSuccessfulEvent: " + $searched);
+end
+
+rule "searching fact un"
+no-loop
+when
+	$searched: ProductSearchUnsuccessfulEvent()
+then
+	System.out.println("Found ProductSearchUnsuccsessfulEvent: " + $searched);
+end
+

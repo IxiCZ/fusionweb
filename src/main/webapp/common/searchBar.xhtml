@@ -10,6 +10,7 @@
 				value="#{searchProductController.searchedKeyword}" required="true"
 				requiredMessage="#{bundle.ProductSearch_MustBe}" />
 			<h:commandLink action="#{searchProductController.prepareList()}"
+				actionListener="#{productSearchListener.search(searchProductController.searchedKeyword, userController.user)}"
 				styleClass="generalLink" value=" #{bundle.ProductSearch_linkSearch}" />
 		</h:form>
 		<br />
