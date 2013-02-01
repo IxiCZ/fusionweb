@@ -39,6 +39,10 @@ declare SearchedText
 	text : String
 end
 
+declare SearchedTextReported
+	@role(event)
+	text : String
+end
 
 declare CurrentMainProduct
 	@role(fact)

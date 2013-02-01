@@ -21,6 +21,7 @@ import org.drools.conf.EventProcessingOption;
 import org.drools.io.impl.ClassPathResource;
 import org.drools.runtime.StatefulKnowledgeSession;
 
+import cz.ixi.fusionweb.drools.channels.ProductSearchUnsuccsessfulChannel;
 import cz.ixi.fusionweb.drools.functions.MostVisitedFunction;
 import cz.ixi.fusionweb.drools.model.ProductNavigationEvent;
 import cz.ixi.fusionweb.web.layout.DefaultLayoutController;
@@ -39,6 +40,8 @@ public class DroolsResourcesBean {
 
     @Inject
     private DefaultLayoutController defaultLayout;
+    @Inject
+    private ProductSearchUnsuccsessfulChannel productSearchUnsuccessful;
 
     @PostConstruct
     public void init() {
@@ -69,6 +72,7 @@ public class DroolsResourcesBean {
 	ksession = kbase.newStatefulKnowledgeSession();
 
 	ksession.registerChannel("defaultLayout", defaultLayout);
+	ksession.registerChannel("productSearchUnsuccessful", productSearchUnsuccessful);
 	ksession.fireAllRules();
 	System.out.println("ksession created");
     }
