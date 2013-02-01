@@ -58,7 +58,8 @@
 				<h:panelGrid columns="2" rendered="#{userController.logged}">
 					<h:outputLabel value="#{bundle.ProdutDiscussion_NewEntryTitle}"
 						for="title" styleClass="bold" />
-					<h:inputText id="title" value="#{productController.newDiscussionEntry.title}"
+					<h:inputText id="title"
+						value="#{productController.newDiscussionEntry.title}"
 						title="#{bundle.ProdutDiscussion_NewEntryTitle}" required="true"
 						requiredMessage="#{bundle.ProdutDiscussionRequiredMessage_title}" />
 					<h:outputLabel value="#{bundle.ProdutDiscussion_NewEntryText}"
@@ -69,7 +70,9 @@
 						requiredMessage="#{bundle.ProdutDiscussionRequiredMessage_text}"
 						styleClass="discussionTextArea" />
 					<br />
-					<h:commandLink action="#{productController.addDiscussionEntry(userController.user)}"
+					<h:commandLink
+						action="#{productController.addDiscussionEntry(userController.user)}"
+						actionListener="#{discussionListener.newDiscussionEntry(productController.newDiscussionEntry,productController.getSelected(),userController.user)}"
 						value="#{bundle.ProdutDiscussion_Save}" styleClass="generalLink" />
 					<br />
 					<br />

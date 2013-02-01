@@ -7,7 +7,10 @@ import cz.ixi.fusionweb.drools.model.ProductSearchUnsuccessfulEvent;
 import cz.ixi.fusionweb.drools.model.ProductSearchSuccessfulEvent;
 import cz.ixi.fusionweb.drools.model.CustomerRegistrationEvent;
 import cz.ixi.fusionweb.drools.model.CustomerRegistrationUnsuccessfulEvent;
+import cz.ixi.fusionweb.drools.model.DiscussionEntryEvent;
 import cz.ixi.fusionweb.entities.Product;
+import cz.ixi.fusionweb.entities.Notification;
+import cz.ixi.fusionweb.entities.NotificationSeverity;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -41,6 +44,10 @@ declare CustomerRegistrationEvent
 end
 
 declare CustomerRegistrationUnsuccessfulEvent 
+	@role(event)
+end
+
+declare DiscussionEntryEvent 
 	@role(event)
 end
 

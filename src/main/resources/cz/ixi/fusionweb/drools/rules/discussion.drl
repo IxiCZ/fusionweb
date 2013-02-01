@@ -1,0 +1,19 @@
+package cz.ixi.fusionweb.drools.rules;
+
+rule "Create notification when discussion entry contains help"
+when
+	$event : DiscussionEntryEvent(text.toLowerCase().contains("help"))
+then
+	channels["notificationsGeneral"].send(new Notification(NotificationSeverity.WARNING, new Date(), 
+	"The discussion entry created by user '" + $event.getUsername() + "' by '" + $event.getProductName() + "' product contains 'help'." ));
+end
+
+
+rule "Create notification when discussion entry contains amazon"
+when
+	$event : DiscussionEntryEvent(text.toLowerCase().contains("amazon"))
+then
+	channels["notificationsGeneral"].send(new Notification(NotificationSeverity.WARNING, new Date(), 
+	"The discussion entry created by user '" + $event.getUsername() + "' by '" + $event.getProductName() + "' product contains 'amazon'." ));
+end
+
