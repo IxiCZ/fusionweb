@@ -56,6 +56,7 @@
 			<br />
 			<br />
 			<h:commandLink action="#{customerController.create}"
+				actionListener="#{customerLogActionsListener.newCustomerRegistration(customerController.getSelected())}"
 				value="#{bundle.CreateCustomerSaveLink}"  styleClass="generalLink"  />
 		</h:form>
 	</ui:define>

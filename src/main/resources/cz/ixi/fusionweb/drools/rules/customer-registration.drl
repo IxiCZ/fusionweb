@@ -1,0 +1,18 @@
+package cz.ixi.fusionweb.drools.rules;
+
+rule "Create notification if too many customer registrations"
+no-loop
+when
+	not CustomerRegistrationTooManyReported() over window:time(1h)
+	ArrayList(size >= 100) from collect( CustomerRegistrationEvent() over window:time(1h))
+then
+	channels["tooManyCustomerRegistrations"].send("too many");
+	insert(new CustomerRegistrationTooManyReported());
+	// System.out.println("too many customer registraions ");
+end
+
+rule "Customer Registrations Too Many Reported reported"
+when
+  CustomerRegistrationTooManyReported() over window:time(1h)
+then
+end

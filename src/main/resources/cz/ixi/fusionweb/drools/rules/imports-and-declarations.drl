@@ -5,6 +5,8 @@ import cz.ixi.fusionweb.drools.model.ProductNavigationEvent;
 import cz.ixi.fusionweb.drools.model.ProductSearchEvent;
 import cz.ixi.fusionweb.drools.model.ProductSearchUnsuccessfulEvent;
 import cz.ixi.fusionweb.drools.model.ProductSearchSuccessfulEvent;
+import cz.ixi.fusionweb.drools.model.CustomerRegistrationEvent;
+import cz.ixi.fusionweb.drools.model.CustomerRegistrationUnsuccessfulEvent;
 import cz.ixi.fusionweb.entities.Product;
 
 import java.util.ArrayList;
@@ -34,6 +36,14 @@ declare ProductSearchUnsuccessfulEvent
 	@role(event)
 end
 
+declare CustomerRegistrationEvent 
+	@role(event)
+end
+
+declare CustomerRegistrationUnsuccessfulEvent 
+	@role(event)
+end
+
 declare SearchedText
 	@role(fact)
 	text : String
@@ -48,5 +58,10 @@ declare CurrentMainProduct
 	@role(fact)
 	id : Integer
 end
+
+declare CustomerRegistrationTooManyReported
+	@role(event)
+end
+
 
 

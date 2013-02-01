@@ -22,6 +22,7 @@ import org.drools.io.impl.ClassPathResource;
 import org.drools.runtime.StatefulKnowledgeSession;
 
 import cz.ixi.fusionweb.drools.channels.ProductSearchUnsuccsessfulChannel;
+import cz.ixi.fusionweb.drools.channels.TooManyCustomerRegistrationsChannel;
 import cz.ixi.fusionweb.drools.functions.MostVisitedFunction;
 import cz.ixi.fusionweb.drools.model.ProductNavigationEvent;
 import cz.ixi.fusionweb.web.layout.DefaultLayoutController;
@@ -42,6 +43,8 @@ public class DroolsResourcesBean {
     private DefaultLayoutController defaultLayout;
     @Inject
     private ProductSearchUnsuccsessfulChannel productSearchUnsuccessful;
+    @Inject
+    private TooManyCustomerRegistrationsChannel tooManyCustomerRegistrations;
 
     @PostConstruct
     public void init() {
@@ -52,7 +55,8 @@ public class DroolsResourcesBean {
 	kbuilder.add(new ClassPathResource("imports-and-declarations.drl", getClass()), ResourceType.DRL);
 	kbuilder.add(new ClassPathResource("main-product.drl", getClass()), ResourceType.DRL);
 	kbuilder.add(new ClassPathResource("product-searching.drl", getClass()), ResourceType.DRL);
-
+	kbuilder.add(new ClassPathResource("customer-registration.drl", getClass()), ResourceType.DRL);
+	
 	// kbuilder.add(new ClassPathResource("track-debug.drl", getClass()), ResourceType.DRL);
 
 	if (kbuilder.hasErrors()) {
@@ -73,6 +77,7 @@ public class DroolsResourcesBean {
 
 	ksession.registerChannel("defaultLayout", defaultLayout);
 	ksession.registerChannel("productSearchUnsuccessful", productSearchUnsuccessful);
+	ksession.registerChannel("tooManyCustomerRegistrations", tooManyCustomerRegistrations);
 	ksession.fireAllRules();
 	System.out.println("ksession created");
     }
