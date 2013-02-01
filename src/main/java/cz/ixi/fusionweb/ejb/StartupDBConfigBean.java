@@ -166,7 +166,7 @@ public class StartupDBConfigBean {
 		note.setSeverity(NotificationSeverity.SEVERE);
 	    }
 	    if (i % 5 == 0) {
-		note.setSeverity(NotificationSeverity.USEFUL);
+		note.setSeverity(NotificationSeverity.GOOD);
 	    }
 	    notifications.create(note);
 	    try {
