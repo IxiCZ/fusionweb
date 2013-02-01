@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.ResourceBundle;
 
 import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -15,6 +15,7 @@ import javax.faces.model.ListDataModel;
 
 import cz.ixi.fusionweb.ejb.NotificationBean;
 import cz.ixi.fusionweb.entities.Notification;
+import cz.ixi.fusionweb.entities.NotificationSeverity;
 import cz.ixi.fusionweb.web.util.AbstractPaginationHelper;
 import cz.ixi.fusionweb.web.util.JsfUtil;
 import cz.ixi.fusionweb.web.util.PageNavigation;
@@ -33,6 +34,7 @@ public class NotificationController implements Serializable {
 
     private AbstractPaginationHelper pagination;
     private DataModel<Notification> items = null;
+    private NotificationSeverity currentSeverity = null;
 
     public NotificationController() {
     }
@@ -40,19 +42,30 @@ public class NotificationController implements Serializable {
     private NotificationBean getFacade() {
 	return ejbFacade;
     }
+    
+    public NotificationSeverity getCurrtenSeverity(){
+	return currentSeverity;
+    }
 
     public AbstractPaginationHelper getPagination() {
 	if (pagination == null) {
 	    pagination = new AbstractPaginationHelper(PAGE_SIZE) {
 		@Override
 		public int getItemsCount() {
-		    return getFacade().count();
+		    if (currentSeverity == null) {
+			return getFacade().count();
+		    }
+		    return getFacade().count(currentSeverity);
 		}
 
 		@Override
 		public DataModel<Notification> createPageDataModel() {
+		    if (currentSeverity == null) {
+			return new ListDataModel<Notification>(getFacade().findRange(
+				new int[] { getPageFirstItem(), getPageFirstItem() + getPageSize() }));
+		    }
 		    return new ListDataModel<Notification>(getFacade().findRange(
-			    new int[] { getPageFirstItem(), getPageFirstItem() + getPageSize() }));
+			    new int[] { getPageFirstItem(), getPageFirstItem() + getPageSize() }, currentSeverity));
 		}
 	    };
 	}
@@ -65,7 +78,33 @@ public class NotificationController implements Serializable {
 
 	return PageNavigation.LIST;
     }
+    
+    public PageNavigation prepareAllList() {
+	currentSeverity = null;	
+	return prepareList();
+    }
+    
+    public PageNavigation prepareSevereList() {
+	currentSeverity = NotificationSeverity.SEVERE;	
+	return prepareList();
+    }
+    
+    public PageNavigation prepareWarningList() {
+	currentSeverity = NotificationSeverity.WARNING;	
+	return prepareList();
+    }
+    
+    public PageNavigation prepareInfoList() {
+	currentSeverity = NotificationSeverity.INFO;	
+	return prepareList();
+    }
+    
 
+    public PageNavigation prepareGoodList() {
+	currentSeverity = NotificationSeverity.GOOD;	
+	return prepareList();
+    }
+    
     public PageNavigation destroy() {
 	try {
 	    getFacade().remove((Notification) getItems().getRowData());

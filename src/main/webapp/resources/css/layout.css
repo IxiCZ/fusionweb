@@ -466,3 +466,84 @@ a.notificationsMenuLink:HOVER,a.notificationsMenuLink:visited:hover {
 	font-weight: bolder;
 	color: green;
 }
+
+
+a.notificationsAllLink:link,a.notificationsAllLink:visited {
+	font-weight: bolder;
+	color: #1C335E;
+	text-decoration: underline;
+	margin: 10px;
+	font-size: 1.10em;
+}
+
+a.notificationsAllLink:HOVER,a.notificationsAllLink:visited:hover {
+	color: #6A94D4;
+	font-weight: bold;
+	text-decoration: none;
+	margin: 10px;
+	font-size: 1.10em;
+}
+
+a.notificationsSevereLink:link,a.notificationsSevereLink:visited {
+	font-weight: bolder;
+	color: red;
+	text-decoration: underline;
+	margin: 10px;
+	font-size: 1.10em;
+}
+
+a.notificationsSevereLink:HOVER,a.notificationsSevereLink:visited:hover {
+	color: red;
+	font-weight: bold;
+	text-decoration: none;
+	margin: 10px;
+	font-size: 1.10em;
+}
+
+a.notificationsWarningLink:link,a.notificationsWarningLink:visited {
+	font-weight: bolder;
+	color: orange;
+	text-decoration: underline;
+	margin: 10px;
+	font-size: 1.10em;
+}
+
+a.notificationsWarningLink:HOVER,a.notificationsWarningLink:visited:hover {
+	color: orange;
+	font-weight: bold;
+	text-decoration: none;
+	margin: 10px;
+	font-size: 1.10em;
+}
+
+a.notificationsInfoLink:link,a.notificationsInfoLink:visited {
+	font-weight: bolder;
+	color: blue;
+	text-decoration: underline;
+	margin: 10px;
+	font-size: 1.10em;
+}
+
+a.notificationsInfoLink:HOVER,a.notificationsInfoLink:visited:hover {
+	color: blue;
+	font-weight: bold;
+	text-decoration: none;
+	margin: 10px;
+	font-size: 1.10em;
+}
+
+a.notificationsGoodLink:link,a.notificationsGoodLink:visited {
+	font-weight: bolder;
+	color: green;
+	text-decoration: underline;
+	margin: 10px;
+	font-size: 1.10em;
+}
+
+a.notificationsGoodLink:HOVER,a.notificationsGoodLink:visited:hover {
+	color: green;
+	font-weight: bold;
+	text-decoration: none;
+	margin: 10px;
+	font-size: 1.10em;
+}

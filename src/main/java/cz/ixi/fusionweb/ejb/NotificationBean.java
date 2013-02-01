@@ -8,6 +8,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import cz.ixi.fusionweb.entities.Notification;
+import cz.ixi.fusionweb.entities.NotificationSeverity;
 
 /**
  * EJB stateless bean handling product Notifications.
@@ -43,5 +44,23 @@ public class NotificationBean extends AbstractFacade<Notification> {
 	createQuery.setFirstResult(range[0]);
 
 	return createQuery.getResultList();
+    }
+    
+    @SuppressWarnings("unchecked")
+    public List<Notification> findRange(int[] range, NotificationSeverity severity) {
+	Query createQuery = this.em.createQuery("SELECT n FROM Notification n WHERE n.severity = :severity ORDER BY n.dateCreated DESC");
+	createQuery.setParameter("severity", severity);
+	createQuery.setMaxResults(range[1] - range[0]);
+	createQuery.setFirstResult(range[0]);
+
+	return createQuery.getResultList();
+    }
+    
+
+    public int count(NotificationSeverity severity) {
+	Query createQuery = this.em.createQuery("SELECT COUNT(n) FROM Notification n WHERE n.severity = :severity");
+	createQuery.setParameter("severity", severity);
+
+	return ((Long) createQuery.getSingleResult()).intValue();
     }
 }

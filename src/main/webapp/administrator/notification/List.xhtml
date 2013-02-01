@@ -14,6 +14,22 @@
 			<br />
 			<h:outputText escape="false" value="#{bundle.ListNotificationEmpty}"
 				rendered="#{notificationController.items.rowCount == 0}" />
+
+			<h:panelGrid columns="5" width="500px">
+				<h:commandLink action="#{notificationController.prepareAllList}"
+					value="ALL" styleClass="notificationsAllLink" />
+				<h:commandLink action="#{notificationController.prepareSevereList}"
+					value="SEVERE" styleClass="notificationsSevereLink" />
+				<h:commandLink action="#{notificationController.prepareWarningList}"
+					value="WARNING" styleClass="notificationsWarningLink" />
+				<h:commandLink action="#{notificationController.prepareInfoList}"
+					value="INFO" styleClass="notificationsInfoLink" />
+				<h:commandLink action="#{notificationController.prepareGoodList}"
+					value="GOOD" styleClass="notificationsGoodLink" />
+			</h:panelGrid>
+			<br />
+			<br />
+
 			<h:panelGroup>
 				<h:dataTable value="#{notificationController.items}" var="item"
 					cellpadding="2" cellspacing="8" styleClass="generalTable"
