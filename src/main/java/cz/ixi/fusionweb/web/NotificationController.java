@@ -42,8 +42,8 @@ public class NotificationController implements Serializable {
     private NotificationBean getFacade() {
 	return ejbFacade;
     }
-    
-    public NotificationSeverity getCurrtenSeverity(){
+
+    public NotificationSeverity getCurrtenSeverity() {
 	return currentSeverity;
     }
 
@@ -78,33 +78,38 @@ public class NotificationController implements Serializable {
 
 	return PageNavigation.LIST;
     }
-    
+
     public PageNavigation prepareAllList() {
-	currentSeverity = null;	
+	currentSeverity = null;
 	return prepareList();
     }
-    
+
     public PageNavigation prepareSevereList() {
-	currentSeverity = NotificationSeverity.SEVERE;	
+	currentSeverity = NotificationSeverity.SEVERE;
 	return prepareList();
     }
-    
+
     public PageNavigation prepareWarningList() {
-	currentSeverity = NotificationSeverity.WARNING;	
+	currentSeverity = NotificationSeverity.WARNING;
 	return prepareList();
     }
-    
+
     public PageNavigation prepareInfoList() {
-	currentSeverity = NotificationSeverity.INFO;	
+	currentSeverity = NotificationSeverity.INFO;
 	return prepareList();
     }
-    
 
     public PageNavigation prepareGoodList() {
-	currentSeverity = NotificationSeverity.GOOD;	
+	currentSeverity = NotificationSeverity.GOOD;
 	return prepareList();
     }
     
+    public String prepareAllListOutside() {
+	recreateModel();
+	currentSeverity = null;
+	return "/administrator/notification/List";
+    }
+
     public PageNavigation destroy() {
 	try {
 	    getFacade().remove((Notification) getItems().getRowData());

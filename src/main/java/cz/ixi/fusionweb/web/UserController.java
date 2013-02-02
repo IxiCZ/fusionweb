@@ -10,7 +10,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import cz.ixi.fusionweb.drools.listeners.CustomerLogActionsListener;
 import cz.ixi.fusionweb.ejb.UserBean;
+import cz.ixi.fusionweb.entities.Role;
 import cz.ixi.fusionweb.entities.User;
 import cz.ixi.fusionweb.web.util.JsfUtil;
 
@@ -27,6 +29,8 @@ public class UserController implements Serializable {
 
     @Inject
     private UserBean users;
+    @Inject
+    private CustomerLogActionsListener droolsCustomerLogActions;
 
     /**
      * Constructor
@@ -50,6 +54,10 @@ public class UserController implements Serializable {
 	    ;
 	    this.user = this.users.getUserByUsername(this.username);
 	    JsfUtil.addSuccessMessage("Login was successful.");
+	    if (user.getRoles().contains(Role.CUSTOMER)) {
+		droolsCustomerLogActions.customerLogIn(user);
+	    }
+
 	    return "/index";
 	} catch (ServletException ex) {
 
@@ -144,11 +152,11 @@ public class UserController implements Serializable {
 	this.password = "1234";
 	return login();
     }
-    
+
     public String loginHugo() {
-   	this.username = "hugo";
-   	this.password = "1234";
-   	return login();
-       }
+	this.username = "hugo";
+	this.password = "1234";
+	return login();
+    }
 
 }

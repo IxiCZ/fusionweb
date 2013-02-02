@@ -26,6 +26,7 @@ public class RulesCompileTest {
 	kbuilder.add(new ClassPathResource("product-searching.drl", getClass()), ResourceType.DRL);
 	kbuilder.add(new ClassPathResource("customer-registration.drl", getClass()), ResourceType.DRL);
 	kbuilder.add(new ClassPathResource("discussion.drl", getClass()), ResourceType.DRL);
+	kbuilder.add(new ClassPathResource("customer-log-in.drl", getClass()), ResourceType.DRL);
 	
 	// kbuilder.add(new ClassPathResource("track-debug.drl", getClass()), ResourceType.DRL);
 

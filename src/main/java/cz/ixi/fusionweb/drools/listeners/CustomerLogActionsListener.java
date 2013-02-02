@@ -3,14 +3,17 @@ package cz.ixi.fusionweb.drools.listeners;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 
+import cz.ixi.fusionweb.drools.model.CustomerLogInEvent;
 import cz.ixi.fusionweb.drools.model.CustomerRegistrationEvent;
 import cz.ixi.fusionweb.drools.model.CustomerRegistrationUnsuccessfulEvent;
 import cz.ixi.fusionweb.drools.rules.DroolsResourcesBean;
 import cz.ixi.fusionweb.ejb.UserBean;
 import cz.ixi.fusionweb.entities.Customer;
+import cz.ixi.fusionweb.entities.User;
 
 /**
- * Inserts events of searching products into drools working memory.
+ * Inserts events considering customer registration ang logging into drools
+ * working memory.
  */
 @ManagedBean(name = "customerLogActionsListener")
 public class CustomerLogActionsListener {
@@ -29,4 +32,7 @@ public class CustomerLogActionsListener {
 	}
     }
 
+    public void customerLogIn(User customer) {
+	drools.insertFact(new CustomerLogInEvent(customer.getUsername()));
+    }
 }

@@ -8,6 +8,7 @@ import cz.ixi.fusionweb.drools.model.ProductSearchSuccessfulEvent;
 import cz.ixi.fusionweb.drools.model.CustomerRegistrationEvent;
 import cz.ixi.fusionweb.drools.model.CustomerRegistrationUnsuccessfulEvent;
 import cz.ixi.fusionweb.drools.model.DiscussionEntryEvent;
+import cz.ixi.fusionweb.drools.model.CustomerLogInEvent;
 import cz.ixi.fusionweb.entities.Product;
 import cz.ixi.fusionweb.entities.Notification;
 import cz.ixi.fusionweb.entities.NotificationSeverity;
@@ -48,6 +49,10 @@ declare CustomerRegistrationUnsuccessfulEvent
 end
 
 declare DiscussionEntryEvent 
+	@role(event)
+end
+		
+declare CustomerLogInEvent 
 	@role(event)
 end
 

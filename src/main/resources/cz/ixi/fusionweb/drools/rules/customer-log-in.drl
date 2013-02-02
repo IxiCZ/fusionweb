@@ -1,0 +1,13 @@
+package cz.ixi.fusionweb.drools.rules;
+
+rule "Report how many customers logged in in the last hour"
+timer (int: 60m 60m)
+no-loop
+when
+     $total : Number( ) from accumulate( $e: CustomerLogInEvent() over window:time(15m),  count( $e ) )
+then
+	
+	channels["notificationsGeneral"].send(new Notification(NotificationSeverity.INFO, new Date(), 
+	"In the last hour logged in "+ $total + " customers." ));
+end
+
