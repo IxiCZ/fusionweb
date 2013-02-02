@@ -25,13 +25,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import cz.ixi.fusionweb.drools.functions.MostVisitedFunction;
-import cz.ixi.fusionweb.drools.model.CustomerLogInEvent;
+import cz.ixi.fusionweb.drools.model.OrderCreatedEvent;
+import cz.ixi.fusionweb.drools.model.ProductBoughtEvent;
 import cz.ixi.fusionweb.entities.Notification;
 
 /**
- * Tests rules considering searching products.
+ * Tests rules considering orders.
  */
-public class CustomerLogInOutTest {
+public class OrderTest {
 
     private StatefulKnowledgeSession ksession;
     private KnowledgeBase kbase;
@@ -45,7 +46,7 @@ public class CustomerLogInOutTest {
 
 	KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder(pkgConf);
 	kbuilder.add(new ClassPathResource("imports-and-declarations.drl", getClass()), ResourceType.DRL);
-	kbuilder.add(new ClassPathResource("customer-log-in.drl", getClass()), ResourceType.DRL);
+	kbuilder.add(new ClassPathResource("order.drl", getClass()), ResourceType.DRL);
 	Assert.assertFalse(kbuilder.getErrors().toString(), kbuilder.hasErrors());
 
 	KnowledgeBaseConfiguration config = KnowledgeBaseFactory.newKnowledgeBaseConfiguration();
@@ -76,33 +77,42 @@ public class CustomerLogInOutTest {
 
     @Test
     public void reportRightNumberOfLoggedCustomers() {
-	String rule = "Report how many customers logged in in the last hour";
+	String rule = "Report how many orders were created and items bought in in the last hour";
 	SessionPseudoClock clock = ksession.getSessionClock();
 	ksession.fireAllRules();
 
 	clock.advanceTime(5, TimeUnit.MINUTES);
 
-	ksession.insert(new CustomerLogInEvent("rick"));
-	ksession.insert(new CustomerLogInEvent("rick2"));
-	ksession.insert(new CustomerLogInEvent("rick2"));
+	ksession.insert(new OrderCreatedEvent(1, "rick", 2, 60.0));
+	ksession.insert(new ProductBoughtEvent(1, 1, "rick", "dvd"));
+	ksession.insert(new ProductBoughtEvent(1, 2, "rick", "cd"));
+
+	ksession.insert(new OrderCreatedEvent(2, "rick2", 1, 50.0));
+	ksession.insert(new ProductBoughtEvent(2, 3, "rick2", "dvd"));
+
 	ksession.fireAllRules();
 
 	clock.advanceTime(61, TimeUnit.MINUTES);
 
 	assertEquals(1, firedRules.howManyTimesIsRuleFired(rule));
 	assertEquals(1, notificationsGeneral.getCreatedNotifications());
-	assertTrue(notificationsGeneral.getDescription().contains("3 customers"));
+	assertTrue(notificationsGeneral.getDescription().contains("2 order(s)"));
+	assertTrue(notificationsGeneral.getDescription().contains("3 product(s)"));
 
 	clock.advanceTime(5, TimeUnit.MINUTES);
 
-	ksession.insert(new CustomerLogInEvent("frodo"));
-	ksession.insert(new CustomerLogInEvent("frodo2"));
+	ksession.insert(new OrderCreatedEvent(3, "rick2", 4, 50.0));
+	ksession.insert(new ProductBoughtEvent(3, 4, "rick3", "dvd"));
+	ksession.insert(new ProductBoughtEvent(3, 4, "rick3", "dvd"));
+	ksession.insert(new ProductBoughtEvent(3, 4, "rick3", "dvd"));
+	ksession.insert(new ProductBoughtEvent(3, 4, "rick3", "dvd"));
 	ksession.fireAllRules();
 
 	clock.advanceTime(61, TimeUnit.MINUTES);
 	assertEquals(2, firedRules.howManyTimesIsRuleFired(rule));
 	assertEquals(2, notificationsGeneral.getCreatedNotifications());
-	assertTrue(notificationsGeneral.getDescription().contains("2 customers"));
+	assertTrue(notificationsGeneral.getDescription().contains("1 order(s)"));
+	assertTrue(notificationsGeneral.getDescription().contains("4 product(s)"));
     }
 
     private class NotificationsGeneralChannelMock implements Channel {
@@ -124,6 +134,7 @@ public class CustomerLogInOutTest {
 
 	@Override
 	public void send(Object object) {
+	    System.out.println(((Notification) object).getDescription());
 	    setDescription(((Notification) object).getDescription());
 	    createdNotifications++;
 	}

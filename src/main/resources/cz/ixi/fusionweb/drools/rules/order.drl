@@ -1,0 +1,14 @@
+package cz.ixi.fusionweb.drools.rules;
+
+rule "Report how many orders were created and items bought in in the last hour"
+timer (int: 60m 60m)
+no-loop
+when
+     $totalOrders : Number( ) from accumulate( $e: OrderCreatedEvent() over window:time(60m),  count( $e ) )
+     $totalProductsBought : Number( ) from accumulate( $e: ProductBoughtEvent() over window:time(60m),  count( $e ) )
+then
+	
+	channels["notificationsGeneral"].send(new Notification(NotificationSeverity.INFO, new Date(), 
+	"In the last hour logged were created "+ $totalOrders + " order(s) and bought " + $totalProductsBought + " product(s)." ));
+end
+
