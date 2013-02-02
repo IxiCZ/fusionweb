@@ -7,8 +7,10 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
+import cz.ixi.fusionweb.drools.listeners.OrderListener;
 import cz.ixi.fusionweb.ejb.OrderBean;
 import cz.ixi.fusionweb.entities.Order;
 import cz.ixi.fusionweb.entities.OrderItem;
@@ -23,6 +25,9 @@ import cz.ixi.fusionweb.web.util.PageNavigation;
 public class ShoppingCart implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
+    @Inject
+    private OrderListener droolsOrders;
 
     @EJB
     OrderBean facade;
@@ -95,6 +100,7 @@ public class ShoppingCart implements Serializable {
 	    }
 	    order.setOrderItemList(cartItems);
 	    facade.create(order);
+	    droolsOrders.newOrder(order, user);
 
 	    System.out.println("order created");
 
