@@ -18,14 +18,13 @@ import cz.ixi.fusionweb.entities.Product;
 import cz.ixi.fusionweb.entities.Role;
 import cz.ixi.fusionweb.entities.User;
 import cz.ixi.fusionweb.web.util.JsfUtil;
-import cz.ixi.fusionweb.web.util.PageNavigation;
 
 @Named(value = "shoppingCart")
 @SessionScoped
 public class ShoppingCart implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Inject
     private OrderListener droolsOrders;
 
@@ -82,13 +81,14 @@ public class ShoppingCart implements Serializable {
 	return total;
     }
 
-    public PageNavigation checkout(User user) {
+    public String checkout(User user) {
 	if (user == null) {
 	    JsfUtil.addErrorMessage(JsfUtil.getStringFromBundle("/Bundle", "LoginBeforeCheckout"));
+	    return "";
 	} else {
 	    if (user.getRoles().contains(Role.ADMINISTRATOR)) {
 		JsfUtil.addErrorMessage(JsfUtil.getStringFromBundle("/Bundle", "AdministratorNotAllowed"));
-		return PageNavigation.INDEX;
+		return "";
 	    }
 
 	    Order order = new Order();
@@ -106,9 +106,9 @@ public class ShoppingCart implements Serializable {
 
 	    JsfUtil.addSuccessMessage(JsfUtil.getStringFromBundle("/Bundle", "Cart_Checkout_Success"));
 	    clear();
+	    return "/customer/customerOrders";
 	}
-	// TODO: think out where to go - stay, orders,...
-	return PageNavigation.INDEX;
+
     }
 
     public void clear() {
