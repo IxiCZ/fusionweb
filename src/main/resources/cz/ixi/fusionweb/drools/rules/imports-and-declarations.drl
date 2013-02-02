@@ -28,6 +28,7 @@ end
 
 declare ProductNavigationEvent
 	@role(event)
+	@expires( 24h )
 end
 
 declare ProductSearchEvent
@@ -64,6 +65,7 @@ end
 
 declare ProductBoughtEvent 
 	@role(event)
+	@expires( 24h )
 end
 
 declare SearchedText
@@ -87,8 +89,12 @@ end
 
 declare ProductVisitedButNotBoughtReported
 	@role(event)
+	@expires( 24h )
 	productId: Integer
 end
 
-
+declare ManyProductPurchasesReported
+	@role(event)
+	productId: Integer
+end
 

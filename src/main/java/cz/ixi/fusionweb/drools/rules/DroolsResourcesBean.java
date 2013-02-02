@@ -7,7 +7,6 @@ import javax.annotation.PreDestroy;
 import javax.ejb.DependsOn;
 import javax.ejb.Lock;
 import javax.ejb.LockType;
-import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;

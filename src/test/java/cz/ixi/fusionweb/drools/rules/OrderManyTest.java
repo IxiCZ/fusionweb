@@ -1,9 +1,8 @@
 package cz.ixi.fusionweb.drools.rules;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
-import java.util.concurrent.TimeUnit;
 
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseConfiguration;
@@ -18,21 +17,19 @@ import org.drools.runtime.Channel;
 import org.drools.runtime.KnowledgeSessionConfiguration;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.conf.ClockTypeOption;
-import org.drools.time.SessionPseudoClock;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import cz.ixi.fusionweb.drools.functions.MostVisitedFunction;
-import cz.ixi.fusionweb.drools.model.OrderCreatedEvent;
 import cz.ixi.fusionweb.drools.model.ProductBoughtEvent;
 import cz.ixi.fusionweb.entities.Notification;
 
 /**
  * Tests rules considering orders.
  */
-public class OrderTest {
+public class OrderManyTest {
 
     private StatefulKnowledgeSession ksession;
     private KnowledgeBase kbase;
@@ -46,7 +43,7 @@ public class OrderTest {
 
 	KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder(pkgConf);
 	kbuilder.add(new ClassPathResource("imports-and-declarations.drl", getClass()), ResourceType.DRL);
-	kbuilder.add(new ClassPathResource("order.drl", getClass()), ResourceType.DRL);
+	kbuilder.add(new ClassPathResource("order-many.drl", getClass()), ResourceType.DRL);
 	Assert.assertFalse(kbuilder.getErrors().toString(), kbuilder.hasErrors());
 
 	KnowledgeBaseConfiguration config = KnowledgeBaseFactory.newKnowledgeBaseConfiguration();
@@ -75,44 +72,26 @@ public class OrderTest {
 	}
     }
 
+
     @Test
-    public void reportRightNumberOfLoggedCustomers() {
-	String rule = "Report how many orders were created and items bought in in the last hour";
-	SessionPseudoClock clock = ksession.getSessionClock();
+    public void reportManyProductPurchases() {
+	String rule = "Create notification if the product is bought a lot";
 	ksession.fireAllRules();
 
-	clock.advanceTime(5, TimeUnit.MINUTES);
+	for (int i = 1; i <= 99; i++) {
+	    ksession.insert(new ProductBoughtEvent(1, 2, "rick", "cd"));
+	    ksession.insert(new ProductBoughtEvent(2, 3, "rick2", "dvd"));
+	    ksession.insert(new ProductBoughtEvent(3, 4, "rick3", "bluray dvd"));
+	}
 
-	ksession.insert(new OrderCreatedEvent(1, "rick", 2, 60.0));
-	ksession.insert(new ProductBoughtEvent(1, 1, "rick", "dvd"));
+	ksession.fireAllRules();
+	assertFalse(firedRules.isRuleFired(rule));
+
 	ksession.insert(new ProductBoughtEvent(1, 2, "rick", "cd"));
-
-	ksession.insert(new OrderCreatedEvent(2, "rick2", 1, 50.0));
-	ksession.insert(new ProductBoughtEvent(2, 3, "rick2", "dvd"));
-
 	ksession.fireAllRules();
-
-	clock.advanceTime(61, TimeUnit.MINUTES);
-
 	assertEquals(1, firedRules.howManyTimesIsRuleFired(rule));
 	assertEquals(1, notificationsGeneral.getCreatedNotifications());
-	assertTrue(notificationsGeneral.getDescription().contains("2 order(s)"));
-	assertTrue(notificationsGeneral.getDescription().contains("3 product(s)"));
-
-	clock.advanceTime(5, TimeUnit.MINUTES);
-
-	ksession.insert(new OrderCreatedEvent(3, "rick2", 4, 50.0));
-	ksession.insert(new ProductBoughtEvent(3, 4, "rick3", "dvd"));
-	ksession.insert(new ProductBoughtEvent(3, 4, "rick3", "dvd"));
-	ksession.insert(new ProductBoughtEvent(3, 4, "rick3", "dvd"));
-	ksession.insert(new ProductBoughtEvent(3, 4, "rick3", "dvd"));
-	ksession.fireAllRules();
-
-	clock.advanceTime(61, TimeUnit.MINUTES);
-	assertEquals(2, firedRules.howManyTimesIsRuleFired(rule));
-	assertEquals(2, notificationsGeneral.getCreatedNotifications());
-	assertTrue(notificationsGeneral.getDescription().contains("1 order(s)"));
-	assertTrue(notificationsGeneral.getDescription().contains("4 product(s)"));
+	assertTrue(notificationsGeneral.getDescription().contains("product 2"));
     }
 
     private class NotificationsGeneralChannelMock implements Channel {

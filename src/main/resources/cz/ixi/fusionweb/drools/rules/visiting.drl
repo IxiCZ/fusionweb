@@ -21,3 +21,16 @@ when
   ProductVisitedButNotBoughtReported() over window:time(1h)
 then
 end
+
+rule "Product Visited But NosdfReported"
+when
+  ProductBoughtEvent() over window:time(1h)
+then
+end
+
+rule "Product Visited But Notsdf Reported"
+when
+  ProductNavigationEvent()  over window:time(1h) from entry-point "ProductNavigationStream" 
+then
+end
+

@@ -1,0 +1,22 @@
+package cz.ixi.fusionweb.drools.rules;
+
+
+rule "Create notification if the product is bought a lot"
+no-loop
+when
+	ProductBoughtEvent($productId: productId, $productName: productName) 
+	not ManyProductPurchasesReported(productId == $productId) over window:time(1h)
+	Number( intValue >= 100) from accumulate( $pbe: ProductBoughtEvent(productId == $productId) over window:time(1h),  count( $pbe ) )
+
+then
+	insert(new ManyProductPurchasesReported($productId));
+	channels["notificationsGeneral"].send(new Notification(NotificationSeverity.GOOD, new Date(), 
+	"In the last hour was product "+ $productId +":" +$productName + " bought at least 100 times." ));
+end
+
+rule "Many Product Purchases Reported"
+when
+  ManyProductPurchasesReported() over window:time(1h)
+then
+end
+
