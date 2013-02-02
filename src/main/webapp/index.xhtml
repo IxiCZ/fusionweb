@@ -20,7 +20,7 @@
 
 				<h:commandLink
 					action="#{productController.prepareView(defaultLayoutController.mainProduct)}"
-					actionListener="#{navigationListener.product(defaultLayoutController.mainProduct)}"
+					actionListener="#{navigationListener.product(defaultLayoutController.mainProduct,userController.user)}"
 					value="#{defaultLayoutController.mainProduct.name}"
 					styleClass="mainProductTitle" />
 				<br />

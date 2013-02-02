@@ -11,9 +11,11 @@ import cz.ixi.fusionweb.drools.model.DiscussionEntryEvent;
 import cz.ixi.fusionweb.drools.model.CustomerLogInEvent;
 import cz.ixi.fusionweb.drools.model.OrderCreatedEvent;
 import cz.ixi.fusionweb.drools.model.ProductBoughtEvent;
+import cz.ixi.fusionweb.drools.model.UserNavigationsEvent;
 import cz.ixi.fusionweb.entities.Product;
 import cz.ixi.fusionweb.entities.Notification;
 import cz.ixi.fusionweb.entities.NotificationSeverity;
+import cz.ixi.fusionweb.entities.User;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -98,3 +100,7 @@ declare ManyProductPurchasesReported
 	productId: Integer
 end
 
+declare UserNavigationsEvent
+	@role(event)
+	@expires(24h)
+end	

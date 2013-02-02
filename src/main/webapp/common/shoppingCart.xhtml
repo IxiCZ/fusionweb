@@ -29,7 +29,7 @@
 						</f:facet>
 						<h:commandLink
 							action="#{productController.prepareView(item.product)}"
-							actionListener="#{navigationListener.product(item.product)}"
+							actionListener="#{navigationListener.product(item.product, userController.user)}"
 							value="#{item.product.name}" styleClass="productsLink" />
 					</h:column>
 

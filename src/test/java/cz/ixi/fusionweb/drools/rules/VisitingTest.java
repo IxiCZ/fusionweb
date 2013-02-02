@@ -86,7 +86,7 @@ public class VisitingTest {
 	clock.advanceTime(5, TimeUnit.MINUTES);
 
 	for (int i = 0; i < 100; i++) {
-	    productEntryPoint.insert(new ProductNavigationEvent(42,"p"));
+	    productEntryPoint.insert(new ProductNavigationEvent("rick",42,"p"));
 	    if (i%2 == 0) {
 		ksession.insert(new ProductBoughtEvent(4, 42, "rick", "p"));
 	    }
@@ -96,7 +96,7 @@ public class VisitingTest {
 	assertFalse(firedRules.isRuleFired(rule));
 	
 	for (int i = 0; i < 100; i++) {
-	    productEntryPoint.insert(new ProductNavigationEvent(42,"p"));
+	    productEntryPoint.insert(new ProductNavigationEvent("rick",42,"p"));
 	}
 	
 	ksession.fireAllRules();

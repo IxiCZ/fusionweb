@@ -21,12 +21,20 @@ public class NavigationListener {
     @EJB
     DroolsResourcesBean drools;
 
-    public void product(Product product) {
-	drools.insertFact(new ProductNavigationEvent(product.getId(), product.getName()));
+    public void product(Product product, User user) {
+	if (user != null) {
+	    drools.insertFact(new ProductNavigationEvent(user.getUsername(), product.getId(), product.getName()));
+	} else {
+	    drools.insertFact(new ProductNavigationEvent(null, product.getId(), product.getName()));
+	}
     }
 
-    public void category(ProductCategory category) {
-	drools.insertFact(new CategoryNavigationEvent(category.getId()));
+    public void category(ProductCategory category, User user) {
+	if (user != null) {
+	    drools.insertFact(new CategoryNavigationEvent(category.getId(), user.getUsername()));
+	} else {
+	    drools.insertFact(new CategoryNavigationEvent(category.getId(), null));
+	}
     }
 
     public void customerMenuMyOrders(User user) {

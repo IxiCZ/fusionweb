@@ -5,8 +5,8 @@ package cz.ixi.fusionweb.drools.model;
  */
 public class CategoryNavigationEvent extends NavigationEvent {
 
-    public CategoryNavigationEvent(Integer id) {
-	super(id);
+    public CategoryNavigationEvent(Integer id, String username) {
+	super(id, username);
     }
 
     @Override

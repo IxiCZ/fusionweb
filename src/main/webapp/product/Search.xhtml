@@ -30,7 +30,7 @@
 				</h:column>
 				<h:column>
 					<h:commandLink action="#{productController.prepareView(item)}"
-						actionListener="#{navigationListener.product(item)}"
+						actionListener="#{navigationListener.product(item,userController.user)}"
 						value="#{item.name}" styleClass="productsLink" />
 					<br />
 					<br />

@@ -15,8 +15,8 @@ public class ProductNavigationEvent extends NavigationEvent {
 	this.productName = productName;
     }
 
-    public ProductNavigationEvent(Integer id, String productName) {
-	super(id);
+    public ProductNavigationEvent(String username, Integer id, String productName) {
+	super(id, username);
 	this.productName = productName;
     }
 

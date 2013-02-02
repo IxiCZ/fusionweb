@@ -83,9 +83,9 @@ public class MainProductTest {
     @Test
     public void takesIntoAccountOnlyRightStream() {
 	for (int i = 1; i < 10; i++) {
-	    ksession.insert(new ProductNavigationEvent(10,""));
+	    ksession.insert(new ProductNavigationEvent("rick",10,""));
 	}
-	ksession.getWorkingMemoryEntryPoint("ProductNavigationStream").insert(new ProductNavigationEvent(42,""));
+	ksession.getWorkingMemoryEntryPoint("ProductNavigationStream").insert(new ProductNavigationEvent("rick",42,""));
 	
 	((SessionPseudoClock) ksession.getSessionClock()).advanceTime(40, TimeUnit.MINUTES);
 	ksession.fireAllRules();
@@ -99,13 +99,13 @@ public class MainProductTest {
 
 	// at "0"
 	for (int i = 1; i < 10; i++) {
-	    entryPoint.insert(new ProductNavigationEvent(1,""));
+	    entryPoint.insert(new ProductNavigationEvent("rick",1,""));
 	}
 
 	clock.advanceTime(50, TimeUnit.MINUTES);
 
 	// at "50"
-	entryPoint.insert(new ProductNavigationEvent(2,""));
+	entryPoint.insert(new ProductNavigationEvent("rick",2,""));
 
 	ksession.fireAllRules();
 	assertEquals(1, (int) defaultLayout.getMainProduct().getId());
