@@ -1,10 +1,13 @@
 package cz.ixi.fusionweb.drools.rules;
 
+import java.util.Date;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.DependsOn;
 import javax.ejb.Lock;
 import javax.ejb.LockType;
+import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
@@ -64,8 +67,8 @@ public class DroolsResourcesBean {
 	kbuilder.add(new ClassPathResource("order.drl", getClass()), ResourceType.DRL);
 	kbuilder.add(new ClassPathResource("visiting.drl", getClass()), ResourceType.DRL);
 
-//	 kbuilder.add(new ClassPathResource("track-debug.drl", getClass()),
-//	 ResourceType.DRL);
+	 kbuilder.add(new ClassPathResource("track-debug.drl", getClass()),
+	 ResourceType.DRL);
 
 	if (kbuilder.hasErrors()) {
 	    if (kbuilder.getErrors().size() > 0) {
@@ -88,7 +91,7 @@ public class DroolsResourcesBean {
 	ksession.registerChannel("tooManyCustomerRegistrations", tooManyCustomerRegistrations);
 	ksession.registerChannel("notificationsGeneral", notificationsGeneral);
 
-	ksession.fireAllRules();
+	//ksession.fireAllRules();
 	System.out.println("ksession created");
     }
 
@@ -107,7 +110,12 @@ public class DroolsResourcesBean {
 	ksession.insert(fact);
 	ksession.fireAllRules();
     }
-
+    
+    public void fireAllRules() {
+	System.out.println("rules fired at: " + new Date());
+        ksession.fireAllRules();
+    }
+    
     @PreDestroy
     public void destroy() {
 	ksession.dispose();
