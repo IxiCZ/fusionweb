@@ -152,29 +152,29 @@ public class StartupDBConfigBean {
 	discussionEntries.create(new DiscussionEntry(allProducts.get(30), new Date(), frodo, "Looking forward to",
 		"I've just ordered it! I am looking forward to seeing all LOTR characters in HD."));
 
-	for (int i = 1; i <= 25; i++) {
-	    Notification note = new Notification(
-		    NotificationSeverity.INFO,
-		    new Date(),
-		    i
-			    + ". notification. Some user did domething that should be noticed and be responded to with determination and force so horrible that the ser won't ever do such thing again.");
-
-	    if (i % 3 == 0) {
-		note.setSeverity(NotificationSeverity.WARNING);
-	    }
-	    if (i % 4 == 0) {
-		note.setSeverity(NotificationSeverity.SEVERE);
-	    }
-	    if (i % 5 == 0) {
-		note.setSeverity(NotificationSeverity.GOOD);
-	    }
-	    notifications.create(note);
-	    try {
-		Thread.sleep(1000);
-	    } catch (InterruptedException e) {
-		e.printStackTrace();
-	    }
-	}
+//	for (int i = 1; i <= 25; i++) {
+//	    Notification note = new Notification(
+//		    NotificationSeverity.INFO,
+//		    new Date(),
+//		    i
+//			    + ". notification. Some user did domething that should be noticed and be responded to with determination and force so horrible that the ser won't ever do such thing again.");
+//
+//	    if (i % 3 == 0) {
+//		note.setSeverity(NotificationSeverity.WARNING);
+//	    }
+//	    if (i % 4 == 0) {
+//		note.setSeverity(NotificationSeverity.SEVERE);
+//	    }
+//	    if (i % 5 == 0) {
+//		note.setSeverity(NotificationSeverity.GOOD);
+//	    }
+//	    notifications.create(note);
+//	    try {
+//		Thread.sleep(1000);
+//	    } catch (InterruptedException e) {
+//		e.printStackTrace();
+//	    }
+//	}
 
 	Logger.getLogger(StartupDBConfigBean.class.getName()).log(Level.INFO,
 		"Creating initial items in the database finished");

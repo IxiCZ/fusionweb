@@ -10,6 +10,13 @@ then
 end
 
 
+rule "Object "
+when
+	$o: Object()
+then
+	System.out.println("Now there is fact: " + $o);
+end
+
 
 rule "searching fact"
 no-loop

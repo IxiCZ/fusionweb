@@ -22,7 +22,7 @@ public class NavigationListener {
     DroolsResourcesBean drools;
 
     public void product(Product product) {
-	drools.insertFact(new ProductNavigationEvent(product.getId()));
+	drools.insertFact(new ProductNavigationEvent(product.getId(), product.getName()));
     }
 
     public void category(ProductCategory category) {

@@ -62,9 +62,10 @@ public class DroolsResourcesBean {
 	kbuilder.add(new ClassPathResource("discussion.drl", getClass()), ResourceType.DRL);
 	kbuilder.add(new ClassPathResource("customer-log-in.drl", getClass()), ResourceType.DRL);
 	kbuilder.add(new ClassPathResource("order.drl", getClass()), ResourceType.DRL);
+	kbuilder.add(new ClassPathResource("visiting.drl", getClass()), ResourceType.DRL);
 
-	// kbuilder.add(new ClassPathResource("track-debug.drl", getClass()),
-	// ResourceType.DRL);
+//	 kbuilder.add(new ClassPathResource("track-debug.drl", getClass()),
+//	 ResourceType.DRL);
 
 	if (kbuilder.hasErrors()) {
 	    if (kbuilder.getErrors().size() > 0) {

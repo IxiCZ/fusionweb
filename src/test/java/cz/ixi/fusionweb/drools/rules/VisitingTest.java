@@ -1,7 +1,8 @@
 package cz.ixi.fusionweb.drools.rules;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.concurrent.TimeUnit;
 
@@ -26,17 +27,19 @@ import org.junit.Before;
 import org.junit.Test;
 
 import cz.ixi.fusionweb.drools.functions.MostVisitedFunction;
+import cz.ixi.fusionweb.drools.model.ProductBoughtEvent;
 import cz.ixi.fusionweb.drools.model.ProductNavigationEvent;
-import cz.ixi.fusionweb.entities.Product;
+import cz.ixi.fusionweb.entities.Notification;
 
 /**
- * Tests rules considering main product.
+ * Tests rules considering searching products.
  */
-public class MainProductTest {
+public class VisitingTest {
 
     private StatefulKnowledgeSession ksession;
     private KnowledgeBase kbase;
-    private DefaultLayoutControllerMock defaultLayout;
+    private FiredRulesListener firedRules;
+    private NotificationsGeneralChannelMock notificationsGeneral;
 
     @Before
     public void setUp() {
@@ -45,7 +48,7 @@ public class MainProductTest {
 
 	KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder(pkgConf);
 	kbuilder.add(new ClassPathResource("imports-and-declarations.drl", getClass()), ResourceType.DRL);
-	kbuilder.add(new ClassPathResource("main-product.drl", getClass()), ResourceType.DRL);
+	kbuilder.add(new ClassPathResource("visiting.drl", getClass()), ResourceType.DRL);
 	Assert.assertFalse(kbuilder.getErrors().toString(), kbuilder.hasErrors());
 
 	KnowledgeBaseConfiguration config = KnowledgeBaseFactory.newKnowledgeBaseConfiguration();
@@ -58,8 +61,11 @@ public class MainProductTest {
 	conf.setOption(ClockTypeOption.get("pseudo"));
 	ksession = kbase.newStatefulKnowledgeSession(conf, null);
 
-	defaultLayout = new DefaultLayoutControllerMock();
-	ksession.registerChannel("defaultLayout", defaultLayout);
+	firedRules = new FiredRulesListener();
+	ksession.addEventListener(firedRules);
+
+	notificationsGeneral = new NotificationsGeneralChannelMock();
+	ksession.registerChannel("notificationsGeneral", notificationsGeneral);
     }
 
     @After
@@ -72,66 +78,61 @@ public class MainProductTest {
     }
 
     @Test
-    public void setMainProductOnStart() {
-	assertNull(defaultLayout.getMainProduct());
-	ksession.fireAllRules();
-	assertEquals(30, (int) defaultLayout.getMainProduct().getId());
-    }
-
-    
-    
-    @Test
-    public void takesIntoAccountOnlyRightStream() {
-	for (int i = 1; i < 10; i++) {
-	    ksession.insert(new ProductNavigationEvent(10,""));
-	}
-	ksession.getWorkingMemoryEntryPoint("ProductNavigationStream").insert(new ProductNavigationEvent(42,""));
-	
-	((SessionPseudoClock) ksession.getSessionClock()).advanceTime(40, TimeUnit.MINUTES);
-	ksession.fireAllRules();
-	assertEquals(42, (int) defaultLayout.getMainProduct().getId());
-    }
-
-    @Test
-    public void takesIntoAccountOnlyEventsFromTimeWindow() {
+    public void productVisitedButNotBougt() {
+	String rule = "Create notification if there is visited, but not bought product.";
 	SessionPseudoClock clock = ksession.getSessionClock();
-	WorkingMemoryEntryPoint entryPoint = ksession.getWorkingMemoryEntryPoint("ProductNavigationStream");
+	WorkingMemoryEntryPoint productEntryPoint = ksession.getWorkingMemoryEntryPoint("ProductNavigationStream");
 
-	// at "0"
-	for (int i = 1; i < 10; i++) {
-	    entryPoint.insert(new ProductNavigationEvent(1,""));
+	clock.advanceTime(5, TimeUnit.MINUTES);
+
+	for (int i = 0; i < 100; i++) {
+	    productEntryPoint.insert(new ProductNavigationEvent(42,"p"));
+	    if (i%2 == 0) {
+		ksession.insert(new ProductBoughtEvent(4, 42, "rick", "p"));
+	    }
 	}
 
-	clock.advanceTime(50, TimeUnit.MINUTES);
-
-	// at "50"
-	entryPoint.insert(new ProductNavigationEvent(2,""));
-
 	ksession.fireAllRules();
-	assertEquals(1, (int) defaultLayout.getMainProduct().getId());
-
-	clock.advanceTime(50, TimeUnit.MINUTES);
-
-	// at "1:40"
+	assertFalse(firedRules.isRuleFired(rule));
+	
+	for (int i = 0; i < 100; i++) {
+	    productEntryPoint.insert(new ProductNavigationEvent(42,"p"));
+	}
+	
 	ksession.fireAllRules();
-	assertEquals(2, (int) defaultLayout.getMainProduct().getId());
+	assertEquals(1, firedRules.howManyTimesIsRuleFired(rule));
+	assertEquals(1, notificationsGeneral.getCreatedNotifications());
+	assertTrue(notificationsGeneral.getDescription().contains("product 42"));
+
+	clock.advanceTime(61, TimeUnit.MINUTES);
+	
+	ksession.fireAllRules();
+	assertEquals(1, firedRules.howManyTimesIsRuleFired(rule));
+	assertEquals(1, notificationsGeneral.getCreatedNotifications());
     }
 
-    class DefaultLayoutControllerMock implements Channel {
+    private class NotificationsGeneralChannelMock implements Channel {
 
-	private Product mainProduct;
+	private int createdNotifications;
+	private String description;
 
-	public Product getMainProduct() {
-	    return mainProduct;
+	public int getCreatedNotifications() {
+	    return createdNotifications;
 	}
 
-	public void setMainProduct(Product mainProduct) {
-	    this.mainProduct = mainProduct;
+	public String getDescription() {
+	    return description;
+	}
+
+	public void setDescription(String description) {
+	    this.description = description;
 	}
 
 	@Override
 	public void send(Object object) {
-	    setMainProduct(new Product((Integer) object));
+	    setDescription(((Notification) object).getDescription());
+	    createdNotifications++;
 	}
     }
+
 }

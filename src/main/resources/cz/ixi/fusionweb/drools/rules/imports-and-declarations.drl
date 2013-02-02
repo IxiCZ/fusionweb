@@ -85,5 +85,10 @@ declare CustomerRegistrationTooManyReported
 	@role(event)
 end
 
+declare ProductVisitedButNotBoughtReported
+	@role(event)
+	productId: Integer
+end
+
 
 
