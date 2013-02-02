@@ -134,7 +134,6 @@ public class OrderTest {
 
 	@Override
 	public void send(Object object) {
-	    System.out.println(((Notification) object).getDescription());
 	    setDescription(((Notification) object).getDescription());
 	    createdNotifications++;
 	}
