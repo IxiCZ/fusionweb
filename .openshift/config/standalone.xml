@@ -114,18 +114,14 @@
 						<check-valid-connection-sql>SELECT 1</check-valid-connection-sql>
 					</validation>
 				</datasource>
-				<datasource jta="false" jndi-name="java:jboss/datasources/mysqlfusionweb" enabled="true" use-java-context="true"
-					pool-name="MysqlDS" use-ccm="true">
-					<connection-url>jdbc:mysql://${env.OPENSHIFT_MYSQL_DB_HOST}:${env.OPENSHIFT_MYSQL_DB_PORT}/${env.OPENSHIFT_APP_NAME}
-					</connection-url>
+				<datasource jta="false" jndi-name="java:jboss/datasources/mysqlfusionweb"
+					enabled="true" use-java-context="true" pool-name="MysqlDS" use-ccm="true">
+					<connection-url>jdbc:mysql://127.1.1.1:3306/fusionweb</connection-url>
 					<driver>mysql</driver>
 					<security>
-						<user-name>${env.OPENSHIFT_MYSQL_DB_USERNAME}</user-name>
-						<password>${env.OPENSHIFT_MYSQL_DB_PASSWORD}</password>
+						<user-name>admin</user-name>
+						<password>adminGjtQPBx</password>
 					</security>
-					<validation>
-						<check-valid-connection-sql>SELECT 1</check-valid-connection-sql>
-					</validation>
 				</datasource>
 				<datasource jndi-name="java:jboss/datasources/PostgreSQLDS"
 					enabled="${postgresql.enabled}" use-java-context="true" pool-name="PostgreSQLDS"
