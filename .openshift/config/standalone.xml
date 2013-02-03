@@ -116,7 +116,7 @@
 				</datasource>
 				<datasource jta="false" jndi-name="java:jboss/datasources/mysqlfusionweb"
 					enabled="true" use-java-context="true" pool-name="FusionWeb" use-ccm="true">
-					<connection-url>jdbc:mysql://127.1.1.1:3306/fusionweb</connection-url>
+					<connection-url>jdbc:mysql://127.0.0.1:3306/fusionweb</connection-url>
 					<driver>mysql</driver>
 					<security>
 						<user-name>admin</user-name>
