@@ -478,7 +478,7 @@
 					<authentication>
 						<login-module code="Database" flag="required">
 							<module-option name="dsJndiName"
-								value="java:jboss/datasources/mysqlfusionweb" />
+								value="java:jboss/datasources/MysqlDS" />
 							<module-option name="principalsQuery"
 								value="select password from User where username=?" />
 							<module-option name="rolesQuery"
