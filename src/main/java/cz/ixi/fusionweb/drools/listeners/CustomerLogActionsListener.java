@@ -4,6 +4,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 
 import cz.ixi.fusionweb.drools.model.CustomerLogInEvent;
+import cz.ixi.fusionweb.drools.model.CustomerLogOutEvent;
 import cz.ixi.fusionweb.drools.model.CustomerRegistrationEvent;
 import cz.ixi.fusionweb.drools.model.CustomerRegistrationUnsuccessfulEvent;
 import cz.ixi.fusionweb.drools.rules.DroolsResourcesBean;
@@ -34,5 +35,9 @@ public class CustomerLogActionsListener {
 
     public void customerLogIn(User customer) {
 	drools.insertFact(new CustomerLogInEvent(customer.getUsername()));
+    }
+    
+    public void customerLogOut(User customer) {
+	drools.insertFact(new CustomerLogOutEvent(customer.getUsername()));
     }
 }

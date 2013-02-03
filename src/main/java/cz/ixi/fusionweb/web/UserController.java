@@ -83,7 +83,9 @@ public class UserController implements Serializable {
 	    // clear the session
 	    ((HttpSession) context.getExternalContext().getSession(false)).invalidate();
 	    JsfUtil.addSuccessMessage("Logout was successful.");
-
+	    if (user.getRoles().contains(Role.CUSTOMER)) {
+		droolsCustomerLogActions.customerLogOut(user);
+	    }
 	} catch (ServletException ex) {
 	    JsfUtil.addErrorMessage("Logout was unsuccessful.");
 	}
