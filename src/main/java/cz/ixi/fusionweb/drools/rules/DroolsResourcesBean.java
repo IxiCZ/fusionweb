@@ -30,7 +30,6 @@ import cz.ixi.fusionweb.drools.channels.NotificationsGeneralChannel;
 import cz.ixi.fusionweb.drools.channels.ProductSearchUnsuccsessfulChannel;
 import cz.ixi.fusionweb.drools.channels.TooManyCustomerRegistrationsChannel;
 import cz.ixi.fusionweb.drools.functions.MostVisitedFunction;
-import cz.ixi.fusionweb.drools.model.ProductNavigationEvent;
 import cz.ixi.fusionweb.drools.model.UserNavigationsEvent;
 import cz.ixi.fusionweb.web.layout.DefaultLayoutController;
 
@@ -99,13 +98,6 @@ public class DroolsResourcesBean {
 	System.out.println("ksession created");
     }
 
-    @Lock(LockType.WRITE)
-    public void insertFact(ProductNavigationEvent fact) {
-	System.out.println("inserting ProductNavigationEvent fact: " + fact);
-
-	ksession.getWorkingMemoryEntryPoint("ProductNavigationStream").insert(fact);
-	ksession.fireAllRules();
-    }
 
     @Lock(LockType.WRITE)
     public void insertFact(Object fact) {

@@ -18,7 +18,6 @@ import org.drools.runtime.Channel;
 import org.drools.runtime.KnowledgeSessionConfiguration;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.conf.ClockTypeOption;
-import org.drools.runtime.rule.WorkingMemoryEntryPoint;
 import org.drools.time.SessionPseudoClock;
 import org.junit.After;
 import org.junit.Assert;
@@ -78,34 +77,20 @@ public class MainProductTest {
 	assertEquals(30, (int) defaultLayout.getMainProduct().getId());
     }
 
-    
-    
-    @Test
-    public void takesIntoAccountOnlyRightStream() {
-	for (int i = 1; i < 10; i++) {
-	    ksession.insert(new ProductNavigationEvent("rick",10,""));
-	}
-	ksession.getWorkingMemoryEntryPoint("ProductNavigationStream").insert(new ProductNavigationEvent("rick",42,""));
-	
-	((SessionPseudoClock) ksession.getSessionClock()).advanceTime(40, TimeUnit.MINUTES);
-	ksession.fireAllRules();
-	assertEquals(42, (int) defaultLayout.getMainProduct().getId());
-    }
 
     @Test
     public void takesIntoAccountOnlyEventsFromTimeWindow() {
 	SessionPseudoClock clock = ksession.getSessionClock();
-	WorkingMemoryEntryPoint entryPoint = ksession.getWorkingMemoryEntryPoint("ProductNavigationStream");
 
 	// at "0"
 	for (int i = 1; i < 10; i++) {
-	    entryPoint.insert(new ProductNavigationEvent("rick",1,""));
+	    ksession.insert(new ProductNavigationEvent("rick",1,""));
 	}
 
 	clock.advanceTime(50, TimeUnit.MINUTES);
 
 	// at "50"
-	entryPoint.insert(new ProductNavigationEvent("rick",2,""));
+	ksession.insert(new ProductNavigationEvent("rick",2,""));
 
 	ksession.fireAllRules();
 	assertEquals(1, (int) defaultLayout.getMainProduct().getId());

@@ -10,13 +10,12 @@ end
 
 rule "Change main product if there is a better one."
 no-loop
-//timer (int: 30m)
+//timer (int: 60m 60m)
 when
-	exists (ProductNavigationEvent() over window:time(1h) from entry-point "ProductNavigationStream" )
+	exists (ProductNavigationEvent() over window:time(1h))
 	$current : CurrentMainProduct()
-	$mostVisitedProductId : Integer() from accumulate ($pne : ProductNavigationEvent($id : id) 
+	$mostVisitedProductId : Integer() from accumulate ($pne : ProductNavigationEvent() 
 														      over window:time(1h) 
-														      from entry-point "ProductNavigationStream", 
 														      mostVisited($pne))
  	eval ($current.getId() != $mostVisitedProductId)	 
 then

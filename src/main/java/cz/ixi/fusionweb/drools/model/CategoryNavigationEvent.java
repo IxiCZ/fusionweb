@@ -5,13 +5,23 @@ package cz.ixi.fusionweb.drools.model;
  */
 public class CategoryNavigationEvent extends NavigationEvent {
 
-    public CategoryNavigationEvent(Integer id, String username) {
-	super(id, username);
+    private Integer productCategoryId;
+
+    public CategoryNavigationEvent(Integer productCategoryId, String username) {
+	super(username);
+	this.productCategoryId = productCategoryId;
+    }
+
+    public Integer getProductCategoryId() {
+	return productCategoryId;
+    }
+
+    public void setProductCategoryId(Integer productCategoryId) {
+	this.productCategoryId = productCategoryId;
     }
 
     @Override
     public String toString() {
-	return "Category[" + getId() + "] navigation event";
+	return "Category[" + getProductCategoryId() + "] navigation event";
     }
-
 }

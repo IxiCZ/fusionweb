@@ -19,7 +19,6 @@ import org.drools.runtime.Channel;
 import org.drools.runtime.KnowledgeSessionConfiguration;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.conf.ClockTypeOption;
-import org.drools.runtime.rule.WorkingMemoryEntryPoint;
 import org.drools.time.SessionPseudoClock;
 import org.junit.After;
 import org.junit.Assert;
@@ -81,12 +80,11 @@ public class VisitingTest {
     public void productVisitedButNotBougt() {
 	String rule = "Create notification if there is visited, but not bought product.";
 	SessionPseudoClock clock = ksession.getSessionClock();
-	WorkingMemoryEntryPoint productEntryPoint = ksession.getWorkingMemoryEntryPoint("ProductNavigationStream");
 
 	clock.advanceTime(5, TimeUnit.MINUTES);
 
 	for (int i = 0; i < 100; i++) {
-	    productEntryPoint.insert(new ProductNavigationEvent("rick",42,"p"));
+	    ksession.insert(new ProductNavigationEvent("rick",42,"p"));
 	    if (i%2 == 0) {
 		ksession.insert(new ProductBoughtEvent(4, 42, "rick", "p"));
 	    }
@@ -96,7 +94,7 @@ public class VisitingTest {
 	assertFalse(firedRules.isRuleFired(rule));
 	
 	for (int i = 0; i < 100; i++) {
-	    productEntryPoint.insert(new ProductNavigationEvent("rick",42,"p"));
+	    ksession.insert(new ProductNavigationEvent("rick",42,"p"));
 	}
 	
 	ksession.fireAllRules();

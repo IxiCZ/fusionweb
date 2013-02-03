@@ -6,6 +6,13 @@ package cz.ixi.fusionweb.drools.model;
 public class ProductNavigationEvent extends NavigationEvent {
 
     private String productName;
+    private Integer productId;
+
+    public ProductNavigationEvent(String username, Integer productId, String productName) {
+	super(username);
+	this.productName = productName;
+	this.productId = productId;
+    }
 
     public String getProductName() {
 	return productName;
@@ -15,14 +22,16 @@ public class ProductNavigationEvent extends NavigationEvent {
 	this.productName = productName;
     }
 
-    public ProductNavigationEvent(String username, Integer id, String productName) {
-	super(id, username);
-	this.productName = productName;
+    public Integer getProductId() {
+	return productId;
+    }
+
+    public void setProductId(Integer productId) {
+	this.productId = productId;
     }
 
     @Override
     public String toString() {
-	return "Product[" + getId() + ": productName=" + productName + "] navigation event";
+	return "ProductNavigationEvent [productName=" + productName + ", productId=" + productId + "]";
     }
-
 }

@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import cz.ixi.fusionweb.drools.model.NavigationEvent;
+import cz.ixi.fusionweb.drools.model.ProductNavigationEvent;
 
 /**
  * Implementation of accumulate function to find out most visited event. 
@@ -57,13 +57,13 @@ public class MostVisitedFunction implements org.drools.runtime.rule.AccumulateFu
      * @see org.drools.base.accumulators.AccumulateFunction#accumulate(java.lang.Object, java.lang.Object)
      */
     public void accumulate(Serializable context, Object value) {
-        NavigationEvent event = (NavigationEvent) value;
+        ProductNavigationEvent event = (ProductNavigationEvent) value;
 
-        if (!MaxData.getNavigationEvents().containsKey(event.getId())){
-            MaxData.getNavigationEvents().put(event.getId(), 1);
+        if (!MaxData.getNavigationEvents().containsKey(event.getProductId())){
+            MaxData.getNavigationEvents().put(event.getProductId(), 1);
         } else {
-            int i = MaxData.getNavigationEvents().get(event.getId());
-            MaxData.getNavigationEvents().put(event.getId(), i+1);
+            int i = MaxData.getNavigationEvents().get(event.getProductId());
+            MaxData.getNavigationEvents().put(event.getProductId(), i+1);
         }
     }
 

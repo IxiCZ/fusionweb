@@ -5,9 +5,9 @@ package cz.ixi.fusionweb.drools.rules;
 rule "Create notification if there is visited, but not bought product."
 no-loop
 when
-	ProductNavigationEvent($productId: id, $productName: productName) from entry-point "ProductNavigationStream" 
+	ProductNavigationEvent($productId: productId, $productName: productName) 
 	not ProductVisitedButNotBoughtReported(productId == $productId) over window:time(1h)
-	$visited: Number() from accumulate( $pne: ProductNavigationEvent(id == $productId) over window:time(1h) from entry-point "ProductNavigationStream",  count( $pne ) )
+	$visited: Number() from accumulate( $pne: ProductNavigationEvent(productId == $productId) over window:time(1h),  count( $pne ) )
 	Number( $visited - intValue >= 100 ) from accumulate( $pbe: ProductBoughtEvent(productId == $productId) over window:time(1h),  count( $pbe ) )
 
 then
@@ -22,6 +22,7 @@ when
 then
 end
 
+/*
 rule "Product Visited But NosdfReported"
 when
   ProductBoughtEvent() over window:time(1h)
@@ -33,4 +34,4 @@ when
   ProductNavigationEvent()  over window:time(1h) from entry-point "ProductNavigationStream" 
 then
 end
-
+*/
