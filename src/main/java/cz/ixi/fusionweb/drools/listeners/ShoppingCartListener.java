@@ -4,6 +4,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 
 import cz.ixi.fusionweb.drools.model.ProductAddedIntoShoppingCartEvent;
+import cz.ixi.fusionweb.drools.model.ShoppingCartNavigationEvent;
 import cz.ixi.fusionweb.drools.rules.DroolsResourcesBean;
 import cz.ixi.fusionweb.entities.Product;
 import cz.ixi.fusionweb.entities.User;
@@ -25,5 +26,15 @@ public class ShoppingCartListener {
 	    drools.insertFact(new ProductAddedIntoShoppingCartEvent(null, product.getId(), product.getName()));
 	}
     }
+    
+    public void shoppingCartVisited( User user) {
+	if (user != null) {
+	    drools.insertFact(new ShoppingCartNavigationEvent(user.getUsername()));
+	} else {
+	    drools.insertFact(new ShoppingCartNavigationEvent(null));
+	}
+    }
+    
+    
 
 }

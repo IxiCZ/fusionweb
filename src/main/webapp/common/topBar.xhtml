@@ -34,6 +34,7 @@
 
 		<h:form>
 			<h:commandLink action="#{shoppingCart.cartPage()}"
+				actionListener="#{shoppingCartListener.shoppingCartVisited(userController.user)}"
 				value="Shopping cart: #{shoppingCart.getCartAbsoluteSize()}"
 				styleClass="logLink" />
 		</h:form>
