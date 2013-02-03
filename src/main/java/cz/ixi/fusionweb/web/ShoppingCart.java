@@ -33,7 +33,9 @@ public class ShoppingCart implements Serializable {
 
     private List<OrderItem> cartItems;
 
-    public String addItem(final Product p) {
+    public String addItem(Product p) {
+	System.out.println("added item: " + p);
+	
 	if (cartItems == null) {
 	    cartItems = new ArrayList<OrderItem>();
 	}
