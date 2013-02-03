@@ -9,7 +9,7 @@
 
   <application>
         <resource-bundle>
-            <base-name>cz.ixi.fusionweb.bundle.Bundle</base-name>
+            <base-name>/Bundle</base-name>
             <var>bundle</var>
         </resource-bundle>
         <locale-config>
