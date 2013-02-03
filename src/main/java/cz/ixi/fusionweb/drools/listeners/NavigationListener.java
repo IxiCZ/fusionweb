@@ -4,6 +4,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 
 import cz.ixi.fusionweb.drools.model.CategoryNavigationEvent;
+import cz.ixi.fusionweb.drools.model.CustomerMyOrdersNavigationEvent;
 import cz.ixi.fusionweb.drools.model.ProductNavigationEvent;
 import cz.ixi.fusionweb.drools.rules.DroolsResourcesBean;
 import cz.ixi.fusionweb.entities.Product;
@@ -38,6 +39,6 @@ public class NavigationListener {
     }
 
     public void customerMenuMyOrders(User user) {
-	System.out.println("User " + user.getUsername() + " clicked My Orders.");
+	drools.insertFact(new CustomerMyOrdersNavigationEvent(user.getUsername()));
     }
 }
