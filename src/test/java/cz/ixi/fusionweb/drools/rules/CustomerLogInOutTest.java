@@ -3,6 +3,7 @@ package cz.ixi.fusionweb.drools.rules;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import org.drools.KnowledgeBase;
@@ -82,9 +83,11 @@ public class CustomerLogInOutTest {
 
 	clock.advanceTime(5, TimeUnit.MINUTES);
 
-	ksession.insert(new CustomerLogInEvent("rick"));
-	ksession.insert(new CustomerLogInEvent("rick2"));
-	ksession.insert(new CustomerLogInEvent("rick2"));
+	for (int i = 1; i <= 3; i++) {
+	    CustomerLogInEvent cLogInEvent = new CustomerLogInEvent("rick" + i);
+	    cLogInEvent.setTime(new Date(clock.getCurrentTime()));
+	    ksession.insert(cLogInEvent);
+	}
 	ksession.fireAllRules();
 
 	clock.advanceTime(61, TimeUnit.MINUTES);
@@ -94,9 +97,12 @@ public class CustomerLogInOutTest {
 	assertTrue(notificationsGeneral.getDescription().contains("3 customers"));
 
 	clock.advanceTime(5, TimeUnit.MINUTES);
-
-	ksession.insert(new CustomerLogInEvent("frodo"));
-	ksession.insert(new CustomerLogInEvent("frodo2"));
+	
+	for (int i = 1; i <= 2; i++) {
+	    CustomerLogInEvent cLogInEvent = new CustomerLogInEvent("frodo" + i);
+	    cLogInEvent.setTime(new Date(clock.getCurrentTime()));
+	    ksession.insert(cLogInEvent);
+	}
 	ksession.fireAllRules();
 
 	clock.advanceTime(61, TimeUnit.MINUTES);

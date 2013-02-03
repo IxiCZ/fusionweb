@@ -26,6 +26,10 @@ public class GeneralUserActionEvent implements Comparable<GeneralUserActionEvent
     public Date getTime() {
 	return time;
     }
+    
+    public void setTime(Date time){
+	this.time = time;
+    }
 
     @Override
     public int compareTo(GeneralUserActionEvent o) {

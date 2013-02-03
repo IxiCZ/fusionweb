@@ -3,6 +3,7 @@ package cz.ixi.fusionweb.drools.rules;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import org.drools.KnowledgeBase;
@@ -77,20 +78,23 @@ public class MainProductTest {
 	assertEquals(30, (int) defaultLayout.getMainProduct().getId());
     }
 
-
     @Test
     public void takesIntoAccountOnlyEventsFromTimeWindow() {
 	SessionPseudoClock clock = ksession.getSessionClock();
 
 	// at "0"
 	for (int i = 1; i < 10; i++) {
-	    ksession.insert(new ProductNavigationEvent("rick",1,""));
+	    ProductNavigationEvent pne = new ProductNavigationEvent("rick", 1, "");
+	    pne.setTime(new Date(clock.getCurrentTime()));
+	    ksession.insert(pne);
 	}
 
 	clock.advanceTime(50, TimeUnit.MINUTES);
 
 	// at "50"
-	ksession.insert(new ProductNavigationEvent("rick",2,""));
+	ProductNavigationEvent pne = new ProductNavigationEvent("rick", 2, "");
+	pne.setTime(new Date(clock.getCurrentTime()));
+	ksession.insert(pne);
 
 	ksession.fireAllRules();
 	assertEquals(1, (int) defaultLayout.getMainProduct().getId());

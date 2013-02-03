@@ -3,6 +3,7 @@ package cz.ixi.fusionweb.drools.rules;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import org.drools.KnowledgeBase;
@@ -83,12 +84,23 @@ public class OrderHowManyTest {
 
 	clock.advanceTime(5, TimeUnit.MINUTES);
 
-	ksession.insert(new OrderCreatedEvent(1, "rick", 2, 60.0));
-	ksession.insert(new ProductBoughtEvent(1, 1, "rick", "dvd"));
-	ksession.insert(new ProductBoughtEvent(1, 2, "rick", "cd"));
+	OrderCreatedEvent oce = new OrderCreatedEvent(1, "rick", 2, 60.0);
+	oce.setTime(new Date(clock.getCurrentTime()));
+	ksession.insert(oce);
+	ProductBoughtEvent pbe = new ProductBoughtEvent(1, 1, "rick", "dvd");
+	pbe.setTime(new Date(clock.getCurrentTime()));
+	ksession.insert(pbe);
+	pbe = new ProductBoughtEvent(1, 2, "rick", "cd");
+	pbe.setTime(new Date(clock.getCurrentTime()));
+	ksession.insert(pbe);
 
-	ksession.insert(new OrderCreatedEvent(2, "rick2", 1, 50.0));
-	ksession.insert(new ProductBoughtEvent(2, 3, "rick2", "dvd"));
+	oce = new OrderCreatedEvent(2, "rick2", 1, 50.0);
+	oce.setTime(new Date(clock.getCurrentTime()));
+	ksession.insert(oce);
+	pbe = new  ProductBoughtEvent(2, 3, "rick2", "dvd");
+	pbe.setTime(new Date(clock.getCurrentTime()));
+	ksession.insert(pbe);
+
 
 	ksession.fireAllRules();
 
@@ -101,11 +113,16 @@ public class OrderHowManyTest {
 
 	clock.advanceTime(5, TimeUnit.MINUTES);
 
-	ksession.insert(new OrderCreatedEvent(3, "rick2", 4, 50.0));
-	ksession.insert(new ProductBoughtEvent(3, 4, "rick3", "dvd"));
-	ksession.insert(new ProductBoughtEvent(3, 4, "rick3", "dvd"));
-	ksession.insert(new ProductBoughtEvent(3, 4, "rick3", "dvd"));
-	ksession.insert(new ProductBoughtEvent(3, 4, "rick3", "dvd"));
+	
+	oce = new OrderCreatedEvent(3, "rick2", 4, 50.0);
+	oce.setTime(new Date(clock.getCurrentTime()));
+	ksession.insert(oce);
+	
+	for (int i = 1; i <= 4; i++) {
+	    ProductBoughtEvent pbe2 = new ProductBoughtEvent(3, 4, "rick3", "dvd");
+	    pbe2.setTime(new Date(clock.getCurrentTime()));
+	    ksession.insert(pbe2);
+	}
 	ksession.fireAllRules();
 
 	clock.advanceTime(61, TimeUnit.MINUTES);
