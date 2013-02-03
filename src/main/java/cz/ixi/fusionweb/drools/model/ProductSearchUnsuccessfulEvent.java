@@ -12,9 +12,9 @@ public class ProductSearchUnsuccessfulEvent extends ProductSearchEvent {
 
     @Override
     public String toString() {
-	if (getUsername() == null) {
-	    return "Unsuccessful product search event of searched text: " + getSearchedText() + " by anonymous user";
+	if (getUsername() != null) {
+	    return "User " + getUsername() + " unsuccesfully searched '" + getSearchedText() + "'.";
 	}
-	return "Unsuccessful product search event of searched text: " + getSearchedText() + " by " + getUsername();
+	return "Anonymous User unsuccesfully searched '" + getSearchedText() + "'.";
     }
 }

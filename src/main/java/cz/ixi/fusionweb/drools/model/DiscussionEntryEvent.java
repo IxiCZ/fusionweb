@@ -1,6 +1,6 @@
 package cz.ixi.fusionweb.drools.model;
 
-public class DiscussionEntryEvent extends GeneralUserActionEvent{
+public class DiscussionEntryEvent extends GeneralUserActionEvent {
 
     private String productName;
     private String text;
@@ -27,9 +27,9 @@ public class DiscussionEntryEvent extends GeneralUserActionEvent{
 	this.text = text;
     }
 
-
     @Override
     public String toString() {
-	return "DiscussionEntryEvent [productName=" + productName + ", text=" + text + ", username=" + getUsername() + "]";
+	return "User " + getUsername() + " added comment for product " + productName;
+
     }
 }

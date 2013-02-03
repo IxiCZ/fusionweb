@@ -1,6 +1,6 @@
 package cz.ixi.fusionweb.drools.model;
 
-public class ProductBoughtEvent extends GeneralUserActionEvent{
+public class ProductBoughtEvent extends GeneralUserActionEvent {
 
     private Integer orderId;
     private Integer productId;
@@ -39,7 +39,6 @@ public class ProductBoughtEvent extends GeneralUserActionEvent{
 
     @Override
     public String toString() {
-	return "ProductBoughtEvent [orderId=" + orderId + ", productId=" + productId + ", username=" + getUsername()
-		+ ", productName=" + productName + "]";
-    }    
+	return "User " + getUsername() + " bought product " + productName + " (" + productId + ").";
+    }
 }

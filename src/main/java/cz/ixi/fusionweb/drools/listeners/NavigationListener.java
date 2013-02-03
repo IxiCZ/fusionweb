@@ -32,9 +32,9 @@ public class NavigationListener {
 
     public void category(ProductCategory category, User user) {
 	if (user != null) {
-	    drools.insertFact(new CategoryNavigationEvent(category.getId(), user.getUsername()));
+	    drools.insertFact(new CategoryNavigationEvent(user.getUsername(), category.getId(), category.getName()));
 	} else {
-	    drools.insertFact(new CategoryNavigationEvent(category.getId(), null));
+	    drools.insertFact(new CategoryNavigationEvent(null, category.getId(), category.getName()));
 	}
     }
 

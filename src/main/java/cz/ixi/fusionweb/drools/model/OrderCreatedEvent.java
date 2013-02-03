@@ -39,7 +39,6 @@ public class OrderCreatedEvent extends GeneralUserActionEvent{
 
     @Override
     public String toString() {
-	return "OrderCreatedInEvent [orderId=" + orderId + ", username=" + getUsername() + ", itemsCount=" + itemsCount
-		+ ", amount=" + amount + "]";
+	return "User " + getUsername() + " created new order with " + itemsCount + " items for total " + amount + "$";
     }
 }

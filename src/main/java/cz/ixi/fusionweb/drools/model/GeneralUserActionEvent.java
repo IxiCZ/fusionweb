@@ -24,13 +24,11 @@ public class GeneralUserActionEvent implements Comparable<GeneralUserActionEvent
     }
 
     public Date getTime() {
-        return time;
+	return time;
     }
 
     @Override
     public int compareTo(GeneralUserActionEvent o) {
 	return o.getTime().compareTo(time);
     }
-    
-    
 }

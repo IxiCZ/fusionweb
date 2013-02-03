@@ -8,6 +8,7 @@ public class CustomerLogInEvent extends GeneralUserActionEvent {
 
     @Override
     public String toString() {
-	return "CustomerLogInEvent [username=" + getUsername() + "]";
+
+	return "Customer " + getUsername() + " logged in.";
     }
 }

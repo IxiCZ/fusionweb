@@ -13,9 +13,9 @@ public class ProductSearchSuccessfulEvent extends ProductSearchEvent{
   
     @Override
     public String toString() {
-	if (getUsername() == null) {
-	    return "Successful product search event of searched text: " + getSearchedText() + " by anonymous user";
+	if (getUsername() != null) {
+	    return "User " + getUsername() + " succesfully searched '" + getSearchedText() + "'.";
 	}
-	return "Successful product search event of searched text: " + getSearchedText() + " by " + getUsername();
+	return "Anonymous User succesfully searched '" + getSearchedText() + "'.";
     }
 }

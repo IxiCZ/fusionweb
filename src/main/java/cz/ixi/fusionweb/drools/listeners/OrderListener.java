@@ -1,6 +1,7 @@
 package cz.ixi.fusionweb.drools.listeners;
 
 import java.io.Serializable;
+import java.util.Iterator;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -24,7 +25,7 @@ public class OrderListener implements Serializable {
     DroolsResourcesBean drools;
 
     public void newOrder(Order order, User user) {
-	drools.insertFact(new OrderCreatedEvent(order.getId(), user.getUsername(), order.getOrderItemList().size(),
+	drools.insertFact(new OrderCreatedEvent(order.getId(), user.getUsername(), getTotalItemsCount(order),
 		order.getAmount()));
 	for (OrderItem oi : order.getOrderItemList()) {
 	    for (int i = 1; i <= oi.getQuantity(); i++) {
@@ -32,5 +33,14 @@ public class OrderListener implements Serializable {
 			.getProduct().getName()));
 	    }
 	}
+    }
+
+    private int getTotalItemsCount(Order order){
+	int total = 0;
+	for (Iterator<OrderItem> it = order.getOrderItemList().iterator(); it.hasNext();) {
+	    OrderItem oi = it.next();
+	    total += oi.getQuantity();
+	}
+	return total;
     }
 }

@@ -8,6 +8,6 @@ public class CustomerMyOrdersNavigationEvent extends GeneralUserActionEvent {
 
     @Override
     public String toString() {
-	return "CustomerMyOrdersNavigationEvent [username=" + getUsername() + "]";
+	return "Customer " + getUsername() + " visited 'MyOrders' menu option.";
     }
 }

@@ -6,10 +6,12 @@ package cz.ixi.fusionweb.drools.model;
 public class CategoryNavigationEvent extends GeneralUserActionEvent {
 
     private Integer productCategoryId;
+    private String categoryName;
 
-    public CategoryNavigationEvent(Integer productCategoryId, String username) {
+    public CategoryNavigationEvent(String username, Integer productCategoryId, String categoryName) {
 	super(username);
 	this.productCategoryId = productCategoryId;
+	this.categoryName = categoryName;
     }
 
     public Integer getProductCategoryId() {
@@ -20,8 +22,19 @@ public class CategoryNavigationEvent extends GeneralUserActionEvent {
 	this.productCategoryId = productCategoryId;
     }
 
+    public String getCategoryName() {
+	return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+	this.categoryName = categoryName;
+    }
+
     @Override
     public String toString() {
-	return "Category[" + getProductCategoryId() + "] navigation event";
+	if (getUsername() != null) {
+	    return "User " + getUsername() + " visited category " + categoryName + "(" + productCategoryId + ").";
+	}
+	return "Anonymous User visited category " + categoryName + "(" + productCategoryId + ").";
     }
 }

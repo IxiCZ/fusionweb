@@ -1,6 +1,5 @@
 package cz.ixi.fusionweb.drools.model;
 
-
 /**
  * Class representing product search event.
  */
@@ -21,12 +20,11 @@ public class ProductSearchEvent extends GeneralUserActionEvent {
 	this.searchedText = searchedText;
     }
 
-
     @Override
     public String toString() {
-	if (getUsername() == null) {
-	    return "ProductSearch event of searched text: " + searchedText + " by anonymous user";
+	if (getUsername() != null) {
+	    return "User " + getUsername() + " searched '" + searchedText + "'.";
 	}
-	return "ProductSearch event of searched text: " + searchedText + " by " + getUsername();
+	return "Anonymous User searched '" + searchedText + "'.";
     }
 }

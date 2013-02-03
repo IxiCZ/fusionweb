@@ -32,6 +32,9 @@ public class ProductNavigationEvent extends GeneralUserActionEvent {
 
     @Override
     public String toString() {
-	return "ProductNavigationEvent [productName=" + productName + ", productId=" + productId + "]";
+	if (getUsername() != null) {
+	    return "User " + getUsername() + " visited product " + productName + "(" + productId + ").";
+	}
+	return "Anonymous User visited product " + productName + "(" + productId + ").";
     }
 }
