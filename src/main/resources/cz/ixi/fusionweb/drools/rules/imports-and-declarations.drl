@@ -30,7 +30,6 @@ end
 
 declare ProductNavigationEvent
 	@role(event)
-	@expires( 24h )
 	@timestamp( time )
 end
 
@@ -74,7 +73,6 @@ end
 
 declare ProductBoughtEvent 
 	@role(event)
-	@expires( 24h )
 	@timestamp( time )
 end
 
