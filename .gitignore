@@ -4,3 +4,7 @@ target
 *.war
 *.ear
 
+.settings/*
+!.settings/.jsdtscope
+.project
+.classpath
