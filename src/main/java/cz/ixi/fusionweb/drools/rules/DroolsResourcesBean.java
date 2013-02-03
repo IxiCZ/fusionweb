@@ -30,7 +30,7 @@ import cz.ixi.fusionweb.drools.channels.NotificationsGeneralChannel;
 import cz.ixi.fusionweb.drools.channels.ProductSearchUnsuccsessfulChannel;
 import cz.ixi.fusionweb.drools.channels.TooManyCustomerRegistrationsChannel;
 import cz.ixi.fusionweb.drools.functions.MostVisitedFunction;
-import cz.ixi.fusionweb.drools.model.UserNavigationsEvent;
+import cz.ixi.fusionweb.drools.model.UserActionsEvent;
 import cz.ixi.fusionweb.web.layout.DefaultLayoutController;
 
 /**
@@ -114,10 +114,10 @@ public class DroolsResourcesBean {
     }
 
     @Lock(LockType.READ) 
-    public List<UserNavigationsEvent> getAllUserNavigations() {
-	List<UserNavigationsEvent> userNavs = new ArrayList<UserNavigationsEvent>();
+    public List<UserActionsEvent> getAllUserNavigations() {
+	List<UserActionsEvent> userNavs = new ArrayList<UserActionsEvent>();
 	for(Object o: ksession.getObjects(new UserNavigationsEventFilter())) {
-	    userNavs.add((UserNavigationsEvent)o);
+	    userNavs.add((UserActionsEvent)o);
 	}
  	return userNavs;
      }
@@ -131,7 +131,7 @@ public class DroolsResourcesBean {
 
 	@Override
 	public boolean accept(Object object) {
-    	   return (object instanceof UserNavigationsEvent);
+    	   return (object instanceof UserActionsEvent);
 	}
 	
     }

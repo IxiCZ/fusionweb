@@ -1,21 +1,21 @@
 package cz.ixi.fusionweb.drools.rules;
 
-rule "No UserNavigations"
+rule "No UserActionsEvent"
 when
 	GeneralUserActionEvent($username: username, username!=null)
-	not UserNavigationsEvent(username == $username)
+	not UserActionsEvent(username == $username)
 then
-	insert(new UserNavigationsEvent($username, new ArrayList()));
-	System.out.println("new UserNavigations for " + $username);
+	insert(new UserActionsEvent($username, new ArrayList()));
+	System.out.println("new UserActionsEvent for " + $username);
 end
 
-rule "Add userAction to UserNavigations"
+rule "Add userAction to UserActionsEvent"
 no-loop
 when
 	$navEvent: GeneralUserActionEvent($username: username, username!=null)
-	$userNav: UserNavigationsEvent(username == $username)
+	$userNav: UserActionsEvent(username == $username)
 then
-	$userNav.getNavigations().add($navEvent);
+	$userNav.getActions().add($navEvent);
 	
-	System.out.println("UserNavigations added " + $navEvent);
+	System.out.println("UserActionsEvent added " + $navEvent);
 end

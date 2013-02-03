@@ -11,7 +11,7 @@ import cz.ixi.fusionweb.drools.model.DiscussionEntryEvent;
 import cz.ixi.fusionweb.drools.model.CustomerLogInEvent;
 import cz.ixi.fusionweb.drools.model.OrderCreatedEvent;
 import cz.ixi.fusionweb.drools.model.ProductBoughtEvent;
-import cz.ixi.fusionweb.drools.model.UserNavigationsEvent;
+import cz.ixi.fusionweb.drools.model.UserActionsEvent;
 import cz.ixi.fusionweb.entities.Product;
 import cz.ixi.fusionweb.entities.Notification;
 import cz.ixi.fusionweb.entities.NotificationSeverity;
@@ -100,7 +100,7 @@ declare ManyProductPurchasesReported
 	productId: Integer
 end
 
-declare UserNavigationsEvent
+declare UserActionsEvent
 	@role(event)
 	@expires(24h)
 end	

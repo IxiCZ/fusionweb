@@ -23,9 +23,17 @@ public class ProductSearchListener {
 
     public void search(String searchedKeyword, User user) {
 	if (products.searchProductCount(searchedKeyword) == 0) {
-	    drools.insertFact(new ProductSearchUnsuccessfulEvent(searchedKeyword, user));
+	    if (user != null) {
+		drools.insertFact(new ProductSearchUnsuccessfulEvent(searchedKeyword, user.getUsername()));
+	    } else {
+		drools.insertFact(new ProductSearchUnsuccessfulEvent(searchedKeyword, null));
+	    }
 	} else {
-	    drools.insertFact(new ProductSearchSuccessfulEvent(searchedKeyword, user));
+	    if (user != null) {
+		drools.insertFact(new ProductSearchSuccessfulEvent(searchedKeyword, user.getUsername()));
+	    } else {
+		drools.insertFact(new ProductSearchSuccessfulEvent(searchedKeyword, null));
+	    }
 	}
     }
 
