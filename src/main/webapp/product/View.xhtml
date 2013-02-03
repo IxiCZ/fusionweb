@@ -24,6 +24,7 @@
 		<h:form>
 			<h:commandButton
 				action="#{shoppingCart.addItem(productController.selected)}"
+				actionListener="#{shoppingCartListener.productAddedIntoCart(productController.selected,userController.user)}"
 				value="#{bundle.AddToCart}" styleClass="addToCartDetail" />
 		</h:form>
 		<br />

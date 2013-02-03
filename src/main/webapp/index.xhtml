@@ -43,6 +43,7 @@
 				<br />
 				<h:commandButton
 					action="#{shoppingCart.addItem(defaultLayoutController.mainProduct)}"
+					actionListener="#{shoppingCartListener.productAddedIntoCart(defaultLayoutController.mainProduct,userController.user)}"
 					value="#{bundle.AddToCart}" styleClass="addToCartMainProduct" />
 			</h:panelGroup>
 		</h:form>

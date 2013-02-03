@@ -24,8 +24,8 @@
 				styleClass="product-table"
 				rendered="#{productController.items.rowCount > 0}">
 				<h:column>
-					<h:graphicImage value="/image?id=#{item.id}" 
-						width="125" maxHeight="125" />
+					<h:graphicImage value="/image?id=#{item.id}" width="125"
+						maxHeight="125" />
 				</h:column>
 				<h:column>
 					<h:commandLink action="#{productController.prepareView}"
@@ -41,6 +41,7 @@
 
 					<h:panelGrid styleClass="addToCart">
 						<h:commandButton action="#{shoppingCart.addItem(item)}"
+							actionListener="#{shoppingCartListener.productAddedIntoCart(item,userController.user)}"
 							value="#{bundle.AddToCart}" styleClass="addToCart"
 							style="margin-top:10px;" />
 					</h:panelGrid>

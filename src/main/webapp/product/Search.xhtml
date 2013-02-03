@@ -11,7 +11,8 @@
 	</ui:define>
 	<ui:define name="body">
 		<h:form styleClass="jsfcrud_list_form">
-			<h:outputText value="#{bundle.ProductSearch_ResultsTitle} #{searchProductController.searchedKeyword}"
+			<h:outputText
+				value="#{bundle.ProductSearch_ResultsTitle} #{searchProductController.searchedKeyword}"
 				styleClass="generalHeader" />
 			<br />
 			<br />
@@ -42,6 +43,7 @@
 
 					<h:panelGrid styleClass="addToCart">
 						<h:commandButton action="#{shoppingCart.addItem(item)}"
+							actionListener="#{shoppingCartListener.productAddedIntoCart(item,userController.user)}"
 							value="#{bundle.AddToCart}" styleClass="addToCart"
 							style="margin-top:10px;" />
 					</h:panelGrid>
