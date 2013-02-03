@@ -102,7 +102,7 @@ public class CustomerLogInOutTest {
 	    CustomerLogInEvent cLogInEvent = new CustomerLogInEvent("frodo" + i);
 	    cLogInEvent.setTime(new Date(clock.getCurrentTime()));
 	    ksession.insert(cLogInEvent);
-	}
+	}//
 	ksession.fireAllRules();
 
 	clock.advanceTime(61, TimeUnit.MINUTES);
