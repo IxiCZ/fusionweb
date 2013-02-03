@@ -11,7 +11,6 @@ import cz.ixi.fusionweb.drools.model.DiscussionEntryEvent;
 import cz.ixi.fusionweb.drools.model.CustomerLogInEvent;
 import cz.ixi.fusionweb.drools.model.OrderCreatedEvent;
 import cz.ixi.fusionweb.drools.model.ProductBoughtEvent;
-import cz.ixi.fusionweb.drools.model.UserActionsEvent;
 import cz.ixi.fusionweb.entities.Product;
 import cz.ixi.fusionweb.entities.Notification;
 import cz.ixi.fusionweb.entities.NotificationSeverity;
@@ -24,25 +23,30 @@ import java.util.List;
 import java.util.Date;
 
 
-declare NavigationEvent
+declare GeneralUserActionEvent
 	@role(event)
+	@timestamp( time )
 end
 
 declare ProductNavigationEvent
 	@role(event)
 	@expires( 24h )
+	@timestamp( time )
 end
 
 declare ProductSearchEvent
 	@role(event)
+	@timestamp( time )
 end
 
 declare ProductSearchSuccessfulEvent 
 	@role(event)
+	@timestamp( time )
 end
 
 declare ProductSearchUnsuccessfulEvent 
 	@role(event)
+	@timestamp( time )
 end
 
 declare CustomerRegistrationEvent 
@@ -55,19 +59,23 @@ end
 
 declare DiscussionEntryEvent 
 	@role(event)
+	@timestamp( time )
 end
 		
 declare CustomerLogInEvent 
 	@role(event)
+	@timestamp( time )
 end
 
 declare OrderCreatedEvent 
 	@role(event)
+	@timestamp( time )
 end
 
 declare ProductBoughtEvent 
 	@role(event)
 	@expires( 24h )
+	@timestamp( time )
 end
 
 declare SearchedText
@@ -100,7 +108,4 @@ declare ManyProductPurchasesReported
 	productId: Integer
 end
 
-declare UserActionsEvent
-	@role(event)
-	@expires(24h)
-end	
+

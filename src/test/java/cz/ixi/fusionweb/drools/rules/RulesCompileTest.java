@@ -30,7 +30,6 @@ public class RulesCompileTest {
 	kbuilder.add(new ClassPathResource("order-how-many.drl", getClass()), ResourceType.DRL);
 	kbuilder.add(new ClassPathResource("order-many.drl", getClass()), ResourceType.DRL);
 	kbuilder.add(new ClassPathResource("visiting.drl", getClass()), ResourceType.DRL);
-	kbuilder.add(new ClassPathResource("user-navigation.drl", getClass()), ResourceType.DRL);
 	
 	 kbuilder.add(new ClassPathResource("track-debug.drl", getClass()), ResourceType.DRL);
 

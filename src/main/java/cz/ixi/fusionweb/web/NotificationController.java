@@ -1,7 +1,6 @@
 package cz.ixi.fusionweb.web;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.ejb.EJB;
@@ -13,11 +12,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
-import javax.inject.Inject;
 
-import cz.ixi.fusionweb.drools.model.GeneralUserActionEvent;
-import cz.ixi.fusionweb.drools.model.UserActionsEvent;
-import cz.ixi.fusionweb.drools.rules.DroolsResourcesBean;
 import cz.ixi.fusionweb.ejb.NotificationBean;
 import cz.ixi.fusionweb.entities.Notification;
 import cz.ixi.fusionweb.entities.NotificationSeverity;
@@ -36,8 +31,6 @@ public class NotificationController implements Serializable {
 
     @EJB
     private NotificationBean ejbFacade;
-    @Inject
-    private DroolsResourcesBean drools;
 
     private AbstractPaginationHelper pagination;
     private DataModel<Notification> items = null;
@@ -80,19 +73,7 @@ public class NotificationController implements Serializable {
 	return pagination;
     }
 
-    private void d(){
-	 List<UserActionsEvent> userNavs = drools.getAllUserNavigations();
-	 for (UserActionsEvent une: userNavs) {
-	     System.out.println("- User: "+ une.getUsername());
-	     for(GeneralUserActionEvent ne: une.getActions()){
-		 System.out.println("--- "+ ne);
-	     }
-	 }
-    }
-    
-    public PageNavigation prepareList() {
-	d();
-	
+    public PageNavigation prepareList() {	
 	recreateModel();
 
 	return PageNavigation.LIST;
@@ -124,8 +105,6 @@ public class NotificationController implements Serializable {
     }
     
     public String prepareAllListOutside() {
-	d();
-	
 	recreateModel();
 	currentSeverity = null;
 	return "/administrator/notification/List";

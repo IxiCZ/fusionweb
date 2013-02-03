@@ -1,8 +1,8 @@
 package cz.ixi.fusionweb.drools.rules;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -30,7 +30,8 @@ import cz.ixi.fusionweb.drools.channels.NotificationsGeneralChannel;
 import cz.ixi.fusionweb.drools.channels.ProductSearchUnsuccsessfulChannel;
 import cz.ixi.fusionweb.drools.channels.TooManyCustomerRegistrationsChannel;
 import cz.ixi.fusionweb.drools.functions.MostVisitedFunction;
-import cz.ixi.fusionweb.drools.model.UserActionsEvent;
+import cz.ixi.fusionweb.drools.model.CustomerLogInEvent;
+import cz.ixi.fusionweb.drools.model.GeneralUserActionEvent;
 import cz.ixi.fusionweb.web.layout.DefaultLayoutController;
 
 /**
@@ -69,7 +70,6 @@ public class DroolsResourcesBean {
 	kbuilder.add(new ClassPathResource("order-how-many.drl", getClass()), ResourceType.DRL);
 	kbuilder.add(new ClassPathResource("order-many.drl", getClass()), ResourceType.DRL);
 	kbuilder.add(new ClassPathResource("visiting.drl", getClass()), ResourceType.DRL);
-	kbuilder.add(new ClassPathResource("user-navigation.drl", getClass()), ResourceType.DRL);
 
 	kbuilder.add(new ClassPathResource("track-debug.drl", getClass()), ResourceType.DRL);
 
@@ -98,7 +98,6 @@ public class DroolsResourcesBean {
 	System.out.println("ksession created");
     }
 
-
     @Lock(LockType.WRITE)
     public void insertFact(Object fact) {
 	System.out.println("inserting fact: " + fact);
@@ -113,26 +112,55 @@ public class DroolsResourcesBean {
 	ksession.fireAllRules();
     }
 
-    @Lock(LockType.READ) 
-    public List<UserActionsEvent> getAllUserNavigations() {
-	List<UserActionsEvent> userNavs = new ArrayList<UserActionsEvent>();
-	for(Object o: ksession.getObjects(new UserNavigationsEventFilter())) {
-	    userNavs.add((UserActionsEvent)o);
+    @Lock(LockType.READ)
+    public SortedSet<CustomerLogInEvent> getAllRecentlyLoggedCustomerEvents() {
+	SortedSet<CustomerLogInEvent> logInEvents = new TreeSet<CustomerLogInEvent>();
+	for (Object o : ksession.getObjects(new LoggedCustomerFilter())) {
+	    logInEvents.add((CustomerLogInEvent) o);
 	}
- 	return userNavs;
-     }
+	return logInEvents;
+    }
+
+    @Lock(LockType.READ)
+    public SortedSet<GeneralUserActionEvent> getAllActionEventsForCustomer(String username) {
+	SortedSet<GeneralUserActionEvent> events = new TreeSet<GeneralUserActionEvent>();
+	for (Object o : ksession.getObjects(new ActionEventForCutomerFilter(username))) {
+	    events.add((GeneralUserActionEvent) o);
+	}
+	return events;
+    }
 
     @PreDestroy
     public void destroy() {
 	ksession.dispose();
     }
 
-    private class UserNavigationsEventFilter implements ObjectFilter {
+    private class LoggedCustomerFilter implements ObjectFilter {
 
 	@Override
 	public boolean accept(Object object) {
-    	   return (object instanceof UserActionsEvent);
+	    return (object instanceof CustomerLogInEvent);
 	}
-	
+
     }
+
+    private class ActionEventForCutomerFilter implements ObjectFilter {
+
+	private String username;
+
+	public ActionEventForCutomerFilter(String username) {
+	    this.username = username;
+	}
+
+	@Override
+	public boolean accept(Object object) {
+	    if (!(object instanceof GeneralUserActionEvent)) {
+		return false;
+	    }
+	    GeneralUserActionEvent event = (GeneralUserActionEvent) object;
+	    return (this.username.equals(event.getUsername()));
+	}
+
+    }
+
 }

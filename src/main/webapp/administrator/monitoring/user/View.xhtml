@@ -1,0 +1,35 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" template="/template.xhtml"
+	xmlns:util="http://java.sun.com/jsf/composite/util"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<ui:define name="body">
+		<h:form>
+			<h:outputText
+				value="#{bundle.Monitoring_User} #{userMonitoringController.currentUsername}"
+				styleClass="generalHeader" />
+			<br />
+			<br />
+			<h:dataTable value="#{userMonitoringController.userEventItems}"
+				styleClass="generalTable" var="item" border="0" cellpadding="4"
+				cellspacing="8">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="#{bundle.Monitoring_Time}" />
+					</f:facet>
+						<h:outputText value="#{item.time}">
+							<f:convertDateTime pattern="HH:mm:ss dd.MM.yyyy " />
+						</h:outputText>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="#{bundle.Monitoring_Event}" />
+					</f:facet>
+					<h:outputText value="#{item}" />
+				</h:column>
+			</h:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

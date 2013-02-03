@@ -1,0 +1,42 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" template="/template.xhtml"
+	xmlns:util="http://java.sun.com/jsf/composite/util"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+
+	<ui:define name="body">
+		<h:form>
+			<h:outputText escape="false" value="#{bundle.Monitoring_Title}"
+				styleClass="generalHeader" />
+			<br />
+			<br />
+			<h:outputText escape="false"
+				value="#{bundle.ListMonitoringUsersEmpty}"
+				rendered="#{userMonitoringController.users.rowCount == 0}" />
+
+			<h:panelGroup>
+				<h:dataTable value="#{userMonitoringController.users}" var="item"
+					cellpadding="4" cellspacing="10" styleClass="generalTable"
+					rendered="#{userMonitoringController.users.rowCount > 0}">
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="#{bundle.Monitoring_LoggedIn}" />
+						</f:facet>
+						<h:outputText value="#{item.time}">
+							<f:convertDateTime pattern="HH:mm:ss dd.MM.yyyy " />
+						</h:outputText>
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="#{bundle.Monitoring_User}" />
+						</f:facet>
+						<h:commandLink action="#{userMonitoringController.prepareView}"
+							value="#{item.username}" styleClass="generalLink" />
+					</h:column>
+				</h:dataTable>
+			</h:panelGroup>
+		</h:form>
+	</ui:define>
+</ui:composition>
