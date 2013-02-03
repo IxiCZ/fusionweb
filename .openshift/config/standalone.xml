@@ -100,7 +100,7 @@
 						<password>sa</password>
 					</security>
 				</datasource>
-				<datasource jndi-name="java:jboss/datasources/MysqlDS"
+				<datasource jndi-name="java:jboss/datasources/mysqlfusionweb"
 					enabled="${mysql.enabled}" use-java-context="true" pool-name="MysqlDS"
 					use-ccm="true">
 					<connection-url>jdbc:mysql://${env.OPENSHIFT_MYSQL_DB_HOST}:${env.OPENSHIFT_MYSQL_DB_PORT}/${env.OPENSHIFT_APP_NAME}
@@ -113,15 +113,6 @@
 					<validation>
 						<check-valid-connection-sql>SELECT 1</check-valid-connection-sql>
 					</validation>
-				</datasource>
-				<datasource jta="false" jndi-name="java:jboss/datasources/mysqlfusionweb"
-					enabled="true" use-java-context="true" pool-name="FusionWeb" use-ccm="true">
-					<connection-url>jdbc:mysql://127.0.0.1:3306/fusionweb</connection-url>
-					<driver>mysql</driver>
-					<security>
-						<user-name>admin</user-name>
-						<password>adminGjtQPBx</password>
-					</security>
 				</datasource>
 				<datasource jndi-name="java:jboss/datasources/PostgreSQLDS"
 					enabled="${postgresql.enabled}" use-java-context="true" pool-name="PostgreSQLDS"
@@ -478,7 +469,7 @@
 					<authentication>
 						<login-module code="Database" flag="required">
 							<module-option name="dsJndiName"
-								value="java:jboss/datasources/MysqlDS" />
+								value="java:jboss/datasources/mysqlfusionweb" />
 							<module-option name="principalsQuery"
 								value="select password from User where username=?" />
 							<module-option name="rolesQuery"
