@@ -3,7 +3,7 @@ package cz.ixi.fusionweb.drools.model;
 /**
  * Class representing product navigation event.
  */
-public class ProductNavigationEvent extends NavigationEvent {
+public class ProductNavigationEvent extends GeneralUserActionEvent {
 
     private String productName;
     private Integer productId;

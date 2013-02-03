@@ -5,9 +5,9 @@ import java.util.List;
 public class UserNavigationsEvent {
 
     private String username;
-    private List<NavigationEvent> navigations;
+    private List<GeneralUserActionEvent> navigations;
     
-    public UserNavigationsEvent(String username, List<NavigationEvent> navigations) {
+    public UserNavigationsEvent(String username, List<GeneralUserActionEvent> navigations) {
 	super();
 	this.username = username;
 	this.navigations = navigations;
@@ -17,7 +17,7 @@ public class UserNavigationsEvent {
         return username;
     }
 
-    public List<NavigationEvent> getNavigations() {
+    public List<GeneralUserActionEvent> getNavigations() {
         return navigations;
     }
 
@@ -25,7 +25,7 @@ public class UserNavigationsEvent {
         this.username = username;
     }
 
-    public void setNavigations(List<NavigationEvent> navigations) {
+    public void setNavigations(List<GeneralUserActionEvent> navigations) {
         this.navigations = navigations;
     }
 

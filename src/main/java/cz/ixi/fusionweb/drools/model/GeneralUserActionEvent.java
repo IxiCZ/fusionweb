@@ -3,11 +3,11 @@ package cz.ixi.fusionweb.drools.model;
 /**
  * Class representing general navigation event.
  */
-public class NavigationEvent {
+public class GeneralUserActionEvent {
 
     private String username;
 
-    public NavigationEvent(String username) {
+    public GeneralUserActionEvent(String username) {
 	super();
 	this.username = username;
     }

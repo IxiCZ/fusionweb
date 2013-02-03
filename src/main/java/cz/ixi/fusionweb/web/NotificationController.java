@@ -15,7 +15,7 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.inject.Inject;
 
-import cz.ixi.fusionweb.drools.model.NavigationEvent;
+import cz.ixi.fusionweb.drools.model.GeneralUserActionEvent;
 import cz.ixi.fusionweb.drools.model.UserNavigationsEvent;
 import cz.ixi.fusionweb.drools.rules.DroolsResourcesBean;
 import cz.ixi.fusionweb.ejb.NotificationBean;
@@ -84,7 +84,7 @@ public class NotificationController implements Serializable {
 	 List<UserNavigationsEvent> userNavs = drools.getAllUserNavigations();
 	 for (UserNavigationsEvent une: userNavs) {
 	     System.out.println("- User: "+ une.getUsername());
-	     for(NavigationEvent ne: une.getNavigations()){
+	     for(GeneralUserActionEvent ne: une.getNavigations()){
 		 System.out.println("--- "+ ne);
 	     }
 	 }

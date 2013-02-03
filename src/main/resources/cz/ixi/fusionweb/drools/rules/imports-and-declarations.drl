@@ -1,6 +1,6 @@
 package cz.ixi.fusionweb.drools.rules;
 
-import cz.ixi.fusionweb.drools.model.NavigationEvent;
+import cz.ixi.fusionweb.drools.model.GeneralUserActionEvent;
 import cz.ixi.fusionweb.drools.model.ProductNavigationEvent;
 import cz.ixi.fusionweb.drools.model.ProductSearchEvent;
 import cz.ixi.fusionweb.drools.model.ProductSearchUnsuccessfulEvent;
