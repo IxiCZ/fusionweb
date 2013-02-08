@@ -39,6 +39,7 @@ public class CustomerLogInOutTest {
     private KnowledgeBase kbase;
     private FiredRulesListener firedRules;
     private StatisticsRecordHourlyChannelMock statisticsHourly;
+    private StatisticsRecordDailyChannelMock statisticsDaily;
 
     @Before
     public void setUp() {
@@ -65,6 +66,9 @@ public class CustomerLogInOutTest {
 
 	statisticsHourly = new StatisticsRecordHourlyChannelMock();
 	ksession.registerChannel("statisticsHourly", statisticsHourly);
+
+	statisticsDaily = new StatisticsRecordDailyChannelMock();
+	ksession.registerChannel("statisticsDaily", statisticsDaily);
     }
 
     @After
@@ -77,7 +81,7 @@ public class CustomerLogInOutTest {
     }
 
     @Test
-    public void reportRightNumberOfLoggedCustomers() {
+    public void reportRightNumberOfLoggedCustomersInLastHour() {
 	String rule = "Report how many customers logged in in the last hour";
 	SessionPseudoClock clock = ksession.getSessionClock();
 	Calendar cal = new GregorianCalendar(2013, 01, 01, 14, 0, 0);
@@ -87,7 +91,7 @@ public class CustomerLogInOutTest {
 	clock.advanceTime(5, TimeUnit.MINUTES);
 	ksession.fireAllRules();
 	assertEquals(1, firedRules.howManyTimesIsRuleFired(rule));
-	assertEquals(1, statisticsHourly.getCreatedNotifications());
+	assertEquals(1, statisticsHourly.getCreatedStatistics());
 	assertTrue(statisticsHourly.getDescription().contains("0 customers"));
 
 	// inserted 14:05
@@ -99,15 +103,15 @@ public class CustomerLogInOutTest {
 	ksession.fireAllRules();
 
 	clock.advanceTime(55, TimeUnit.MINUTES);
-	
+
 	ksession.fireAllRules();
 
 	assertEquals(2, firedRules.howManyTimesIsRuleFired(rule));
-	assertEquals(2, statisticsHourly.getCreatedNotifications());
+	assertEquals(2, statisticsHourly.getCreatedStatistics());
 	assertTrue(statisticsHourly.getDescription().contains("3 customers"));
 
 	clock.advanceTime(5, TimeUnit.MINUTES);
-	
+
 	for (int i = 1; i <= 2; i++) {
 	    CustomerLogInEvent cLogInEvent = new CustomerLogInEvent("frodo" + i);
 	    cLogInEvent.setTime(new Date(clock.getCurrentTime()));
@@ -117,8 +121,59 @@ public class CustomerLogInOutTest {
 
 	clock.advanceTime(55, TimeUnit.MINUTES);
 	assertEquals(3, firedRules.howManyTimesIsRuleFired(rule));
-	assertEquals(3, statisticsHourly.getCreatedNotifications());
+	assertEquals(3, statisticsHourly.getCreatedStatistics());
 	assertTrue(statisticsHourly.getDescription().contains("2 customers"));
+    }
+
+    @Test
+    public void reportRightNumberOfLoggedCustomersInLastDay() {
+	String rule = "Report how many customers logged in in the last day";
+	SessionPseudoClock clock = ksession.getSessionClock();
+	Calendar cal = new GregorianCalendar(2013, 01, 01, 14, 0, 0);
+	clock.advanceTime(cal.getTimeInMillis(), TimeUnit.MILLISECONDS);
+	ksession.fireAllRules();
+
+	clock.advanceTime(5, TimeUnit.MINUTES);
+
+	for (int i = 1; i <= 10; i++) {
+	    CustomerLogInEvent cLogInEvent = new CustomerLogInEvent("rick" + i);
+	    cLogInEvent.setTime(new Date(clock.getCurrentTime()));
+	    ksession.insert(cLogInEvent);
+	}
+	ksession.fireAllRules();
+
+	clock.advanceTime(70, TimeUnit.MINUTES);
+
+	ksession.fireAllRules();
+	
+	
+	for (int i = 1; i <= 5; i++) {
+	    CustomerLogInEvent cLogInEvent = new CustomerLogInEvent("rick" + i);
+	    cLogInEvent.setTime(new Date(clock.getCurrentTime()));
+	    ksession.insert(cLogInEvent);
+	}
+	ksession.fireAllRules();
+
+	clock.advanceTime(10, TimeUnit.HOURS);
+
+	assertEquals(1, firedRules.howManyTimesIsRuleFired(rule));
+	assertEquals(1, statisticsDaily.getCreatedStatistics());
+	assertTrue(statisticsDaily.getDescription().contains("15 customers"));
+
+	clock.advanceTime(5, TimeUnit.MINUTES);
+
+	for (int i = 1; i <= 2; i++) {
+	    CustomerLogInEvent cLogInEvent = new CustomerLogInEvent("frodo" + i);
+	    cLogInEvent.setTime(new Date(clock.getCurrentTime()));
+	    ksession.insert(cLogInEvent);
+	}//
+	ksession.fireAllRules();
+
+	clock.advanceTime(1, TimeUnit.DAYS);
+	ksession.fireAllRules();
+	assertEquals(2, firedRules.howManyTimesIsRuleFired(rule));
+	assertEquals(2, statisticsDaily.getCreatedStatistics());
+	assertTrue(statisticsDaily.getDescription().contains("2 customers"));
     }
 
     private class StatisticsRecordHourlyChannelMock implements Channel {
@@ -126,7 +181,31 @@ public class CustomerLogInOutTest {
 	private int createdStatistics;
 	private String description;
 
-	public int getCreatedNotifications() {
+	public int getCreatedStatistics() {
+	    return createdStatistics;
+	}
+
+	public String getDescription() {
+	    return description;
+	}
+
+	public void setDescription(String description) {
+	    this.description = description;
+	}
+
+	@Override
+	public void send(Object object) {
+	    setDescription(object.toString());
+	    createdStatistics++;
+	}
+    }
+
+    private class StatisticsRecordDailyChannelMock implements Channel {
+
+	private int createdStatistics;
+	private String description;
+
+	public int getCreatedStatistics() {
 	    return createdStatistics;
 	}
 

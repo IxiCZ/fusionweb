@@ -28,6 +28,7 @@ import org.drools.runtime.StatefulKnowledgeSession;
 
 import cz.ixi.fusionweb.drools.channels.NotificationsGeneralChannel;
 import cz.ixi.fusionweb.drools.channels.ProductSearchUnsuccsessfulChannel;
+import cz.ixi.fusionweb.drools.channels.StatisticsRecordDailyChannel;
 import cz.ixi.fusionweb.drools.channels.StatisticsRecordHourlyChannel;
 import cz.ixi.fusionweb.drools.channels.TooManyCustomerRegistrationsChannel;
 import cz.ixi.fusionweb.drools.functions.MostVisitedFunction;
@@ -57,6 +58,8 @@ public class DroolsResourcesBean {
     private NotificationsGeneralChannel notificationsGeneral;
     @Inject
     private StatisticsRecordHourlyChannel statisticsHourly;
+    @Inject
+    private StatisticsRecordDailyChannel statisticsDaily;
 
     @PostConstruct
     public void init() {
@@ -73,7 +76,7 @@ public class DroolsResourcesBean {
 	kbuilder.add(new ClassPathResource("order-how-many.drl", getClass()), ResourceType.DRL);
 	kbuilder.add(new ClassPathResource("order-many.drl", getClass()), ResourceType.DRL);
 	kbuilder.add(new ClassPathResource("visiting.drl", getClass()), ResourceType.DRL);
-
+	
 	kbuilder.add(new ClassPathResource("track-debug.drl", getClass()), ResourceType.DRL);
 
 	if (kbuilder.hasErrors()) {
@@ -97,7 +100,8 @@ public class DroolsResourcesBean {
 	ksession.registerChannel("tooManyCustomerRegistrations", tooManyCustomerRegistrations);
 	ksession.registerChannel("notificationsGeneral", notificationsGeneral);
 	ksession.registerChannel("statisticsHourly", statisticsHourly);
-
+	ksession.registerChannel("statisticsDaily", statisticsDaily);
+	
 	// ksession.fireAllRules();
 	System.out.println("ksession created");
     }

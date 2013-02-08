@@ -11,3 +11,14 @@ then
 	channels["statisticsHourly"].send("In the last hour logged in "+ $total + " customers." );
 end
 
+
+rule "Report how many customers logged in in the last day"
+timer (cron:0 0 0 */1 * ?)
+no-loop
+when
+     $total : Number( ) from accumulate( $e: CustomerLogInEvent() over window:time(24h),  count( $e ) )
+then
+	
+	channels["statisticsDaily"].send("In the last day logged in "+ $total + " customers." );
+end
+
