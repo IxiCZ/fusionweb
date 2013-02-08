@@ -1,7 +1,8 @@
 package cz.ixi.fusionweb.drools.rules;
 
 rule "Report how many orders were created and items bought in in the last hour"
-timer (int: 60m 60m)
+timer (cron:0 0 */1 * * ?)
+//timer (int: 60m 60m)
 no-loop
 when
      $totalOrders : Number( ) from accumulate( $e: OrderCreatedEvent() over window:time(60m),  count( $e ) )

@@ -3,7 +3,9 @@ package cz.ixi.fusionweb.drools.rules;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.concurrent.TimeUnit;
 
 import org.drools.KnowledgeBase;
@@ -79,10 +81,17 @@ public class OrderHowManyTest {
     public void reportRightNumberOfBoughtProductsAndCreatedOrders() {
 	String rule = "Report how many orders were created and items bought in in the last hour";
 	SessionPseudoClock clock = ksession.getSessionClock();
+	Calendar cal = new GregorianCalendar(2013, 01, 01, 14, 0, 0);
+	clock.advanceTime(cal.getTimeInMillis(), TimeUnit.MILLISECONDS);
 	ksession.fireAllRules();
 
 	clock.advanceTime(5, TimeUnit.MINUTES);
-
+	ksession.fireAllRules();
+	assertEquals(1, firedRules.howManyTimesIsRuleFired(rule));
+	assertEquals(1, statisticsHourly.getCreatedNotifications());
+	assertTrue(statisticsHourly.getDescription().contains("0 order(s)"));
+	assertTrue(statisticsHourly.getDescription().contains("0 product(s)"));
+	
 	OrderCreatedEvent oce = new OrderCreatedEvent(1, "rick", 2, 60.0);
 	oce.setTime(new Date(clock.getCurrentTime()));
 	ksession.insert(oce);
@@ -103,10 +112,10 @@ public class OrderHowManyTest {
 
 	ksession.fireAllRules();
 
-	clock.advanceTime(61, TimeUnit.MINUTES);
+	clock.advanceTime(55, TimeUnit.MINUTES);
 
-	assertEquals(1, firedRules.howManyTimesIsRuleFired(rule));
-	assertEquals(1, statisticsHourly.getCreatedNotifications());
+	assertEquals(2, firedRules.howManyTimesIsRuleFired(rule));
+	assertEquals(2, statisticsHourly.getCreatedNotifications());
 	assertTrue(statisticsHourly.getDescription().contains("2 order(s)"));
 	assertTrue(statisticsHourly.getDescription().contains("3 product(s)"));
 
@@ -124,9 +133,9 @@ public class OrderHowManyTest {
 	}
 	ksession.fireAllRules();
 
-	clock.advanceTime(61, TimeUnit.MINUTES);
-	assertEquals(2, firedRules.howManyTimesIsRuleFired(rule));
-	assertEquals(2, statisticsHourly.getCreatedNotifications());
+	clock.advanceTime(55, TimeUnit.MINUTES);
+	assertEquals(3, firedRules.howManyTimesIsRuleFired(rule));
+	assertEquals(3, statisticsHourly.getCreatedNotifications());
 	assertTrue(statisticsHourly.getDescription().contains("1 order(s)"));
 	assertTrue(statisticsHourly.getDescription().contains("4 product(s)"));
     }
