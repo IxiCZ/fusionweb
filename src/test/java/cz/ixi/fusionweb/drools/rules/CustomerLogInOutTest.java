@@ -3,7 +3,9 @@ package cz.ixi.fusionweb.drools.rules;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.concurrent.TimeUnit;
 
 import org.drools.KnowledgeBase;
@@ -78,10 +80,17 @@ public class CustomerLogInOutTest {
     public void reportRightNumberOfLoggedCustomers() {
 	String rule = "Report how many customers logged in in the last hour";
 	SessionPseudoClock clock = ksession.getSessionClock();
+	Calendar cal = new GregorianCalendar(2013, 01, 01, 14, 0, 0);
+	clock.advanceTime(cal.getTimeInMillis(), TimeUnit.MILLISECONDS);
 	ksession.fireAllRules();
 
 	clock.advanceTime(5, TimeUnit.MINUTES);
+	ksession.fireAllRules();
+	assertEquals(1, firedRules.howManyTimesIsRuleFired(rule));
+	assertEquals(1, statisticsHourly.getCreatedNotifications());
+	assertTrue(statisticsHourly.getDescription().contains("0 customers"));
 
+	// inserted 14:05
 	for (int i = 1; i <= 3; i++) {
 	    CustomerLogInEvent cLogInEvent = new CustomerLogInEvent("rick" + i);
 	    cLogInEvent.setTime(new Date(clock.getCurrentTime()));
@@ -89,10 +98,12 @@ public class CustomerLogInOutTest {
 	}
 	ksession.fireAllRules();
 
-	clock.advanceTime(61, TimeUnit.MINUTES);
+	clock.advanceTime(55, TimeUnit.MINUTES);
+	
+	ksession.fireAllRules();
 
-	assertEquals(1, firedRules.howManyTimesIsRuleFired(rule));
-	assertEquals(1, statisticsHourly.getCreatedNotifications());
+	assertEquals(2, firedRules.howManyTimesIsRuleFired(rule));
+	assertEquals(2, statisticsHourly.getCreatedNotifications());
 	assertTrue(statisticsHourly.getDescription().contains("3 customers"));
 
 	clock.advanceTime(5, TimeUnit.MINUTES);
@@ -104,9 +115,9 @@ public class CustomerLogInOutTest {
 	}//
 	ksession.fireAllRules();
 
-	clock.advanceTime(61, TimeUnit.MINUTES);
-	assertEquals(2, firedRules.howManyTimesIsRuleFired(rule));
-	assertEquals(2, statisticsHourly.getCreatedNotifications());
+	clock.advanceTime(55, TimeUnit.MINUTES);
+	assertEquals(3, firedRules.howManyTimesIsRuleFired(rule));
+	assertEquals(3, statisticsHourly.getCreatedNotifications());
 	assertTrue(statisticsHourly.getDescription().contains("2 customers"));
     }
 
