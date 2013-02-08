@@ -9,6 +9,18 @@ when
      $totalProductsBought : Number( ) from accumulate( $e: ProductBoughtEvent() over window:time(60m),  count( $e ) )
 then
 	
-	channels["statisticsHourly"].send("In the last hour logged were created "+ $totalOrders + " order(s) and bought " + $totalProductsBought + " product(s).");
+	channels["statisticsHourly"].send("In the last hour were created "+ $totalOrders + " order(s) and bought " + $totalProductsBought + " product(s).");
 end
 
+
+rule "Report how many orders were created and items bought in in the last day"
+timer (cron:0 0 0 */1 * ?)
+//timer (int: 60m 60m)
+no-loop
+when
+     $totalOrders : Number( ) from accumulate( $e: OrderCreatedEvent() over window:time(24h),  count( $e ) )
+     $totalProductsBought : Number( ) from accumulate( $e: ProductBoughtEvent() over window:time(24h),  count( $e ) )
+then
+	
+	channels["statisticsDaily"].send("In the last day were created "+ $totalOrders + " order(s) and bought " + $totalProductsBought + " product(s).");
+end
