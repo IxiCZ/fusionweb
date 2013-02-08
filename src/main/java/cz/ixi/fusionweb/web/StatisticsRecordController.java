@@ -26,7 +26,7 @@ public class StatisticsRecordController implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private static final String BUNDLE = "/Bundle";
+    private static final String BUNDLE = "Bundle";
     private static final int PAGE_SIZE = 15;
 
     @EJB
