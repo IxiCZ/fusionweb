@@ -27,7 +27,6 @@ import org.junit.Test;
 
 import cz.ixi.fusionweb.drools.functions.MostVisitedFunction;
 import cz.ixi.fusionweb.drools.model.CustomerLogInEvent;
-import cz.ixi.fusionweb.entities.Notification;
 
 /**
  * Tests rules considering searching products.
@@ -37,7 +36,7 @@ public class CustomerLogInOutTest {
     private StatefulKnowledgeSession ksession;
     private KnowledgeBase kbase;
     private FiredRulesListener firedRules;
-    private NotificationsGeneralChannelMock notificationsGeneral;
+    private StatisticsRecordHourlyChannelMock statisticsHourly;
 
     @Before
     public void setUp() {
@@ -62,8 +61,8 @@ public class CustomerLogInOutTest {
 	firedRules = new FiredRulesListener();
 	ksession.addEventListener(firedRules);
 
-	notificationsGeneral = new NotificationsGeneralChannelMock();
-	ksession.registerChannel("notificationsGeneral", notificationsGeneral);
+	statisticsHourly = new StatisticsRecordHourlyChannelMock();
+	ksession.registerChannel("statisticsHourly", statisticsHourly);
     }
 
     @After
@@ -93,8 +92,8 @@ public class CustomerLogInOutTest {
 	clock.advanceTime(61, TimeUnit.MINUTES);
 
 	assertEquals(1, firedRules.howManyTimesIsRuleFired(rule));
-	assertEquals(1, notificationsGeneral.getCreatedNotifications());
-	assertTrue(notificationsGeneral.getDescription().contains("3 customers"));
+	assertEquals(1, statisticsHourly.getCreatedNotifications());
+	assertTrue(statisticsHourly.getDescription().contains("3 customers"));
 
 	clock.advanceTime(5, TimeUnit.MINUTES);
 	
@@ -107,17 +106,17 @@ public class CustomerLogInOutTest {
 
 	clock.advanceTime(61, TimeUnit.MINUTES);
 	assertEquals(2, firedRules.howManyTimesIsRuleFired(rule));
-	assertEquals(2, notificationsGeneral.getCreatedNotifications());
-	assertTrue(notificationsGeneral.getDescription().contains("2 customers"));
+	assertEquals(2, statisticsHourly.getCreatedNotifications());
+	assertTrue(statisticsHourly.getDescription().contains("2 customers"));
     }
 
-    private class NotificationsGeneralChannelMock implements Channel {
+    private class StatisticsRecordHourlyChannelMock implements Channel {
 
-	private int createdNotifications;
+	private int createdStatistics;
 	private String description;
 
 	public int getCreatedNotifications() {
-	    return createdNotifications;
+	    return createdStatistics;
 	}
 
 	public String getDescription() {
@@ -130,8 +129,8 @@ public class CustomerLogInOutTest {
 
 	@Override
 	public void send(Object object) {
-	    setDescription(((Notification) object).getDescription());
-	    createdNotifications++;
+	    setDescription(object.toString());
+	    createdStatistics++;
 	}
     }
 

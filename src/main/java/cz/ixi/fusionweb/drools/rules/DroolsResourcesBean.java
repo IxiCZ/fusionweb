@@ -28,6 +28,7 @@ import org.drools.runtime.StatefulKnowledgeSession;
 
 import cz.ixi.fusionweb.drools.channels.NotificationsGeneralChannel;
 import cz.ixi.fusionweb.drools.channels.ProductSearchUnsuccsessfulChannel;
+import cz.ixi.fusionweb.drools.channels.StatisticsRecordHourlyChannel;
 import cz.ixi.fusionweb.drools.channels.TooManyCustomerRegistrationsChannel;
 import cz.ixi.fusionweb.drools.functions.MostVisitedFunction;
 import cz.ixi.fusionweb.drools.model.CustomerLogInEvent;
@@ -54,6 +55,8 @@ public class DroolsResourcesBean {
     private TooManyCustomerRegistrationsChannel tooManyCustomerRegistrations;
     @Inject
     private NotificationsGeneralChannel notificationsGeneral;
+    @Inject
+    private StatisticsRecordHourlyChannel statisticsHourly;
 
     @PostConstruct
     public void init() {
@@ -93,6 +96,7 @@ public class DroolsResourcesBean {
 	ksession.registerChannel("productSearchUnsuccessful", productSearchUnsuccessful);
 	ksession.registerChannel("tooManyCustomerRegistrations", tooManyCustomerRegistrations);
 	ksession.registerChannel("notificationsGeneral", notificationsGeneral);
+	ksession.registerChannel("statisticsHourly", statisticsHourly);
 
 	// ksession.fireAllRules();
 	System.out.println("ksession created");
