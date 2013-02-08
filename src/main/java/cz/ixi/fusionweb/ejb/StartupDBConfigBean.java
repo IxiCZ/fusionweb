@@ -20,12 +20,12 @@ import org.apache.commons.io.IOUtils;
 import cz.ixi.fusionweb.entities.Administrator;
 import cz.ixi.fusionweb.entities.Customer;
 import cz.ixi.fusionweb.entities.DiscussionEntry;
-import cz.ixi.fusionweb.entities.Notification;
-import cz.ixi.fusionweb.entities.NotificationSeverity;
 import cz.ixi.fusionweb.entities.Order;
 import cz.ixi.fusionweb.entities.OrderItem;
 import cz.ixi.fusionweb.entities.Product;
 import cz.ixi.fusionweb.entities.ProductCategory;
+import cz.ixi.fusionweb.entities.StatisticsFrequency;
+import cz.ixi.fusionweb.entities.StatisticsRecord;
 
 /**
  * Fills the database during the startup.
@@ -50,6 +50,8 @@ public class StartupDBConfigBean {
     private DiscussionEntryBean discussionEntries;
     @EJB
     private NotificationBean notifications;
+    @EJB
+    private StatisticsRecordBean statisticsRecords;
 
     @PostConstruct
     public void createData() {
@@ -157,7 +159,7 @@ public class StartupDBConfigBean {
 //		    NotificationSeverity.INFO,
 //		    new Date(),
 //		    i
-//			    + ". notification. Some user did domething that should be noticed and be responded to with determination and force so horrible that the ser won't ever do such thing again.");
+//			    + ". notification. Some user did something that should be noticed and be responded to with determination and force so horrible that the user won't ever do such thing again.");
 //
 //	    if (i % 3 == 0) {
 //		note.setSeverity(NotificationSeverity.WARNING);
@@ -176,6 +178,9 @@ public class StartupDBConfigBean {
 //	    }
 //	}
 
+	statisticsRecords.create(new StatisticsRecord(StatisticsFrequency.HOURLY, new Date(), "Hour"));
+	statisticsRecords.create(new StatisticsRecord(StatisticsFrequency.DAILY, new Date(), "Day"));
+	
 	Logger.getLogger(StartupDBConfigBean.class.getName()).log(Level.INFO,
 		"Creating initial items in the database finished");
     }
