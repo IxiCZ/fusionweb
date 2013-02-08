@@ -28,7 +28,6 @@ import org.junit.Test;
 import cz.ixi.fusionweb.drools.functions.MostVisitedFunction;
 import cz.ixi.fusionweb.drools.model.OrderCreatedEvent;
 import cz.ixi.fusionweb.drools.model.ProductBoughtEvent;
-import cz.ixi.fusionweb.entities.Notification;
 
 /**
  * Tests rules considering orders.
@@ -38,7 +37,7 @@ public class OrderHowManyTest {
     private StatefulKnowledgeSession ksession;
     private KnowledgeBase kbase;
     private FiredRulesListener firedRules;
-    private NotificationsGeneralChannelMock notificationsGeneral;
+    private StatisticsRecordHourlyChannelMock statisticsHourly;
 
     @Before
     public void setUp() {
@@ -63,8 +62,8 @@ public class OrderHowManyTest {
 	firedRules = new FiredRulesListener();
 	ksession.addEventListener(firedRules);
 
-	notificationsGeneral = new NotificationsGeneralChannelMock();
-	ksession.registerChannel("notificationsGeneral", notificationsGeneral);
+	statisticsHourly = new StatisticsRecordHourlyChannelMock();
+	ksession.registerChannel("statisticsHourly", statisticsHourly);
     }
 
     @After
@@ -107,9 +106,9 @@ public class OrderHowManyTest {
 	clock.advanceTime(61, TimeUnit.MINUTES);
 
 	assertEquals(1, firedRules.howManyTimesIsRuleFired(rule));
-	assertEquals(1, notificationsGeneral.getCreatedNotifications());
-	assertTrue(notificationsGeneral.getDescription().contains("2 order(s)"));
-	assertTrue(notificationsGeneral.getDescription().contains("3 product(s)"));
+	assertEquals(1, statisticsHourly.getCreatedNotifications());
+	assertTrue(statisticsHourly.getDescription().contains("2 order(s)"));
+	assertTrue(statisticsHourly.getDescription().contains("3 product(s)"));
 
 	clock.advanceTime(5, TimeUnit.MINUTES);
 
@@ -127,33 +126,32 @@ public class OrderHowManyTest {
 
 	clock.advanceTime(61, TimeUnit.MINUTES);
 	assertEquals(2, firedRules.howManyTimesIsRuleFired(rule));
-	assertEquals(2, notificationsGeneral.getCreatedNotifications());
-	assertTrue(notificationsGeneral.getDescription().contains("1 order(s)"));
-	assertTrue(notificationsGeneral.getDescription().contains("4 product(s)"));
+	assertEquals(2, statisticsHourly.getCreatedNotifications());
+	assertTrue(statisticsHourly.getDescription().contains("1 order(s)"));
+	assertTrue(statisticsHourly.getDescription().contains("4 product(s)"));
     }
+    private class StatisticsRecordHourlyChannelMock implements Channel {
 
-    private class NotificationsGeneralChannelMock implements Channel {
+  	private int createdStatistics;
+  	private String description;
 
-	private int createdNotifications;
-	private String description;
+  	public int getCreatedNotifications() {
+  	    return createdStatistics;
+  	}
 
-	public int getCreatedNotifications() {
-	    return createdNotifications;
-	}
+  	public String getDescription() {
+  	    return description;
+  	}
 
-	public String getDescription() {
-	    return description;
-	}
+  	public void setDescription(String description) {
+  	    this.description = description;
+  	}
 
-	public void setDescription(String description) {
-	    this.description = description;
-	}
-
-	@Override
-	public void send(Object object) {
-	    setDescription(((Notification) object).getDescription());
-	    createdNotifications++;
-	}
-    }
+  	@Override
+  	public void send(Object object) {
+  	    setDescription(object.toString());
+  	    createdStatistics++;
+  	}
+      }
 
 }

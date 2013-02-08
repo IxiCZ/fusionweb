@@ -8,7 +8,6 @@ when
      $totalProductsBought : Number( ) from accumulate( $e: ProductBoughtEvent() over window:time(60m),  count( $e ) )
 then
 	
-	channels["notificationsGeneral"].send(new Notification(NotificationSeverity.INFO, new Date(), 
-	"In the last hour logged were created "+ $totalOrders + " order(s) and bought " + $totalProductsBought + " product(s)." ));
+	channels["statisticsHourly"].send("In the last hour logged were created "+ $totalOrders + " order(s) and bought " + $totalProductsBought + " product(s).");
 end
 
