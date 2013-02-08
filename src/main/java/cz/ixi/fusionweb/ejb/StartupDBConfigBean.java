@@ -178,8 +178,8 @@ public class StartupDBConfigBean {
 //	    }
 //	}
 
-	statisticsRecords.create(new StatisticsRecord(StatisticsFrequency.HOURLY, new Date(), "Hour"));
-	statisticsRecords.create(new StatisticsRecord(StatisticsFrequency.DAILY, new Date(), "Day"));
+//	statisticsRecords.create(new StatisticsRecord(StatisticsFrequency.HOURLY, new Date(), "Hour"));
+//	statisticsRecords.create(new StatisticsRecord(StatisticsFrequency.DAILY, new Date(), "Day"));
 	
 	Logger.getLogger(StartupDBConfigBean.class.getName()).log(Level.INFO,
 		"Creating initial items in the database finished");
