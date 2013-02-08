@@ -467,7 +467,6 @@ a.notificationsMenuLink:HOVER,a.notificationsMenuLink:visited:hover {
 	color: green;
 }
 
-
 a.notificationsAllLink:link,a.notificationsAllLink:visited {
 	font-weight: bolder;
 	color: #1C335E;
@@ -492,7 +491,8 @@ a.notificationsSevereLink:link,a.notificationsSevereLink:visited {
 	font-size: 1.10em;
 }
 
-a.notificationsSevereLink:HOVER,a.notificationsSevereLink:visited:hover {
+a.notificationsSevereLink:HOVER,a.notificationsSevereLink:visited:hover
+	{
 	color: red;
 	font-weight: bold;
 	text-decoration: none;
@@ -508,7 +508,8 @@ a.notificationsWarningLink:link,a.notificationsWarningLink:visited {
 	font-size: 1.10em;
 }
 
-a.notificationsWarningLink:HOVER,a.notificationsWarningLink:visited:hover {
+a.notificationsWarningLink:HOVER,a.notificationsWarningLink:visited:hover
+	{
 	color: orange;
 	font-weight: bold;
 	text-decoration: none;
@@ -542,6 +543,50 @@ a.notificationsGoodLink:link,a.notificationsGoodLink:visited {
 
 a.notificationsGoodLink:HOVER,a.notificationsGoodLink:visited:hover {
 	color: green;
+	font-weight: bold;
+	text-decoration: none;
+	margin: 10px;
+	font-size: 1.10em;
+}
+
+.statisticsRecordHourly {
+	font-weight: bolder;
+	color: teal;
+}
+
+.statisticsRecordDaily {
+	font-weight: bolder;
+	color: purple;
+}
+
+a.statisticsRecordHourlyLink:link,a.statisticsRecordHourlyLink:visited {
+	font-weight: bolder;
+	color: teal;
+	text-decoration: underline;
+	margin: 10px;
+	font-size: 1.10em;
+}
+
+a.statisticsRecordHourlyLink:HOVER,a.statisticsRecordHourlyLink:visited:hover
+	{
+	color: teal;
+	font-weight: bold;
+	text-decoration: none;
+	margin: 10px;
+	font-size: 1.10em;
+}
+
+a.statisticsRecordDailyLink:link,a.statisticsRecordDailyLink:visited {
+	font-weight: bolder;
+	color: purple;
+	text-decoration: underline;
+	margin: 10px;
+	font-size: 1.10em;
+}
+
+a.statisticsRecordDailyLink:HOVER,a.statisticsRecordDailyLink:visited:hover
+	{
+	color: purple;
 	font-weight: bold;
 	text-decoration: none;
 	margin: 10px;

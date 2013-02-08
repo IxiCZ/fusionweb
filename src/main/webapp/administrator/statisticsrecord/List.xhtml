@@ -1,0 +1,85 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" template="/template.xhtml"
+	xmlns:util="http://java.sun.com/jsf/composite/util"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+
+	<ui:define name="body">
+		<h:form>
+			<h:outputText escape="false"
+				value="#{bundle.StatisticsRecord_Title}"
+				styleClass="generalHeader" />
+			<br />
+			<br />
+			<h:panelGrid columns="5" width="500px">
+				<h:commandLink action="#{statisticsRecordController.prepareAllList}"
+					value="ALL" styleClass="notificationsAllLink" />
+				<h:commandLink
+					action="#{statisticsRecordController.prepareHourlyList}"
+					value="HOURLY" styleClass="statisticsRecordHourlyLink" />
+				<h:commandLink
+					action="#{statisticsRecordController.prepareDailyList}"
+					value="DAILY" styleClass="statisticsRecordDailyLink" />
+			</h:panelGrid>
+			<br />
+			<br />
+			<h:outputText escape="false"
+				value="#{bundle.ListStatisticsRecordEmpty}"
+				rendered="#{statisticsRecordController.items.rowCount == 0}" />
+			<h:panelGroup>
+				<h:dataTable value="#{statisticsRecordController.items}" var="item"
+					cellpadding="2" cellspacing="8" styleClass="generalTable"
+					rendered="#{statisticsRecordController.items.rowCount > 0}"
+					width="100%">
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="#{bundle.ListStatisticsRecord_DateCreated}" />
+						</f:facet>
+						<h:outputText value="#{item.dateCreated}">
+							<f:convertDateTime pattern="HH:mm:ss dd.MM.yyyy" />
+						</h:outputText>
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="#{bundle.ListStatisticsRecord_Frequency}" />
+						</f:facet>
+						<h:outputText value="#{item.frequency}"
+							rendered="#{item.frequency == 'HOURLY'}"
+							styleClass="statisticsRecordHourly" />
+						<h:outputText value="#{item.frequency}"
+							rendered="#{item.frequency == 'DAILY'}"
+							styleClass="statisticsRecordDaily" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="#{bundle.ListStatisticsRecord_Description}" />
+						</f:facet>
+						<h:outputText value="#{item.description}" />
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="" />
+						</f:facet>
+
+						<h:commandLink action="#{statisticsRecordController.destroy}"
+							value="X" styleClass="generalLink" />
+					</h:column>
+				</h:dataTable>
+				<ul class="commandButtons">
+					<li><h:commandLink
+							action="#{statisticsRecordController.previous}"
+							value="#{bundle.Previous}" styleClass="generalLink"
+							rendered="#{statisticsRecordController.pagination.hasPreviousPage}" /></li>
+					<li><h:commandLink action="#{statisticsRecordController.next}"
+							value="#{bundle.Next}" styleClass="generalLink"
+							rendered="#{statisticsRecordController.pagination.hasNextPage}" /></li>
+				</ul>
+			</h:panelGroup>
+
+		</h:form>
+	</ui:define>
+
+
+</ui:composition>
