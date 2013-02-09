@@ -73,7 +73,8 @@ public class NotificationController implements Serializable {
 	return pagination;
     }
 
-    public PageNavigation prepareList() {	
+    public PageNavigation prepareList() {
+	pagination = null;
 	recreateModel();
 
 	return PageNavigation.LIST;
@@ -106,6 +107,7 @@ public class NotificationController implements Serializable {
     
     public String prepareAllListOutside() {
 	recreateModel();
+	pagination = null;
 	currentSeverity = null;
 	return "/administrator/notification/List";
     }

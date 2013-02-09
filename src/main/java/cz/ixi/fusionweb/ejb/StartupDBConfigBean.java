@@ -20,6 +20,8 @@ import org.apache.commons.io.IOUtils;
 import cz.ixi.fusionweb.entities.Administrator;
 import cz.ixi.fusionweb.entities.Customer;
 import cz.ixi.fusionweb.entities.DiscussionEntry;
+import cz.ixi.fusionweb.entities.Notification;
+import cz.ixi.fusionweb.entities.NotificationSeverity;
 import cz.ixi.fusionweb.entities.Order;
 import cz.ixi.fusionweb.entities.OrderItem;
 import cz.ixi.fusionweb.entities.Product;
@@ -177,10 +179,12 @@ public class StartupDBConfigBean {
 //		e.printStackTrace();
 //	    }
 //	}
-
-//	statisticsRecords.create(new StatisticsRecord(StatisticsFrequency.HOURLY, new Date(), "Hour"));
+//
+//	for (int i = 1; i <= 25; i++) {
+//	    statisticsRecords.create(new StatisticsRecord(StatisticsFrequency.HOURLY, new Date(), "Hour"));
+//	}
 //	statisticsRecords.create(new StatisticsRecord(StatisticsFrequency.DAILY, new Date(), "Day"));
-	
+
 	Logger.getLogger(StartupDBConfigBean.class.getName()).log(Level.INFO,
 		"Creating initial items in the database finished");
     }

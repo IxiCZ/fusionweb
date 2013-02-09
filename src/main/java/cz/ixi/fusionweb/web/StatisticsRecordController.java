@@ -74,6 +74,7 @@ public class StatisticsRecordController implements Serializable {
     }
 
     public PageNavigation prepareList() {
+	pagination = null;
 	recreateModel();
 
 	return PageNavigation.LIST;
@@ -97,6 +98,7 @@ public class StatisticsRecordController implements Serializable {
     public String prepareAllListOutside() {
 	recreateModel();
 	currentFrequency = null;
+	pagination = null;
 	return "/administrator/statisticsrecord/List";
     }
 
