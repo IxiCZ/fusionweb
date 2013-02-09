@@ -12,9 +12,6 @@
 				styleClass="generalHeader" />
 			<br />
 			<br />
-			<h:outputText escape="false" value="#{bundle.ListNotificationEmpty}"
-				rendered="#{notificationController.items.rowCount == 0}" />
-
 			<h:panelGrid columns="5" width="500px">
 				<h:commandLink action="#{notificationController.prepareAllList}"
 					value="ALL" styleClass="notificationsAllLink" />
@@ -29,7 +26,8 @@
 			</h:panelGrid>
 			<br />
 			<br />
-
+			<h:outputText escape="false" value="#{bundle.ListNotificationEmpty}"
+				rendered="#{notificationController.items.rowCount == 0}" />
 			<h:panelGroup>
 				<h:dataTable value="#{notificationController.items}" var="item"
 					cellpadding="2" cellspacing="8" styleClass="generalTable"

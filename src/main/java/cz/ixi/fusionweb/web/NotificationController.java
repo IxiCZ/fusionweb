@@ -115,7 +115,7 @@ public class NotificationController implements Serializable {
     public PageNavigation destroy() {
 	try {
 	    getFacade().remove((Notification) getItems().getRowData());
-	    JsfUtil.addSuccessMessage(ResourceBundle.getBundle(BUNDLE).getString("CategoryDeleted"));
+	    JsfUtil.addSuccessMessage(ResourceBundle.getBundle(BUNDLE).getString("NotificationDeleted"));
 	} catch (Exception e) {
 	    JsfUtil.addErrorMessage(e, ResourceBundle.getBundle(BUNDLE).getString("PersistenceErrorOccured"));
 	}
