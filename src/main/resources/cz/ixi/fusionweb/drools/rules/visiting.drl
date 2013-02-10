@@ -1,7 +1,6 @@
 package cz.ixi.fusionweb.drools.rules;
 
 
-
 rule "Create notification if there is visited, but not bought product."
 no-loop
 when
@@ -22,16 +21,4 @@ when
 then
 end
 
-/*
-rule "Product Visited But NosdfReported"
-when
-  ProductBoughtEvent() over window:time(1h)
-then
-end
 
-rule "Product Visited But Notsdf Reported"
-when
-  ProductNavigationEvent()  over window:time(1h) from entry-point "ProductNavigationStream" 
-then
-end
-*/

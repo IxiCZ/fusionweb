@@ -9,8 +9,8 @@ then
 end
 
 rule "Change main product if there is a better one."
+timer (cron:0 0 */1 * * ?)
 no-loop
-//timer (int: 60m 60m)
 when
 	exists (ProductNavigationEvent() over window:time(1h))
 	$current : CurrentMainProduct()

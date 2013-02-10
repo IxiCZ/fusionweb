@@ -82,6 +82,8 @@ public class MainProductTest {
     public void takesIntoAccountOnlyEventsFromTimeWindow() {
 	SessionPseudoClock clock = ksession.getSessionClock();
 
+	clock.advanceTime(1, TimeUnit.MINUTES);
+	ksession.fireAllRules();
 	// at "0"
 	for (int i = 1; i < 10; i++) {
 	    ProductNavigationEvent pne = new ProductNavigationEvent("rick", 1, "");
@@ -89,21 +91,16 @@ public class MainProductTest {
 	    ksession.insert(pne);
 	}
 
-	clock.advanceTime(50, TimeUnit.MINUTES);
+	ksession.fireAllRules();
+	clock.advanceTime(59, TimeUnit.MINUTES);
 
-	// at "50"
+	// at "60"
 	ProductNavigationEvent pne = new ProductNavigationEvent("rick", 2, "");
 	pne.setTime(new Date(clock.getCurrentTime()));
 	ksession.insert(pne);
 
 	ksession.fireAllRules();
 	assertEquals(1, (int) defaultLayout.getMainProduct().getId());
-
-	clock.advanceTime(50, TimeUnit.MINUTES);
-
-	// at "1:40"
-	ksession.fireAllRules();
-	assertEquals(2, (int) defaultLayout.getMainProduct().getId());
     }
 
     class DefaultLayoutControllerMock implements Channel {
