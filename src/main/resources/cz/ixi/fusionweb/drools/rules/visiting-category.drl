@@ -1,0 +1,49 @@
+package cz.ixi.fusionweb.drools.rules;
+
+
+rule "Report no visited categories in the last hour."
+timer (cron:0 0 */1 * * ?)
+no-loop
+when
+	not (CategoryNavigationEvent() over window:time(1h))
+then
+	channels["statisticsHourly"].send("No category in the menu was visited in the last hour." );
+end
+
+rule "Report most visited category in the last hour if any."
+no-loop
+timer (cron:0 0 */1 * * ?)
+when
+	exists (CategoryNavigationEvent() over window:time(1h))
+	$m: Number() from accumulate ($pne : CategoryNavigationEvent() over window:time(1h), count($pne))
+	$mostVisitedCategoryEvent : CategoryNavigationEvent() from accumulate ($pne : CategoryNavigationEvent() 
+														      over window:time(1h)
+														      mostVisited($pne))
+then
+	if ($m.intValue() > 0) {
+		channels["statisticsHourly"].send("The most visited category in the menu in the last hour was "+ $mostVisitedCategoryEvent.getCategoryName() + "(" +$mostVisitedCategoryEvent.getProductCategoryId() + ")." );
+	}
+end
+
+
+rule "Report no visited categoris in the last day."
+timer (cron:0 0 0 */1 * ?)
+no-loop
+when
+	not (CategoryNavigationEvent() over window:time(24h))
+then
+	channels["statisticsDaily"].send("No category in the menu was visited in the last day." );
+end
+
+rule "Report most visited category in the last day if any."
+no-loop
+timer (cron:0 0 0 */1 * ?)
+when
+	exists (CategoryNavigationEvent() over window:time(24h))
+	$mostVisitedCategoryEvent : CategoryNavigationEvent() from accumulate ($pne : CategoryNavigationEvent() 
+														      over window:time(24h)
+														      mostVisited($pne))
+then
+	channels["statisticsDaily"].send("The most visited category in the menu in the last day was "+ $mostVisitedCategoryEvent.getCategoryName() + "(" +$mostVisitedCategoryEvent.getProductCategoryId() + ")." );
+end
+

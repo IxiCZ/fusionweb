@@ -2,6 +2,7 @@ package cz.ixi.fusionweb.drools.rules;
 
 import cz.ixi.fusionweb.drools.model.GeneralUserActionEvent;
 import cz.ixi.fusionweb.drools.model.ProductNavigationEvent;
+import cz.ixi.fusionweb.drools.model.CategoryNavigationEvent;
 import cz.ixi.fusionweb.drools.model.ProductSearchEvent;
 import cz.ixi.fusionweb.drools.model.ProductSearchUnsuccessfulEvent;
 import cz.ixi.fusionweb.drools.model.ProductSearchSuccessfulEvent;
@@ -29,6 +30,11 @@ declare GeneralUserActionEvent
 end
 
 declare ProductNavigationEvent
+	@role(event)
+	@timestamp( time )
+end
+
+declare CategoryNavigationEvent
 	@role(event)
 	@timestamp( time )
 end

@@ -60,11 +60,14 @@ no-loop
 timer (cron:0 0 0 */1 * ?)
 when
 	exists (ProductNavigationEvent() over window:time(24h))
+	$m: Number() from accumulate ($pne : ProductNavigationEvent() over window:time(24h), count($pne))
 	$mostVisitedProductEvent : ProductNavigationEvent() from accumulate ($pne : ProductNavigationEvent() 
 														      over window:time(24h)
 														      mostVisited($pne))
 then
-	channels["statisticsDaily"].send("The most visited product in the last day was "+ $mostVisitedProductEvent.getProductName() + "(" +$mostVisitedProductEvent.getProductId() + ")." );
+	if ($m.intValue() > 0) {
+		channels["statisticsDaily"].send("The most visited product in the last day was "+ $mostVisitedProductEvent.getProductName() + "(" +$mostVisitedProductEvent.getProductId() + ")." );
+	}
 end
 
 

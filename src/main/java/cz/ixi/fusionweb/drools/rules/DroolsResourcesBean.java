@@ -76,6 +76,7 @@ public class DroolsResourcesBean {
 	kbuilder.add(new ClassPathResource("order-how-many.drl", getClass()), ResourceType.DRL);
 	kbuilder.add(new ClassPathResource("order-many.drl", getClass()), ResourceType.DRL);
 	kbuilder.add(new ClassPathResource("visiting.drl", getClass()), ResourceType.DRL);
+	kbuilder.add(new ClassPathResource("visiting-category.drl", getClass()), ResourceType.DRL);
 	
 	kbuilder.add(new ClassPathResource("track-debug.drl", getClass()), ResourceType.DRL);
 
