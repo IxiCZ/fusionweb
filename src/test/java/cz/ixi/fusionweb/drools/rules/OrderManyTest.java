@@ -10,7 +10,6 @@ import org.drools.KnowledgeBaseFactory;
 import org.drools.builder.KnowledgeBuilder;
 import org.drools.builder.KnowledgeBuilderFactory;
 import org.drools.builder.ResourceType;
-import org.drools.compiler.PackageBuilderConfiguration;
 import org.drools.conf.EventProcessingOption;
 import org.drools.io.impl.ClassPathResource;
 import org.drools.runtime.Channel;
@@ -22,7 +21,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import cz.ixi.fusionweb.drools.functions.MostVisitedFunction;
 import cz.ixi.fusionweb.drools.model.ProductBoughtEvent;
 import cz.ixi.fusionweb.entities.Notification;
 
@@ -38,10 +36,7 @@ public class OrderManyTest {
 
     @Before
     public void setUp() {
-	PackageBuilderConfiguration pkgConf = new PackageBuilderConfiguration();
-	pkgConf.addAccumulateFunction("mostVisited", MostVisitedFunction.class);
-
-	KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder(pkgConf);
+	KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
 	kbuilder.add(new ClassPathResource("imports-and-declarations.drl", getClass()), ResourceType.DRL);
 	kbuilder.add(new ClassPathResource("order-many.drl", getClass()), ResourceType.DRL);
 	Assert.assertFalse(kbuilder.getErrors().toString(), kbuilder.hasErrors());
