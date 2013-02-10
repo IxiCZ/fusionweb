@@ -4,6 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.concurrent.TimeUnit;
 
 import org.drools.KnowledgeBase;
@@ -39,6 +42,8 @@ public class VisitingTest {
     private KnowledgeBase kbase;
     private FiredRulesListener firedRules;
     private NotificationsGeneralChannelMock notificationsGeneral;
+    private StatisticsRecordHourlyChannelMock statisticsHourly;
+    private StatisticsRecordDailyChannelMock statisticsDaily;
 
     @Before
     public void setUp() {
@@ -65,6 +70,12 @@ public class VisitingTest {
 
 	notificationsGeneral = new NotificationsGeneralChannelMock();
 	ksession.registerChannel("notificationsGeneral", notificationsGeneral);
+
+	statisticsHourly = new StatisticsRecordHourlyChannelMock();
+	ksession.registerChannel("statisticsHourly", statisticsHourly);
+
+	statisticsDaily = new StatisticsRecordDailyChannelMock();
+	ksession.registerChannel("statisticsDaily", statisticsDaily);
     }
 
     @After
@@ -84,25 +95,175 @@ public class VisitingTest {
 	clock.advanceTime(5, TimeUnit.MINUTES);
 
 	for (int i = 0; i < 100; i++) {
-	    ksession.insert(new ProductNavigationEvent("rick",42,"p"));
-	    if (i%2 == 0) {
+	    ksession.insert(new ProductNavigationEvent("rick", 42, "p"));
+	    if (i % 2 == 0) {
 		ksession.insert(new ProductBoughtEvent(4, 42, "rick", "p"));
 	    }
 	}
 
 	ksession.fireAllRules();
 	assertFalse(firedRules.isRuleFired(rule));
-	
+
 	for (int i = 0; i < 100; i++) {
-	    ksession.insert(new ProductNavigationEvent("rick",42,"p"));
+	    ksession.insert(new ProductNavigationEvent("rick", 42, "p"));
 	}
-	
+
 	ksession.fireAllRules();
 	assertEquals(1, firedRules.howManyTimesIsRuleFired(rule));
 	assertEquals(1, notificationsGeneral.getCreatedNotifications());
 	assertTrue(notificationsGeneral.getDescription().contains("product 42"));
     }
 
+    @Test
+    public void productReportInTheLastHour() {
+	String ruleVisited = "Report most visited product in the last hour if any.";
+	String ruleNotVisited = "Report no visited products in the last hour.";
+	SessionPseudoClock clock = ksession.getSessionClock();
+	Calendar cal = new GregorianCalendar(2013, 01, 01, 14, 0, 0);
+	clock.advanceTime(cal.getTimeInMillis(), TimeUnit.MILLISECONDS);
+	ksession.insert(clock);
+
+	ksession.fireAllRules();
+
+	clock.advanceTime(5, TimeUnit.MINUTES);
+
+	ksession.fireAllRules();
+
+	assertEquals(0, firedRules.howManyTimesIsRuleFired(ruleVisited));
+	assertEquals(1, firedRules.howManyTimesIsRuleFired(ruleNotVisited));
+	assertEquals(1, statisticsHourly.getCreatedStatistics());
+	assertTrue(statisticsHourly.getDescription().contains("No product was visited in the last hour."));
+
+	ksession.fireAllRules();
+
+	for (int i = 0; i < 60; i++) {
+	    ksession.fireAllRules();
+	    clock.advanceTime(1, TimeUnit.MINUTES);
+	}
+
+	ksession.fireAllRules();
+
+	assertEquals(0, firedRules.howManyTimesIsRuleFired(ruleVisited));
+	assertEquals(2, firedRules.howManyTimesIsRuleFired(ruleNotVisited));
+	assertEquals(2, statisticsHourly.getCreatedStatistics());
+	assertTrue(statisticsHourly.getDescription().contains("No product was visited in the last hour."));
+
+	ksession.fireAllRules();
+
+	for (int i = 0; i < 5; i++) {
+	    ksession.fireAllRules();
+	    clock.advanceTime(1, TimeUnit.MINUTES);
+	}
+
+	ksession.fireAllRules();
+
+	for (int i = 0; i < 100; i++) {
+	    ProductNavigationEvent pne = new ProductNavigationEvent("rick", 1, "product");
+	    pne.setTime(new Date(clock.getCurrentTime()));
+	    ksession.insert(pne);
+	}
+
+	for (int i = 0; i < 99; i++) {
+	    ProductNavigationEvent pne = new ProductNavigationEvent("rick", 42, "p");
+	    pne.setTime(new Date(clock.getCurrentTime()));
+	    ksession.insert(pne);
+	}
+
+	for (int i = 0; i < 60; i++) {
+	    ksession.fireAllRules();
+
+	    clock.advanceTime(1, TimeUnit.MINUTES);
+	}
+
+	assertEquals(1, firedRules.howManyTimesIsRuleFired(ruleVisited));
+	assertEquals(2, firedRules.howManyTimesIsRuleFired(ruleNotVisited));
+	assertEquals(3, statisticsHourly.getCreatedStatistics());
+	assertTrue(statisticsHourly.getDescription().contains("product(1)"));
+
+	for (int i = 0; i < 60; i++) {
+	    ksession.fireAllRules();
+
+	    clock.advanceTime(1, TimeUnit.MINUTES);
+	}
+
+	// assertEquals(1, firedRules.howManyTimesIsRuleFired(ruleVisited));
+	assertEquals(3, firedRules.howManyTimesIsRuleFired(ruleNotVisited));
+	assertEquals(4, statisticsHourly.getCreatedStatistics());
+	assertTrue(statisticsHourly.getDescription().contains("No product was visited in the last hour."));
+    }
+
+    
+    @Test
+    public void productReportInTheLastDay() {
+	String ruleVisited = "Report most visited product in the last day if any.";
+	String ruleNotVisited = "Report no visited products in the last day.";
+	SessionPseudoClock clock = ksession.getSessionClock();
+	Calendar cal = new GregorianCalendar(2013, 01, 01, 14, 0, 0);
+	clock.advanceTime(cal.getTimeInMillis(), TimeUnit.MILLISECONDS);
+	ksession.insert(clock);
+
+	ksession.fireAllRules();
+
+	clock.advanceTime(5, TimeUnit.MINUTES);
+
+	ksession.fireAllRules();
+
+	for (int i = 0; i < 10; i++) {
+	    ksession.fireAllRules();
+	    clock.advanceTime(1, TimeUnit.HOURS);
+	}
+
+	ksession.fireAllRules();
+
+	assertEquals(0, firedRules.howManyTimesIsRuleFired(ruleVisited));
+	assertEquals(1, firedRules.howManyTimesIsRuleFired(ruleNotVisited));
+	assertEquals(1, statisticsDaily.getCreatedStatistics());
+	assertTrue(statisticsDaily.getDescription().contains("No product was visited in the last day."));
+
+	ksession.fireAllRules();
+
+	for (int i = 0; i < 5; i++) {
+	    ksession.fireAllRules();
+	    clock.advanceTime(1, TimeUnit.MINUTES);
+	}
+
+	ksession.fireAllRules();
+
+	for (int i = 0; i < 100; i++) {
+	    ProductNavigationEvent pne = new ProductNavigationEvent("rick", 1, "product");
+	    pne.setTime(new Date(clock.getCurrentTime()));
+	    ksession.insert(pne);
+	}
+
+	for (int i = 0; i < 99; i++) {
+	    ProductNavigationEvent pne = new ProductNavigationEvent("rick", 42, "p");
+	    pne.setTime(new Date(clock.getCurrentTime()));
+	    ksession.insert(pne);
+	}
+
+	for (int i = 0; i < 24; i++) {
+	    ksession.fireAllRules();
+
+	    clock.advanceTime(1, TimeUnit.HOURS);
+	}
+
+	assertEquals(1, firedRules.howManyTimesIsRuleFired(ruleVisited));
+	assertEquals(2, firedRules.howManyTimesIsRuleFired(ruleNotVisited));
+	assertEquals(3, statisticsDaily.getCreatedStatistics());
+	assertTrue(statisticsDaily.getDescription().contains("product(1)"));
+
+	for (int i = 0; i < 24; i++) {
+	    ksession.fireAllRules();
+
+	    clock.advanceTime(1, TimeUnit.HOURS);
+	}
+
+	assertEquals(1, firedRules.howManyTimesIsRuleFired(ruleVisited));
+	assertEquals(3, firedRules.howManyTimesIsRuleFired(ruleNotVisited));
+	assertEquals(4, statisticsDaily.getCreatedStatistics());
+	assertTrue(statisticsDaily.getDescription().contains("No product was visited in the last day."));
+    }
+    
     private class NotificationsGeneralChannelMock implements Channel {
 
 	private int createdNotifications;
@@ -127,4 +288,53 @@ public class VisitingTest {
 	}
     }
 
+    private class StatisticsRecordHourlyChannelMock implements Channel {
+
+	private int createdStatistics;
+	private String description;
+
+	public int getCreatedStatistics() {
+	    return createdStatistics;
+	}
+
+	public String getDescription() {
+	    return description;
+	}
+
+	public void setDescription(String description) {
+	    this.description = description;
+	}
+
+	@Override
+	public void send(Object object) {
+	    System.out.println(object.toString());
+	    setDescription(object.toString());
+	    createdStatistics++;
+	}
+    }
+
+    private class StatisticsRecordDailyChannelMock implements Channel {
+
+	private int createdStatistics;
+	private String description;
+
+	public int getCreatedStatistics() {
+	    return createdStatistics;
+	}
+
+	public String getDescription() {
+	    return description;
+	}
+
+	public void setDescription(String description) {
+	    this.description = description;
+	}
+
+	@Override
+	public void send(Object object) {
+	    System.out.println(object.toString());
+	    setDescription(object.toString());
+	    createdStatistics++;
+	}
+    }
 }

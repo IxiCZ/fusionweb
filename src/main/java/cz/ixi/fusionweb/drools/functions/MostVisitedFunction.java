@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import cz.ixi.fusionweb.drools.model.GeneralUserActionEvent;
 import cz.ixi.fusionweb.drools.model.ProductNavigationEvent;
 
 /**
@@ -18,6 +19,7 @@ public class MostVisitedFunction implements org.drools.runtime.rule.AccumulateFu
     protected static class MaxData implements Externalizable {
         
         private static Map<Integer, Integer> navigationEvents = new HashMap<Integer, Integer>();
+        private static Map<Integer, GeneralUserActionEvent> events = new HashMap<Integer, GeneralUserActionEvent>();
         
         public MaxData() {}
 
@@ -28,8 +30,16 @@ public class MostVisitedFunction implements org.drools.runtime.rule.AccumulateFu
 	public static void setNavigationEvents(Map<Integer, Integer> navigationEvents) {
 	    MaxData.navigationEvents = navigationEvents;
 	}
-        
-        @SuppressWarnings("unchecked")
+	
+        public static Map<Integer, GeneralUserActionEvent> getEvents() {
+	    return events;
+	}
+
+	public static void setEvents(Map<Integer, GeneralUserActionEvent> events) {
+	    MaxData.events = events;
+	}
+
+	@SuppressWarnings("unchecked")
 	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
             navigationEvents = (Map<Integer, Integer>) in.readObject();
         }
@@ -51,6 +61,7 @@ public class MostVisitedFunction implements org.drools.runtime.rule.AccumulateFu
      */
     public void init(Serializable context) throws Exception {
 	MaxData.setNavigationEvents(new HashMap<Integer, Integer>());
+	MaxData.setEvents(new HashMap<Integer, GeneralUserActionEvent>());
     }
 
     /* (non-Javadoc)
@@ -61,6 +72,7 @@ public class MostVisitedFunction implements org.drools.runtime.rule.AccumulateFu
 
         if (!MaxData.getNavigationEvents().containsKey(event.getProductId())){
             MaxData.getNavigationEvents().put(event.getProductId(), 1);
+            MaxData.getEvents().put(event.getProductId(), event);
         } else {
             int i = MaxData.getNavigationEvents().get(event.getProductId());
             MaxData.getNavigationEvents().put(event.getProductId(), i+1);
@@ -76,15 +88,14 @@ public class MostVisitedFunction implements org.drools.runtime.rule.AccumulateFu
      */
     public Object getResult(Serializable context) throws Exception {
 	int maxValue = 0;
-	int maxId = 0; 
+	int maxId = -1; 
 	for (Integer i : MaxData.getNavigationEvents().keySet()){
 	    if (MaxData.getNavigationEvents().get(i) > maxValue){
 		maxValue = MaxData.getNavigationEvents().get(i);
 		maxId = i;
 	    }
 	}
-	
-	return maxId;
+	return MaxData.getEvents().get(maxId);
     }
 
     /* (non-Javadoc)

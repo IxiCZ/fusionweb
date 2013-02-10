@@ -14,14 +14,14 @@ no-loop
 when
 	exists (ProductNavigationEvent() over window:time(1h))
 	$current : CurrentMainProduct()
-	$mostVisitedProductId : Integer() from accumulate ($pne : ProductNavigationEvent() 
+	$mostVisitedProductEvent : ProductNavigationEvent() from accumulate ($pne : ProductNavigationEvent() 
 														      over window:time(1h) 
 														      mostVisited($pne))
- 	eval ($current.getId() != $mostVisitedProductId)	 
+ 	eval ($current.getId() != $mostVisitedProductEvent.getProductId())	 
 then
 	modify ($current) {
-		setId($mostVisitedProductId);
+		setId($mostVisitedProductEvent.getProductId());
 	}
-	channels["defaultLayout"].send($mostVisitedProductId);
+	channels["defaultLayout"].send($mostVisitedProductEvent.getProductId());
 end
 

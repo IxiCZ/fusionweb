@@ -1,6 +1,5 @@
 package cz.ixi.fusionweb.drools.rules;
 
-
 rule "Create notification if there is visited, but not bought product."
 no-loop
 when
@@ -19,6 +18,53 @@ rule "Product Visited But Not Bought Reported"
 when
   ProductVisitedButNotBoughtReported() over window:time(1h)
 then
+end
+
+
+rule "Report no visited products in the last hour."
+timer (cron:0 0 */1 * * ?)
+no-loop
+when
+	not (ProductNavigationEvent() over window:time(1h))
+then
+	channels["statisticsHourly"].send("No product was visited in the last hour." );
+end
+
+rule "Report most visited product in the last hour if any."
+no-loop
+timer (cron:0 0 */1 * * ?)
+when
+	exists (ProductNavigationEvent() over window:time(1h))
+	$m: Number() from accumulate ($pne : ProductNavigationEvent() over window:time(1h), count($pne))
+	$mostVisitedProductEvent : ProductNavigationEvent() from accumulate ($pne : ProductNavigationEvent() 
+														      over window:time(1h)
+														      mostVisited($pne))
+then
+	if ($m.intValue() > 0) {
+		channels["statisticsHourly"].send("The most visited product in the last hour was "+ $mostVisitedProductEvent.getProductName() + "(" +$mostVisitedProductEvent.getProductId() + ")." );
+	}
+end
+
+
+rule "Report no visited products in the last day."
+timer (cron:0 0 0 */1 * ?)
+no-loop
+when
+	not (ProductNavigationEvent() over window:time(24h))
+then
+	channels["statisticsDaily"].send("No product was visited in the last day." );
+end
+
+rule "Report most visited product in the last day if any."
+no-loop
+timer (cron:0 0 0 */1 * ?)
+when
+	exists (ProductNavigationEvent() over window:time(24h))
+	$mostVisitedProductEvent : ProductNavigationEvent() from accumulate ($pne : ProductNavigationEvent() 
+														      over window:time(24h)
+														      mostVisited($pne))
+then
+	channels["statisticsDaily"].send("The most visited product in the last day was "+ $mostVisitedProductEvent.getProductName() + "(" +$mostVisitedProductEvent.getProductId() + ")." );
 end
 
 
