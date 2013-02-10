@@ -4,7 +4,8 @@ rule "Create notification if too many customer registrations"
 no-loop
 when
 	not CustomerRegistrationTooManyReported() over window:time(1h)
-	ArrayList(size >= 100) from collect( CustomerRegistrationEvent() over window:time(1h))
+	ArrayList(size >= 2) from collect( CustomerRegistrationEvent() over window:time(1h))
+	//ArrayList(size >= 100) from collect( CustomerRegistrationEvent() over window:time(1h))
 then
 	channels["tooManyCustomerRegistrations"].send("too many");
 	insert(new CustomerRegistrationTooManyReported());
