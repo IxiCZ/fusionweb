@@ -1,13 +1,6 @@
 package cz.ixi.fusionweb.drools.rules;
 
 
-rule "Retracts any navigation event "
-no-loop
-when
-	$o: Object()
-then
-	System.out.println("Found fact: " + $o);
-end
 
 
 rule "Object "
@@ -17,7 +10,7 @@ then
 	System.out.println("Now there is fact: " + $o);
 end
 
-
+/*
 rule "searching fact"
 no-loop
 when
@@ -42,4 +35,4 @@ when
 then
 	System.out.println("Found ProductSearchUnsuccsessfulEvent: " + $searched);
 end
-
+*/

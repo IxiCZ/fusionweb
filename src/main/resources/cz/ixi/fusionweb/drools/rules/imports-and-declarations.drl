@@ -27,59 +27,71 @@ import java.util.Date;
 declare GeneralUserActionEvent
 	@role(event)
 	@timestamp( time )
+	@expires( 24h )
 end
 
 declare ProductNavigationEvent
 	@role(event)
 	@timestamp( time )
+	@expires( 24h )
 end
 
 declare CategoryNavigationEvent
 	@role(event)
 	@timestamp( time )
+	@expires( 24h )
 end
 
 declare ProductSearchEvent
 	@role(event)
 	@timestamp( time )
+	@expires( 24h )
 end
 
 declare ProductSearchSuccessfulEvent 
 	@role(event)
 	@timestamp( time )
+	@expires( 24h )
 end
 
 declare ProductSearchUnsuccessfulEvent 
 	@role(event)
 	@timestamp( time )
+	@expires( 24h )
 end
 
 declare CustomerRegistrationEvent 
 	@role(event)
+	@expires( 24h )
 end
 
 declare CustomerRegistrationUnsuccessfulEvent 
 	@role(event)
+	@expires( 24h )
 end
 
 declare DiscussionEntryEvent 
 	@role(event)
 	@timestamp( time )
+	@expires( 24h )
 end
 		
 declare CustomerLogInEvent 
 	@role(event)
 	@timestamp( time )
+	@expires( 24h )
 end
 
 declare OrderCreatedEvent 
 	@role(event)
 	@timestamp( time )
+	@expires( 24h )
 end
 
 declare ProductBoughtEvent 
 	@role(event)
 	@timestamp( time )
+	@expires( 24h )
 end
 
 declare SearchedText
@@ -89,6 +101,7 @@ end
 
 declare SearchedTextReported
 	@role(event)
+	@expires( 24h )
 	text : String
 end
 
@@ -99,6 +112,7 @@ end
 
 declare CustomerRegistrationTooManyReported
 	@role(event)
+	@expires( 24h )
 end
 
 declare ProductVisitedButNotBoughtReported
@@ -109,6 +123,7 @@ end
 
 declare ManyProductPurchasesReported
 	@role(event)
+	@expires( 24h )
 	productId: Integer
 end
 
