@@ -20,53 +20,30 @@ when
 then
 end
 
-
-rule "Report no visited products in the last hour."
-timer (cron:0 0 */1 * * ?)
-no-loop
-when
-	not (ProductNavigationEvent() over window:time(1h))
-then
-	channels["statisticsHourly"].send("No product was visited in the last hour." );
-end
-
 rule "Report most visited product in the last hour if any."
-no-loop
 timer (cron:0 0 */1 * * ?)
 when
-	exists (ProductNavigationEvent() over window:time(1h))
-	$m: Number() from accumulate ($pne : ProductNavigationEvent() over window:time(1h), count($pne))
-	$mostVisitedProductEvent : ProductNavigationEvent() from accumulate ($pne : ProductNavigationEvent() 
-														      over window:time(1h)
-														      mostVisited($pne))
+	$mostVisitedProductEventHourly : ProductNavigationEvent() from accumulate ($hourlyPNEvents : ProductNavigationEvent() over window:time(1h),
+														    				   mostVisitedProduct($hourlyPNEvents))
 then
-	if ($m.intValue() > 0) {
-		channels["statisticsHourly"].send("The most visited product in the last hour was "+ $mostVisitedProductEvent.getProductName() + "(" +$mostVisitedProductEvent.getProductId() + ")." );
+	if ($mostVisitedProductEventHourly.getProductId() != -1) {
+		channels["statisticsHourly"].send("The most visited product in the last hour was "+ $mostVisitedProductEventHourly.getProductName() + "(" +$mostVisitedProductEventHourly.getProductId() + ")." );
+	} else {
+		channels["statisticsHourly"].send("No product was visited in the last hour." );
 	}
 end
 
 
-rule "Report no visited products in the last day."
-timer (cron:0 0 0 */1 * ?)
-no-loop
-when
-	not (ProductNavigationEvent() over window:time(24h))
-then
-	channels["statisticsDaily"].send("No product was visited in the last day." );
-end
-
 rule "Report most visited product in the last day if any."
-no-loop
 timer (cron:0 0 0 */1 * ?)
 when
-	exists (ProductNavigationEvent() over window:time(24h))
-	$m: Number() from accumulate ($pne : ProductNavigationEvent() over window:time(24h), count($pne))
-	$mostVisitedProductEvent : ProductNavigationEvent() from accumulate ($pne : ProductNavigationEvent() 
-														      over window:time(24h)
-														      mostVisited($pne))
+	$mostVisitedProductEventDaily : ProductNavigationEvent() from accumulate ($dailyPNEvents : ProductNavigationEvent() over window:time(24h),
+														      				  mostVisitedProduct($dailyPNEvents))
 then
-	if ($m.intValue() > 0) {
-		channels["statisticsDaily"].send("The most visited product in the last day was "+ $mostVisitedProductEvent.getProductName() + "(" +$mostVisitedProductEvent.getProductId() + ")." );
+	if ($mostVisitedProductEventDaily.getProductId() != -1) {
+		channels["statisticsDaily"].send("The most visited product in the last day was "+ $mostVisitedProductEventDaily.getProductName() + "(" +$mostVisitedProductEventDaily.getProductId() + ")." );
+	} else {
+		channels["statisticsDaily"].send("No product was visited in the last day." );
 	}
 end
 

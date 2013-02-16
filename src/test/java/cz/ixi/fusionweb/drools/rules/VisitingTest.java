@@ -13,9 +13,9 @@ import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseConfiguration;
 import org.drools.KnowledgeBaseFactory;
 import org.drools.builder.KnowledgeBuilder;
+import org.drools.builder.KnowledgeBuilderConfiguration;
 import org.drools.builder.KnowledgeBuilderFactory;
 import org.drools.builder.ResourceType;
-import org.drools.compiler.PackageBuilderConfiguration;
 import org.drools.conf.EventProcessingOption;
 import org.drools.io.impl.ClassPathResource;
 import org.drools.runtime.Channel;
@@ -28,7 +28,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import cz.ixi.fusionweb.drools.functions.MostVisitedFunction;
 import cz.ixi.fusionweb.drools.model.ProductBoughtEvent;
 import cz.ixi.fusionweb.drools.model.ProductNavigationEvent;
 import cz.ixi.fusionweb.entities.Notification;
@@ -47,10 +46,11 @@ public class VisitingTest {
 
     @Before
     public void setUp() {
-	PackageBuilderConfiguration pkgConf = new PackageBuilderConfiguration();
-	pkgConf.addAccumulateFunction("mostVisited", MostVisitedFunction.class);
+	KnowledgeBuilderConfiguration kbconf = KnowledgeBuilderFactory.newKnowledgeBuilderConfiguration();
+	kbconf.setProperty("drools.accumulate.function.mostVisitedProduct",
+		"cz.ixi.fusionweb.drools.functions.MostVisitedProductFunction");
 
-	KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder(pkgConf);
+	KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder(kbconf);
 	kbuilder.add(new ClassPathResource("imports-and-declarations.drl", getClass()), ResourceType.DRL);
 	kbuilder.add(new ClassPathResource("visiting.drl", getClass()), ResourceType.DRL);
 	Assert.assertFalse(kbuilder.getErrors().toString(), kbuilder.hasErrors());
@@ -117,7 +117,6 @@ public class VisitingTest {
     @Test
     public void productReportInTheLastHour() {
 	String ruleVisited = "Report most visited product in the last hour if any.";
-	String ruleNotVisited = "Report no visited products in the last hour.";
 	SessionPseudoClock clock = ksession.getSessionClock();
 	Calendar cal = new GregorianCalendar(2013, 01, 01, 14, 0, 0);
 	clock.advanceTime(cal.getTimeInMillis(), TimeUnit.MILLISECONDS);
@@ -129,8 +128,7 @@ public class VisitingTest {
 
 	ksession.fireAllRules();
 
-	assertEquals(0, firedRules.howManyTimesIsRuleFired(ruleVisited));
-	assertEquals(1, firedRules.howManyTimesIsRuleFired(ruleNotVisited));
+	assertEquals(1, firedRules.howManyTimesIsRuleFired(ruleVisited));
 	assertEquals(1, statisticsHourly.getCreatedStatistics());
 	assertTrue(statisticsHourly.getDescription().contains("No product was visited in the last hour."));
 
@@ -143,8 +141,7 @@ public class VisitingTest {
 
 	ksession.fireAllRules();
 
-	assertEquals(0, firedRules.howManyTimesIsRuleFired(ruleVisited));
-	assertEquals(2, firedRules.howManyTimesIsRuleFired(ruleNotVisited));
+	assertEquals(2, firedRules.howManyTimesIsRuleFired(ruleVisited));
 	assertEquals(2, statisticsHourly.getCreatedStatistics());
 	assertTrue(statisticsHourly.getDescription().contains("No product was visited in the last hour."));
 
@@ -175,10 +172,18 @@ public class VisitingTest {
 	    clock.advanceTime(1, TimeUnit.MINUTES);
 	}
 
-	assertEquals(1, firedRules.howManyTimesIsRuleFired(ruleVisited));
-	assertEquals(2, firedRules.howManyTimesIsRuleFired(ruleNotVisited));
+	assertEquals(3, firedRules.howManyTimesIsRuleFired(ruleVisited));
 	assertEquals(3, statisticsHourly.getCreatedStatistics());
 	assertTrue(statisticsHourly.getDescription().contains("product(1)"));
+
+	for (int i = 0; i < 5; i++) {
+	    ksession.fireAllRules();
+	    clock.advanceTime(1, TimeUnit.MINUTES);
+	}
+
+	ProductNavigationEvent pne = new ProductNavigationEvent("rick", 5, "product");
+	pne.setTime(new Date(clock.getCurrentTime()));
+	ksession.insert(pne);
 
 	for (int i = 0; i < 60; i++) {
 	    ksession.fireAllRules();
@@ -186,17 +191,24 @@ public class VisitingTest {
 	    clock.advanceTime(1, TimeUnit.MINUTES);
 	}
 
-	// assertEquals(1, firedRules.howManyTimesIsRuleFired(ruleVisited));
-	assertEquals(3, firedRules.howManyTimesIsRuleFired(ruleNotVisited));
+	assertEquals(4, firedRules.howManyTimesIsRuleFired(ruleVisited));
 	assertEquals(4, statisticsHourly.getCreatedStatistics());
+	assertTrue(statisticsHourly.getDescription().contains("product(5)"));
+	
+	for (int i = 0; i < 60; i++) {
+	    ksession.fireAllRules();
+
+	    clock.advanceTime(1, TimeUnit.MINUTES);
+	}
+
+	assertEquals(5, firedRules.howManyTimesIsRuleFired(ruleVisited));
+	assertEquals(5, statisticsHourly.getCreatedStatistics());
 	assertTrue(statisticsHourly.getDescription().contains("No product was visited in the last hour."));
     }
 
-    
     @Test
     public void productReportInTheLastDay() {
 	String ruleVisited = "Report most visited product in the last day if any.";
-	String ruleNotVisited = "Report no visited products in the last day.";
 	SessionPseudoClock clock = ksession.getSessionClock();
 	Calendar cal = new GregorianCalendar(2013, 01, 01, 14, 0, 0);
 	clock.advanceTime(cal.getTimeInMillis(), TimeUnit.MILLISECONDS);
@@ -214,9 +226,8 @@ public class VisitingTest {
 	}
 
 	ksession.fireAllRules();
-
-	assertEquals(0, firedRules.howManyTimesIsRuleFired(ruleVisited));
-	assertEquals(1, firedRules.howManyTimesIsRuleFired(ruleNotVisited));
+	
+	assertEquals(1, firedRules.howManyTimesIsRuleFired(ruleVisited));
 	assertEquals(1, statisticsDaily.getCreatedStatistics());
 	assertTrue(statisticsDaily.getDescription().contains("No product was visited in the last day."));
 
@@ -247,9 +258,8 @@ public class VisitingTest {
 	    clock.advanceTime(1, TimeUnit.HOURS);
 	}
 
-	assertEquals(1, firedRules.howManyTimesIsRuleFired(ruleVisited));
-	assertEquals(2, firedRules.howManyTimesIsRuleFired(ruleNotVisited));
-	assertEquals(3, statisticsDaily.getCreatedStatistics());
+	assertEquals(2, firedRules.howManyTimesIsRuleFired(ruleVisited));
+	assertEquals(2, statisticsDaily.getCreatedStatistics());
 	assertTrue(statisticsDaily.getDescription().contains("product(1)"));
 
 	for (int i = 0; i < 24; i++) {
@@ -258,12 +268,11 @@ public class VisitingTest {
 	    clock.advanceTime(1, TimeUnit.HOURS);
 	}
 
-	assertEquals(1, firedRules.howManyTimesIsRuleFired(ruleVisited));
-	assertEquals(3, firedRules.howManyTimesIsRuleFired(ruleNotVisited));
-	assertEquals(4, statisticsDaily.getCreatedStatistics());
+	assertEquals(3, firedRules.howManyTimesIsRuleFired(ruleVisited));
+	assertEquals(3, statisticsDaily.getCreatedStatistics());
 	assertTrue(statisticsDaily.getDescription().contains("No product was visited in the last day."));
     }
-    
+
     private class NotificationsGeneralChannelMock implements Channel {
 
 	private int createdNotifications;

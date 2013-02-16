@@ -18,10 +18,10 @@ import org.drools.KnowledgeBaseConfiguration;
 import org.drools.KnowledgeBaseFactory;
 import org.drools.ObjectFilter;
 import org.drools.builder.KnowledgeBuilder;
+import org.drools.builder.KnowledgeBuilderConfiguration;
 import org.drools.builder.KnowledgeBuilderError;
 import org.drools.builder.KnowledgeBuilderFactory;
 import org.drools.builder.ResourceType;
-import org.drools.compiler.PackageBuilderConfiguration;
 import org.drools.conf.EventProcessingOption;
 import org.drools.io.impl.ClassPathResource;
 import org.drools.runtime.StatefulKnowledgeSession;
@@ -31,7 +31,6 @@ import cz.ixi.fusionweb.drools.channels.ProductSearchUnsuccsessfulChannel;
 import cz.ixi.fusionweb.drools.channels.StatisticsRecordDailyChannel;
 import cz.ixi.fusionweb.drools.channels.StatisticsRecordHourlyChannel;
 import cz.ixi.fusionweb.drools.channels.TooManyCustomerRegistrationsChannel;
-import cz.ixi.fusionweb.drools.functions.MostVisitedFunction;
 import cz.ixi.fusionweb.drools.model.CustomerLogInEvent;
 import cz.ixi.fusionweb.drools.model.GeneralUserActionEvent;
 import cz.ixi.fusionweb.web.layout.DefaultLayoutController;
@@ -63,10 +62,13 @@ public class DroolsResourcesBean {
 
     @PostConstruct
     public void init() {
-	PackageBuilderConfiguration pkgConf = new PackageBuilderConfiguration();
-	pkgConf.addAccumulateFunction("mostVisited", MostVisitedFunction.class);
+	KnowledgeBuilderConfiguration kbconf = KnowledgeBuilderFactory.newKnowledgeBuilderConfiguration();
+	kbconf.setProperty("drools.accumulate.function.mostVisitedProduct",
+		"cz.ixi.fusionweb.drools.functions.MostVisitedProductFunction");
+	kbconf.setProperty("drools.accumulate.function.mostVisitedCategory",
+		"cz.ixi.fusionweb.drools.functions.MostVisitedCategoryFunction");
 
-	KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder(pkgConf);
+	KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder(kbconf);
 	kbuilder.add(new ClassPathResource("imports-and-declarations.drl", getClass()), ResourceType.DRL);
 	kbuilder.add(new ClassPathResource("main-product.drl", getClass()), ResourceType.DRL);
 	kbuilder.add(new ClassPathResource("product-searching.drl", getClass()), ResourceType.DRL);

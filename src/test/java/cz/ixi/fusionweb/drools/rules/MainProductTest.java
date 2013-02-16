@@ -10,9 +10,9 @@ import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseConfiguration;
 import org.drools.KnowledgeBaseFactory;
 import org.drools.builder.KnowledgeBuilder;
+import org.drools.builder.KnowledgeBuilderConfiguration;
 import org.drools.builder.KnowledgeBuilderFactory;
 import org.drools.builder.ResourceType;
-import org.drools.compiler.PackageBuilderConfiguration;
 import org.drools.conf.EventProcessingOption;
 import org.drools.io.impl.ClassPathResource;
 import org.drools.runtime.Channel;
@@ -25,7 +25,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import cz.ixi.fusionweb.drools.functions.MostVisitedFunction;
 import cz.ixi.fusionweb.drools.model.ProductNavigationEvent;
 import cz.ixi.fusionweb.entities.Product;
 
@@ -40,10 +39,11 @@ public class MainProductTest {
 
     @Before
     public void setUp() {
-	PackageBuilderConfiguration pkgConf = new PackageBuilderConfiguration();
-	pkgConf.addAccumulateFunction("mostVisited", MostVisitedFunction.class);
+	KnowledgeBuilderConfiguration kbconf = KnowledgeBuilderFactory.newKnowledgeBuilderConfiguration();
+	kbconf.setProperty("drools.accumulate.function.mostVisitedProduct",
+		"cz.ixi.fusionweb.drools.functions.MostVisitedProductFunction");
 
-	KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder(pkgConf);
+	KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder(kbconf);
 	kbuilder.add(new ClassPathResource("imports-and-declarations.drl", getClass()), ResourceType.DRL);
 	kbuilder.add(new ClassPathResource("main-product.drl", getClass()), ResourceType.DRL);
 	Assert.assertFalse(kbuilder.getErrors().toString(), kbuilder.hasErrors());

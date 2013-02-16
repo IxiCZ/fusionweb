@@ -14,9 +14,9 @@ no-loop
 when
 	exists (ProductNavigationEvent() over window:time(1h))
 	$current : CurrentMainProduct()
-	$mostVisitedProductEvent : ProductNavigationEvent() from accumulate ($pne : ProductNavigationEvent() 
+	$mostVisitedProductEvent : ProductNavigationEvent() from accumulate ($PNEventMain : ProductNavigationEvent() 
 														      over window:time(1h) 
-														      mostVisited($pne))
+														      mostVisitedProduct($PNEventMain))
  	eval ($current.getId() != $mostVisitedProductEvent.getProductId())	 
 then
 	modify ($current) {
