@@ -122,6 +122,8 @@ public class StartupDBConfigBean {
 		    + secondItems.getQuantity() * secondItems.getProduct().getPrice() + thirdItems.getQuantity()
 		    * thirdItems.getProduct().getPrice());
 	    rickOrder.setOrderItemList(items);
+	    
+	    orders.create(rickOrder);
 
 	    if (i % 2 == 0) {
 		Order willOrder = new Order(will, 0, new Date());
@@ -136,7 +138,7 @@ public class StartupDBConfigBean {
 		willOrder.setOrderItemList(items);
 		orders.create(willOrder);
 	    }
-	    orders.create(rickOrder);
+
 	}
 
 	// DISCUSSION
