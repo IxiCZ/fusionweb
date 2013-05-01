@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -30,58 +32,55 @@ import org.hibernate.annotations.LazyCollectionOption;
  */
 @Entity
 @Table(name = "User")
-@NamedQueries({
-    @NamedQuery(name = "User.findAll",query = "SELECT p FROM User p")
-    , @NamedQuery(name = "User.findByUsername", query = "SELECT p FROM User p WHERE p.username = :username")
-    , @NamedQuery(name = "User.findByFirstname", query = "SELECT p FROM User p WHERE p.firstname = :firstname")
-    , @NamedQuery(name = "User.findByLastname", query = "SELECT p FROM User p WHERE p.lastname = :lastname")
-    , @NamedQuery(name = "User.findByEmail", query = "SELECT p FROM User p WHERE p.email = :email")
-    , @NamedQuery(name = "User.findByAddress", query = "SELECT p FROM User p WHERE p.address = :address")
-    , @NamedQuery(name = "User.findByCity", query = "SELECT p FROM User p WHERE p.city = :city")
-})
+@NamedQueries({ @NamedQuery(name = "User.findAll", query = "SELECT p FROM User p"),
+	@NamedQuery(name = "User.findByUsername", query = "SELECT p FROM User p WHERE p.username = :username"),
+	@NamedQuery(name = "User.findByFirstname", query = "SELECT p FROM User p WHERE p.firstname = :firstname"),
+	@NamedQuery(name = "User.findByLastname", query = "SELECT p FROM User p WHERE p.lastname = :lastname"),
+	@NamedQuery(name = "User.findByEmail", query = "SELECT p FROM User p WHERE p.email = :email"),
+	@NamedQuery(name = "User.findByAddress", query = "SELECT p FROM User p WHERE p.address = :address"),
+	@NamedQuery(name = "User.findByCity", query = "SELECT p FROM User p WHERE p.city = :city") })
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @ElementCollection
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     @LazyCollection(LazyCollectionOption.FALSE)
-    @JoinTable(name = "UserRoles", joinColumns =
-    @JoinColumn(name = "User_username"))
+    @JoinTable(name = "UserRoles", joinColumns = @JoinColumn(name = "User_username"))
     private Set<Role> roles;
-    
+
     @Id
     @Basic(optional = false)
     @Column(name = "USERNAME")
     @Size(min = 3, max = 50, message = "{person.username}")
     private String username;
-    
+
     @NotNull
     @Size(min = 3, max = 100, message = "{person.password}")
     private String password;
-    
+
     @Basic(optional = false)
     @Size(min = 3, max = 45, message = "{person.address}")
     @Column(name = "ADDRESS")
     private String address;
-    
+
     @Basic(optional = false)
     @Size(min = 3, max = 45, message = "{person.city}")
     @Column(name = "CITY")
     private String city;
-    
+
     @Pattern(regexp = ".+@.+\\.[a-z]+", message = "{person.email}")
     @Size(min = 3, max = 45, message = "{person.email}")
     @Basic(optional = false)
     @Column(name = "EMAIL")
     private String email;
-    
+
     @Basic(optional = false)
     @Size(min = 3, max = 50, message = "{person.firstname}")
     @Column(name = "FIRSTNAME")
     private String firstname;
-    
+
     @Basic(optional = false)
     @Size(min = 3, max = 100, message = "{person.lastname}")
     @Column(name = "LASTNAME")
@@ -91,114 +90,115 @@ public class User implements Serializable {
     }
 
     public User(Set<Role> roles, String username, String password) {
-        this.roles = roles;
-        this.username = username;
-        setPassword(password);
+	this.roles = roles;
+	this.username = username;
+	setPassword(password);
     }
-    
-     public User(Set<Role> roles, String username, String password, String firstname, String lastname, String email, String address, String city) {
-        this.roles = roles;
-        this.username = username;
-        setPassword(password);
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.email = email;
-        this.address = address;
-        this.city = city;
-     }
+
+    public User(Set<Role> roles, String username, String password, String firstname, String lastname, String email,
+	    String address, String city) {
+	this.roles = roles;
+	this.username = username;
+	setPassword(password);
+	this.firstname = firstname;
+	this.lastname = lastname;
+	this.email = email;
+	this.address = address;
+	this.city = city;
+    }
 
     public String getUsername() {
-        return this.username;
+	return this.username;
     }
 
     public void setUsername(String username) {
-        this.username = username;
+	this.username = username;
     }
 
     public void setPassword(String password) {
-        try {
-            MessageDigest m;
-            m = MessageDigest.getInstance("SHA-256");
-            m.update(password.getBytes(), 0, password.length());
-            this.password = Base64.encodeBase64String(m.digest());
-            ;
-        } catch (NoSuchAlgorithmException e) {
-            // TODO log
-        }
+	try {
+	    MessageDigest m;
+	    m = MessageDigest.getInstance("SHA-256");
+	    m.update(password.getBytes(), 0, password.length());
+	    this.password = Base64.encodeBase64String(m.digest());
+	    ;
+	} catch (NoSuchAlgorithmException e) {
+	    Logger.getLogger(User.class.getName()).log(Level.SEVERE, "Error" + e, e);
+	}
     }
 
     public Set<Role> getRoles() {
-        return this.roles;
+	return this.roles;
     }
 
     public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+	this.roles = roles;
     }
 
     public String getPassword() {
-        return this.password;
+	return this.password;
     }
 
     public String getAddress() {
-        return address;
+	return address;
     }
 
     public void setAddress(String address) {
-        this.address = address;
+	this.address = address;
     }
 
     public String getCity() {
-        return city;
+	return city;
     }
 
     public void setCity(String city) {
-        this.city = city;
+	this.city = city;
     }
 
     public String getEmail() {
-        return email;
+	return email;
     }
 
     public void setEmail(String email) {
-        this.email = email;
+	this.email = email;
     }
 
     public String getFirstname() {
-        return firstname;
+	return firstname;
     }
 
     public void setFirstname(String firstname) {
-        this.firstname = firstname;
+	this.firstname = firstname;
     }
 
     public String getLastname() {
-        return lastname;
+	return lastname;
     }
 
     public void setLastname(String lastname) {
-        this.lastname = lastname;
+	this.lastname = lastname;
     }
 
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof User)) {
-            return false;
-        }
-        User other = (User) object;
-        if (((this.username == null) && (other.username != null))
-                || ((this.username != null) && !this.username.equals(other.username))) {
-            return false;
-        }
-        return true;
+	if (!(object instanceof User)) {
+	    return false;
+	}
+	User other = (User) object;
+	if (((this.username == null) && (other.username != null))
+		|| ((this.username != null) && !this.username.equals(other.username))) {
+	    return false;
+	}
+	return true;
     }
 
     @Override
     public int hashCode() {
-        return username.hashCode();
+	return username.hashCode();
     }
 
     @Override
     public String toString() {
-        return "User[ username=" + username + " ]";
+	return "User[ username=" + username + " ]";
     }
 }

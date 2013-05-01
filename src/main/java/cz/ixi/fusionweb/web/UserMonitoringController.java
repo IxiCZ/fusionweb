@@ -34,18 +34,7 @@ public class UserMonitoringController implements Serializable {
 	return currentUsername;
     }
 
-   /* private void d() {
-	List<String> usernames = drools.getAllRecentlyLoggedCustomers();
-	for (String username : usernames) {
-	    System.out.println("- User: " + username);
-	    for (GeneralUserActionEvent ne : drools.getAllActionEventsForCustomer(username)) {
-		System.out.println("--- " + ne);
-	    }
-	}
-    }*/
-
     public String prepareUsersList() {
-//	d();
 	recreateUsersModel();
 
 	return "/administrator/monitoring/user/List";

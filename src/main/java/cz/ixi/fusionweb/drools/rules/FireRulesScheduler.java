@@ -20,7 +20,6 @@ public class FireRulesScheduler {
     
     @PostConstruct
     @Schedule(hour="*", minute="*/5", second="0", persistent=false)
-    //@Schedule(hour="*", minute="*",second = "*/5", persistent=false)
     public void init(){
 	drools.fireAllRules();
     }    

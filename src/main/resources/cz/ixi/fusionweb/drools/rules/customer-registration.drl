@@ -9,7 +9,6 @@ when
 then
 	channels["tooManyCustomerRegistrations"].send("too many");
 	insert(new CustomerRegistrationTooManyReported());
-	// System.out.println("too many customer registraions ");
 end
 
 rule "Customer Registrations Too Many Reported reported"

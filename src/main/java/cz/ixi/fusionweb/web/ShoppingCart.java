@@ -34,8 +34,6 @@ public class ShoppingCart implements Serializable {
     private List<OrderItem> cartItems;
 
     public String addItem(Product p) {
-	System.out.println("added item: " + p);
-	
 	if (cartItems == null) {
 	    cartItems = new ArrayList<OrderItem>();
 	}
@@ -103,8 +101,6 @@ public class ShoppingCart implements Serializable {
 	    order.setOrderItemList(cartItems);
 	    facade.create(order);
 	    droolsOrders.newOrder(order, user);
-
-	    System.out.println("order created");
 
 	    JsfUtil.addSuccessMessage(JsfUtil.getStringFromBundle("/Bundle", "Cart_Checkout_Success"));
 	    clear();

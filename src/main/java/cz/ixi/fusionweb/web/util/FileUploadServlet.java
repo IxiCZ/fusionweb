@@ -81,7 +81,6 @@ public class FileUploadServlet extends HttpServlet {
                 response.sendRedirect("administrator/product/Confirm.xhtml");
             }
 
-            // very generic error threatment - just sample
         } catch (NumberFormatException nfe) {
             response.sendRedirect("administrator/product/Create.xhtml?errMsg=Error to process product information");
         } catch (IOException ioe) {

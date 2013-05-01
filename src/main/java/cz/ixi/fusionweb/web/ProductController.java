@@ -168,7 +168,6 @@ public class ProductController implements Serializable {
     }
 
     public PageNavigation create() {
-	System.out.println("clic create");
 	try {
 	    getFacade().create(current);
 	    JsfUtil.addSuccessMessage(ResourceBundle.getBundle(BUNDLE).getString("ProductCreated"));
@@ -230,7 +229,6 @@ public class ProductController implements Serializable {
 
     private void performDestroy() {
 	try {
-	    System.out.println("name " + current.getName());
 	    getFacade().remove(current.getId());
 	    JsfUtil.addSuccessMessage(ResourceBundle.getBundle(BUNDLE).getString("ProductDeleted"));
 	} catch (Exception e) {

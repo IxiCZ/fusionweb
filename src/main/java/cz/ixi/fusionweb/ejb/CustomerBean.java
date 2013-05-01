@@ -31,6 +31,12 @@ public class CustomerBean extends AbstractFacade<Customer> {
 	return (List<Customer>) createQuery.getResultList();
     }
 
+    /**
+     * Returns customer of given username, null if doesn't exist.
+     * 
+     * @param username of customer to be returned
+     * @return customer of given username, null if doesn't exist
+     */
     public Customer getCustomerByUsername(String username) {
 	Query createNamedQuery = getEntityManager().createNamedQuery("Customer.findByUsername");
 

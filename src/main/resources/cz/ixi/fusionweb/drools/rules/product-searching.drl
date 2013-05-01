@@ -6,7 +6,6 @@ when
 	ProductSearchUnsuccessfulEvent($searchedText : searchedText)
 	not SearchedText(text == $searchedText)
 then
-	// System.out.println("Inserted new searched text event with text: " + $searchedText);
 	insert(new SearchedText( $searchedText));
 end
 
@@ -16,7 +15,6 @@ when
 	$searched : SearchedText($text : text)
 	not ProductSearchUnsuccessfulEvent(searchedText == $text)
 then
-	// System.out.println("retr: " + $text);
 	retract($searched);
 end
 
@@ -30,7 +28,6 @@ when
 then
 	channels["productSearchUnsuccessful"].send($text);
 	insert(new SearchedTextReported($text));
-	// System.out.println("Unsuccesful search of more than 10 " + $text);
 end
 
 

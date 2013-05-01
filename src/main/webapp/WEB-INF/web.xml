@@ -63,7 +63,6 @@
 	        <auth-method>FORM</auth-method>
 	        <form-login-config>
 	            <form-login-page>/common/login.xhtml</form-login-page>
-	            <!-- TODO create or by just message?? -->
 	            <form-error-page>/common/login.xhtml</form-error-page>
 	        </form-login-config>
 	    </login-config>

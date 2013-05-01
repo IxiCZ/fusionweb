@@ -55,6 +55,9 @@ public class StartupDBConfigBean {
     @EJB
     private StatisticsRecordBean statisticsRecords;
 
+    /**
+     * Fills the database with some data.
+     */
     @PostConstruct
     public void createData() {
 	// PRODUCT CATEGORIES:

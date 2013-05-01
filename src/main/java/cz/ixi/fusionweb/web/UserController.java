@@ -1,6 +1,8 @@
 package cz.ixi.fusionweb.web;
 
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -50,8 +52,7 @@ public class UserController implements Serializable {
 		request.logout();
 	    }
 	    request.login(this.username, this.password);
-	    System.out.println("Logged " + username);
-	    ;
+	    Logger.getLogger(UserController.class.getName()).log(Level.INFO, "Logged: " + username);
 	    this.user = this.users.getUserByUsername(this.username);
 	    JsfUtil.addSuccessMessage("Login was successful.");
 	    if (user.getRoles().contains(Role.CUSTOMER)) {
@@ -60,9 +61,9 @@ public class UserController implements Serializable {
 
 	    return "";
 	} catch (ServletException ex) {
-
 	    JsfUtil.addErrorMessage("Login was unsuccessful.");
-	    System.out.println("Not logged, attempt was " + this.username + " " + this.password);
+	    Logger.getLogger(UserController.class.getName()).log(Level.INFO,
+		    "Not logged, attempt was " + this.username + " " + this.password);
 	    ex.printStackTrace();
 	    return "/common/login";
 	}
@@ -77,7 +78,7 @@ public class UserController implements Serializable {
 	FacesContext context = FacesContext.getCurrentInstance();
 	HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
 
-	try {   
+	try {
 	    request.logout();
 	    // clear the session
 	    ((HttpSession) context.getExternalContext().getSession(false)).invalidate();

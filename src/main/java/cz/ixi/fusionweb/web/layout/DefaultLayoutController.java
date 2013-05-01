@@ -1,6 +1,8 @@
 package cz.ixi.fusionweb.web.layout;
 
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.ApplicationScoped;
@@ -12,7 +14,7 @@ import cz.ixi.fusionweb.ejb.ProductBean;
 import cz.ixi.fusionweb.entities.Product;
 
 /**
- * Products on main page.
+ * Main product on main page.
  */
 @Named(value = "defaultLayoutController")
 @ApplicationScoped
@@ -36,9 +38,11 @@ public class DefaultLayoutController implements Channel, Serializable {
     @Override
     public void send(Object object) {
 	if (object != null) {
-	    System.out.println("Setting of new main product, previous was: " + getMainProduct());
+	    Logger.getLogger(DefaultLayoutController.class.getName()).log(Level.INFO,
+		    "Setting of new main product, previous was: " + getMainProduct());
 	    setMainProduct(products.find((Integer) object));
-	    System.out.println("Setting of new main product, new is:       " + getMainProduct());
+	    Logger.getLogger(DefaultLayoutController.class.getName()).log(Level.INFO,
+		    "Setting of new main product, new is:       " + getMainProduct());
 	}
     }
 
