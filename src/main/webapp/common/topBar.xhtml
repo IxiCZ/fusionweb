@@ -3,42 +3,56 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:util="http://java.sun.com/jsf/composite/components/util">
 
-
-	<div align="right">
-
-		<h:form rendered="#{userController.logged == false}">
-			<h:commandLink action="#{userController.loginRick()}" value="#{bundle.LogAsRick}"
-				styleClass="logLink" />
-		</h:form>
-
-		<h:form rendered="#{userController.logged == false}">
-			<h:commandLink action="#{userController.loginHugo()}" value="#{bundle.LogAsHugo}"
-				styleClass="logLink" />
-		</h:form>
-		<br />
-
-		<h:link outcome="/common/login" value="#{bundle.LogIn}"
-			rendered="#{userController.logged == false}" styleClass="logLink" />
-
-		<h:form rendered="#{userController.logged == false}">
-			<h:commandLink action="#{customerController.prepareRegistration()}"
-				value="#{bundle.Register}" styleClass="logLink" />
-		</h:form>
-
-		<h:outputText value="Logged as: " rendered="#{userController.logged}" />
-		<b><h:outputText value="#{userController.user.username}"
-				rendered="#{userController.logged}" /></b> <br />
-		<h:form rendered="#{userController.logged}">
-			<h:commandLink action="#{userController.logout()}" value="#{bundle.LogOut}"
-				styleClass="logLink" />
-		</h:form>
-		
+	<h:panelGrid columns="2" width="920px">
 		<h:form>
-			<h:commandLink action="#{shoppingCart.cartPage()}"
-				actionListener="#{shoppingCartListener.shoppingCartVisited(userController.user)}"
-				value="Shopping cart: #{shoppingCart.getCartAbsoluteSize()}"
-				styleClass="logLink" />
+			<h:commandButton action="/about/about.xhtml" value="About"
+				styleClass="aboutButton" style="margin-top:10px;" />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
 		</h:form>
-	</div>
+		<h:panelGroup>
+			<div align="right">
+
+				<h:form rendered="#{userController.logged == false}">
+					<h:commandLink action="#{userController.loginRick()}"
+						value="#{bundle.LogAsRick}" styleClass="logLink" />
+				</h:form>
+
+				<h:form rendered="#{userController.logged == false}">
+					<h:commandLink action="#{userController.loginHugo()}"
+						value="#{bundle.LogAsHugo}" styleClass="logLink" />
+				</h:form>
+				<br />
+
+				<h:link outcome="/common/login" value="#{bundle.LogIn}"
+					rendered="#{userController.logged == false}" styleClass="logLink" />
+
+				<h:form rendered="#{userController.logged == false}">
+					<h:commandLink action="#{customerController.prepareRegistration()}"
+						value="#{bundle.Register}" styleClass="logLink" />
+				</h:form>
+
+				<h:outputText value="Logged as: "
+					rendered="#{userController.logged}" />
+				<b><h:outputText value="#{userController.user.username}"
+						rendered="#{userController.logged}" /></b> <br />
+				<h:form rendered="#{userController.logged}">
+					<h:commandLink action="#{userController.logout()}"
+						value="#{bundle.LogOut}" styleClass="logLink" />
+				</h:form>
+
+				<h:form>
+					<h:commandLink action="#{shoppingCart.cartPage()}"
+						actionListener="#{shoppingCartListener.shoppingCartVisited(userController.user)}"
+						value="Shopping cart: #{shoppingCart.getCartAbsoluteSize()}"
+						styleClass="logLink" />
+				</h:form>
+
+			</div>
+		</h:panelGroup>
+	</h:panelGrid>
 
 </ui:composition>

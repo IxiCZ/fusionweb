@@ -293,9 +293,45 @@ input.shoppingCartTableQuantityText {
 	font-weight: bold;
 }
 
+.italic {
+	font-style: italic;
+}
+
 .boldunderline {
 	font-weight: bold;
-	text-decoration: underline; 
+	text-decoration: underline;
+}
+
+.aboutheader {
+	font-weight: bold;
+	text-decoration: underline;
+	font-size: 1.1em;
+	text-align: center;
+}
+
+.aboutTitle {
+	font-weight: bold;
+	text-decoration: underline;
+	font-size: 1.5em;
+	text-align: center;
+	color: #E08300;
+}
+
+input.aboutButton {
+	background-color: #FCD69F;
+	border: solid 1px #000000;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	font-size: 1.1em;
+	font-weight: bold;
+	text-align: center;
+	margin-left: 20px;
+}
+
+
+.center {
+	text-align: center;
 }
 
 .shoppingCartHeader {
