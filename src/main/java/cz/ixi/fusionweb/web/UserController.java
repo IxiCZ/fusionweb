@@ -58,7 +58,7 @@ public class UserController implements Serializable {
 		droolsCustomerLogActions.customerLogIn(user);
 	    }
 
-	    return "/index";
+	    return "";
 	} catch (ServletException ex) {
 
 	    JsfUtil.addErrorMessage("Login was unsuccessful.");
@@ -89,7 +89,7 @@ public class UserController implements Serializable {
 	} catch (ServletException ex) {
 	    JsfUtil.addErrorMessage("Logout was unsuccessful.");
 	}
-	return "/index";
+	return "";
 
     }
 
@@ -148,7 +148,6 @@ public class UserController implements Serializable {
     }
 
     // HELPTING METHODS:
-    // TODO delete them at the end of the development
     public String loginRick() {
 	this.username = "rick";
 	this.password = "1234";
