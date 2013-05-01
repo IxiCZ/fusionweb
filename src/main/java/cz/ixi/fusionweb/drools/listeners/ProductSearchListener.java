@@ -21,6 +21,12 @@ public class ProductSearchListener {
     @EJB
     private ProductBean products;
 
+    /**
+     * Creates and inserts an event representing either successful or unsuccessful product search.
+     * 
+     * @param searchedKeyword searched keyword
+     * @param user user realizing the search
+     */
     public void search(String searchedKeyword, User user) {
 	if (products.searchProductCount(searchedKeyword) == 0) {
 	    if (user != null) {

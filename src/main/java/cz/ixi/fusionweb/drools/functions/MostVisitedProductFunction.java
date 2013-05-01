@@ -11,7 +11,7 @@ import java.util.Map;
 import cz.ixi.fusionweb.drools.model.ProductNavigationEvent;
 
 /**
- * Implementation of accumulate function to find out most visited event.
+ * Implementation of accumulate function to find out most visited product event.
  */
 public class MostVisitedProductFunction implements org.drools.base.accumulators.AccumulateFunction {
 

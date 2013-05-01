@@ -18,6 +18,12 @@ public class ShoppingCartListener {
     @EJB
     DroolsResourcesBean drools;
 
+    /**
+     * Creates and inserts event representing a product adding to cart.
+     * 
+     * @param product product added to cart
+     * @param user user who added the product to cart
+     */
     public void productAddedIntoCart(Product product, User user) {
 	if (user != null) {
 	    drools.insertFact(new ProductAddedIntoShoppingCartEvent(user.getUsername(), product.getId(), product
@@ -27,6 +33,12 @@ public class ShoppingCartListener {
 	}
     }
     
+    /**
+     * Creates and inserts event representing a product adding to cart.
+     * 
+     * @param product product added to cart
+     * @param user user who added the product to cart
+     */
     public void shoppingCartVisited( User user) {
 	if (user != null) {
 	    drools.insertFact(new ShoppingCartNavigationEvent(user.getUsername()));

@@ -18,6 +18,13 @@ public class DiscussionListener {
     @EJB
     DroolsResourcesBean drools;
 
+    /**
+     * Creates and inserts new event representing composing of discussion entry.
+     * 
+     * @param entry the submitted discussion entry
+     * @param product product by which is entry submitted
+     * @param user user submitting the entry
+     */
     public void newDiscussionEntry(DiscussionEntry entry, Product product, User user) {
 	drools.insertFact(new DiscussionEntryEvent(product.getName(), entry.getTitle() + ": " + entry.getText(), user.getUsername()));
     }

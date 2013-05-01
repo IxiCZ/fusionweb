@@ -11,7 +11,7 @@ import java.util.Map;
 import cz.ixi.fusionweb.drools.model.CategoryNavigationEvent;
 
 /**
- * Implementation of accumulate function to find out most visited event.
+ * Implementation of accumulate function to find out most visited category event.
  */
 public class MostVisitedCategoryFunction implements org.drools.base.accumulators.AccumulateFunction {
 

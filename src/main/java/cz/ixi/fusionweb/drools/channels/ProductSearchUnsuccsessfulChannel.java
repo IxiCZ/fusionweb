@@ -25,7 +25,5 @@ public class ProductSearchUnsuccsessfulChannel implements Channel {
 	String searchedText = (String) object;
 	notifications.create(new Notification(NotificationSeverity.WARNING, new Date(),
 		"There were too many product searches of '" + searchedText + "' with no results in the last hour. "));
-
-	System.out.println("Created new notification of searching product with no results: " + searchedText);
     }
 }

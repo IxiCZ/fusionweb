@@ -13,7 +13,7 @@ import cz.ixi.fusionweb.entities.Customer;
 import cz.ixi.fusionweb.entities.User;
 
 /**
- * Inserts events considering customer registration ang logging into drools
+ * Inserts events considering customer registration and logging into drools
  * working memory.
  */
 @ManagedBean(name = "customerLogActionsListener")
@@ -25,6 +25,11 @@ public class CustomerLogActionsListener {
     @EJB
     private UserBean users;
 
+    /**
+     * Creates and inserts new event representing either successful or unsuccessful customer registration.
+     * 
+     * @param customer customer attempting to register
+     */
     public void newCustomerRegistration(Customer customer) {
 	if (users.getUserByUsername(customer.getUsername()) == null) {
 	    drools.insertFact(new CustomerRegistrationEvent(customer.getUsername()));
@@ -33,10 +38,20 @@ public class CustomerLogActionsListener {
 	}
     }
 
+    /**
+     * Creates and inserts new event representing customer logging in.
+     * 
+     * @param customer customer who is logging in
+     */
     public void customerLogIn(User customer) {
 	drools.insertFact(new CustomerLogInEvent(customer.getUsername()));
     }
     
+    /**
+     * Creates and inserts new event representing customer logging out.
+     * 
+     * @param customer customer who is logging out
+     */
     public void customerLogOut(User customer) {
 	drools.insertFact(new CustomerLogOutEvent(customer.getUsername()));
     }

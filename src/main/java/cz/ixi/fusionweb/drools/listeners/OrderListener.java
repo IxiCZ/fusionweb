@@ -24,9 +24,16 @@ public class OrderListener implements Serializable {
     @EJB
     DroolsResourcesBean drools;
 
+    /**
+     * Creates and inserts multiple events for created order: one representing
+     * the created order and one for each bought product item.
+     * 
+     * @param order order from which are created the events
+     * @param user user creating the order
+     */
     public void newOrder(Order order, User user) {
-	drools.insertFact(new OrderCreatedEvent(order.getId(), user.getUsername(), getTotalItemsCount(order),
-		order.getAmount()));
+	drools.insertFact(new OrderCreatedEvent(order.getId(), user.getUsername(), getTotalItemsCount(order), order
+		.getAmount()));
 	for (OrderItem oi : order.getOrderItemList()) {
 	    for (int i = 1; i <= oi.getQuantity(); i++) {
 		drools.insertFact(new ProductBoughtEvent(order.getId(), oi.getProduct().getId(), user.getUsername(), oi
@@ -35,7 +42,13 @@ public class OrderListener implements Serializable {
 	}
     }
 
-    private int getTotalItemsCount(Order order){
+    /**
+     * Return total number items in the given order.
+     * 
+     * @param order of which the total items should be count
+     * @return total number items in the given order
+     */
+    private int getTotalItemsCount(Order order) {
 	int total = 0;
 	for (Iterator<OrderItem> it = order.getOrderItemList().iterator(); it.hasNext();) {
 	    OrderItem oi = it.next();

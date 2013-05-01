@@ -12,7 +12,7 @@ import cz.ixi.fusionweb.entities.StatisticsFrequency;
 import cz.ixi.fusionweb.entities.StatisticsRecord;
 
 /**
- * Channel which creates a new notification statistics record.
+ * Channel which creates a new daily statistics record.
  */
 @ManagedBean
 public class StatisticsRecordDailyChannel implements Channel {

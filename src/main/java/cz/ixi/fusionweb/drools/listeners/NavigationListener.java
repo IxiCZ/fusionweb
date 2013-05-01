@@ -21,7 +21,13 @@ public class NavigationListener {
 
     @EJB
     DroolsResourcesBean drools;
-
+     
+    /**
+     * Creates and inserts the event representing a user visiting a product.
+     * 
+     * @param product product which is visited
+     * @param user user visiting the product
+     */
     public void product(Product product, User user) {
 	if (user != null) {
 	    drools.insertFact(new ProductNavigationEvent(user.getUsername(), product.getId(), product.getName()));
@@ -30,6 +36,12 @@ public class NavigationListener {
 	}
     }
 
+    /**
+     * Creates and inserts the event representing a user visiting a category.
+     * 
+     * @param product category which is visited
+     * @param user user visiting the category
+     */
     public void category(ProductCategory category, User user) {
 	if (user != null) {
 	    drools.insertFact(new CategoryNavigationEvent(user.getUsername(), category.getId(), category.getName()));
@@ -38,6 +50,11 @@ public class NavigationListener {
 	}
     }
 
+    /**
+     * Creates and inserts the event representing a user "My orders" menu item.
+     * 
+     * @param user user visiting the menu item
+     */
     public void customerMenuMyOrders(User user) {
 	drools.insertFact(new CustomerMyOrdersNavigationEvent(user.getUsername()));
     }
