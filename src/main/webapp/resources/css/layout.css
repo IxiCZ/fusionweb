@@ -293,6 +293,11 @@ input.shoppingCartTableQuantityText {
 	font-weight: bold;
 }
 
+.boldunderline {
+	font-weight: bold;
+	text-decoration: underline; 
+}
+
 .shoppingCartHeader {
 	color: #355BA1;
 	font-weight: bold;

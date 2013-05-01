@@ -7,28 +7,28 @@
 	<div align="right">
 
 		<h:form rendered="#{userController.logged == false}">
-			<h:commandLink action="#{userController.loginRick()}" value="Rick"
+			<h:commandLink action="#{userController.loginRick()}" value="#{bundle.LogAsRick}"
 				styleClass="logLink" />
 		</h:form>
 
 		<h:form rendered="#{userController.logged == false}">
-			<h:commandLink action="#{userController.loginHugo()}" value="Hugo"
+			<h:commandLink action="#{userController.loginHugo()}" value="#{bundle.LogAsHugo}"
 				styleClass="logLink" />
 		</h:form>
 
-		<h:link outcome="/common/login" value="Log in"
+		<h:link outcome="/common/login" value="#{bundle.LogIn}"
 			rendered="#{userController.logged == false}" styleClass="logLink" />
 
 		<h:form rendered="#{userController.logged == false}">
 			<h:commandLink action="#{customerController.prepareRegistration()}"
-				value="Register" styleClass="logLink" />
+				value="#{bundle.Register}" styleClass="logLink" />
 		</h:form>
 
 		<h:outputText value="Logged as: " rendered="#{userController.logged}" />
 		<b><h:outputText value="#{userController.user.username}"
 				rendered="#{userController.logged}" /></b> <br />
 		<h:form rendered="#{userController.logged}">
-			<h:commandLink action="#{userController.logout()}" value="Log out"
+			<h:commandLink action="#{userController.logout()}" value="#{bundle.LogOut}"
 				styleClass="logLink" />
 		</h:form>
 
