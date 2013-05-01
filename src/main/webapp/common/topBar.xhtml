@@ -15,6 +15,7 @@
 			<h:commandLink action="#{userController.loginHugo()}" value="#{bundle.LogAsHugo}"
 				styleClass="logLink" />
 		</h:form>
+		<br />
 
 		<h:link outcome="/common/login" value="#{bundle.LogIn}"
 			rendered="#{userController.logged == false}" styleClass="logLink" />
@@ -31,7 +32,7 @@
 			<h:commandLink action="#{userController.logout()}" value="#{bundle.LogOut}"
 				styleClass="logLink" />
 		</h:form>
-
+		
 		<h:form>
 			<h:commandLink action="#{shoppingCart.cartPage()}"
 				actionListener="#{shoppingCartListener.shoppingCartVisited(userController.user)}"
