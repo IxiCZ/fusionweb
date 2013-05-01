@@ -59,7 +59,7 @@ public class UserController implements Serializable {
 		droolsCustomerLogActions.customerLogIn(user);
 	    }
 
-	    return "";
+	    return "/common/login";
 	} catch (ServletException ex) {
 	    JsfUtil.addErrorMessage("Login was unsuccessful.");
 	    Logger.getLogger(UserController.class.getName()).log(Level.INFO,
@@ -90,7 +90,7 @@ public class UserController implements Serializable {
 	} catch (ServletException ex) {
 	    JsfUtil.addErrorMessage("Logout was unsuccessful.");
 	}
-	return "";
+	return "/common/login";
 
     }
 
