@@ -93,12 +93,12 @@ public class DroolsResourcesBean {
 	    if (kbuilder.getErrors().size() > 0) {
 		for (KnowledgeBuilderError kerror : kbuilder.getErrors()) {
 		    Logger.getLogger(DroolsResourcesBean.class.getName()).log(Level.SEVERE,
-			    "Error while cnstructing the session " + kerror, kerror);
+			    "Error while constructing the session " + kerror, kerror);
 		}
 	    }
 	} else {
 	    Logger.getLogger(DroolsResourcesBean.class.getName()).log(Level.INFO,
-		    "No errors in kbuilder while cnstructing the session ");
+		    "No errors in kbuilder while constructing the session ");
 	}
 	KnowledgeBaseConfiguration config = KnowledgeBaseFactory.newKnowledgeBaseConfiguration();
 	config.setOption(EventProcessingOption.STREAM);
@@ -123,7 +123,7 @@ public class DroolsResourcesBean {
 	});
 
 	ksession.fireAllRules();
-	Logger.getLogger(DroolsResourcesBean.class.getName()).log(Level.INFO, "Session successfully created.");
+	Logger.getLogger(DroolsResourcesBean.class.getName()).log(Level.INFO, "DROOLS - Session successfully created.");
     }
 
     /**
@@ -133,7 +133,7 @@ public class DroolsResourcesBean {
      */
     @Lock(LockType.WRITE)
     public void insertFact(Object fact) {
-	Logger.getLogger(DroolsResourcesBean.class.getName()).log(Level.INFO, "Inserting fact: " + fact);
+	Logger.getLogger(DroolsResourcesBean.class.getName()).log(Level.INFO, "DROOLS - Inserting fact: " + fact);
 
 	ksession.insert(fact);
 	ksession.fireAllRules();
@@ -144,7 +144,7 @@ public class DroolsResourcesBean {
      */
     @Lock(LockType.WRITE)
     public void fireAllRules() {
-	Logger.getLogger(DroolsResourcesBean.class.getName()).log(Level.INFO, "Rules fired by automatic timer at: " + new Date());
+	Logger.getLogger(DroolsResourcesBean.class.getName()).log(Level.INFO, "DROOLS - Rules fired by automatic timer at: " + new Date());
 	ksession.fireAllRules();
     }
 
@@ -182,7 +182,7 @@ public class DroolsResourcesBean {
      */
     @PreDestroy
     public void destroy() {
-	Logger.getLogger(DroolsResourcesBean.class.getName()).log(Level.INFO, "Disposing the session.");
+	Logger.getLogger(DroolsResourcesBean.class.getName()).log(Level.INFO, "DROOLS - Disposing the session.");
 	ksession.dispose();
     }
 
