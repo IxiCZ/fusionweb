@@ -42,7 +42,7 @@ import cz.ixi.fusionweb.web.layout.DefaultLayoutController;
 @Singleton
 @Startup
 @Lock(LockType.READ)
-@DependsOn({ "StartupDBConfigBean", "StartupLayoutsBean" })
+@DependsOn({ "StartupDBConfigBean" })
 public class DroolsResourcesBean {
 
     private StatefulKnowledgeSession ksession;
