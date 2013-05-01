@@ -3,6 +3,8 @@ package cz.ixi.fusionweb.drools.rules;
 import java.util.Date;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -23,6 +25,8 @@ import org.drools.builder.KnowledgeBuilderError;
 import org.drools.builder.KnowledgeBuilderFactory;
 import org.drools.builder.ResourceType;
 import org.drools.conf.EventProcessingOption;
+import org.drools.event.rule.ActivationCreatedEvent;
+import org.drools.event.rule.DefaultAgendaEventListener;
 import org.drools.io.impl.ClassPathResource;
 import org.drools.runtime.StatefulKnowledgeSession;
 
@@ -60,6 +64,9 @@ public class DroolsResourcesBean {
     @Inject
     private StatisticsRecordDailyChannel statisticsDaily;
 
+    /**
+     * Constructs the session from resources.	
+     */
     @PostConstruct
     public void init() {
 	KnowledgeBuilderConfiguration kbconf = KnowledgeBuilderFactory.newKnowledgeBuilderConfiguration();
@@ -79,17 +86,19 @@ public class DroolsResourcesBean {
 	kbuilder.add(new ClassPathResource("order-many.drl", getClass()), ResourceType.DRL);
 	kbuilder.add(new ClassPathResource("visiting.drl", getClass()), ResourceType.DRL);
 	kbuilder.add(new ClassPathResource("visiting-category.drl", getClass()), ResourceType.DRL);
-	
+
 	kbuilder.add(new ClassPathResource("track-debug.drl", getClass()), ResourceType.DRL);
 
 	if (kbuilder.hasErrors()) {
 	    if (kbuilder.getErrors().size() > 0) {
 		for (KnowledgeBuilderError kerror : kbuilder.getErrors()) {
-		    System.err.println(kerror);
+		    Logger.getLogger(DroolsResourcesBean.class.getName()).log(Level.SEVERE,
+			    "Error while cnstructing the session " + kerror, kerror);
 		}
 	    }
 	} else {
-	    System.out.println("No errors in kbuilder.");
+	    Logger.getLogger(DroolsResourcesBean.class.getName()).log(Level.INFO,
+		    "No errors in kbuilder while cnstructing the session ");
 	}
 	KnowledgeBaseConfiguration config = KnowledgeBaseFactory.newKnowledgeBaseConfiguration();
 	config.setOption(EventProcessingOption.STREAM);
@@ -104,25 +113,46 @@ public class DroolsResourcesBean {
 	ksession.registerChannel("notificationsGeneral", notificationsGeneral);
 	ksession.registerChannel("statisticsHourly", statisticsHourly);
 	ksession.registerChannel("statisticsDaily", statisticsDaily);
-	
-	// ksession.fireAllRules();
-	System.out.println("ksession created");
+
+	ksession.addEventListener(new DefaultAgendaEventListener() {
+	    @Override
+	    public void activationCreated(ActivationCreatedEvent event) {
+		Logger.getLogger(DroolsResourcesBean.class.getName()).log(Level.INFO,
+			"DROOLS - fired rule: " + event.getActivation().getRule().getName());
+	    }
+	});
+
+	ksession.fireAllRules();
+	Logger.getLogger(DroolsResourcesBean.class.getName()).log(Level.INFO, "Session successfully created.");
     }
 
+    /**
+     * Inserts the fact and fires the rules.
+     * 
+     * @param fact fact to be inserted into the session
+     */
     @Lock(LockType.WRITE)
     public void insertFact(Object fact) {
-	System.out.println("inserting fact: " + fact);
+	Logger.getLogger(DroolsResourcesBean.class.getName()).log(Level.INFO, "Inserting fact: " + fact);
 
 	ksession.insert(fact);
 	ksession.fireAllRules();
     }
 
+    /**
+     * Fires the rules.
+     */
     @Lock(LockType.WRITE)
     public void fireAllRules() {
-	System.out.println("rules fired at: " + new Date());
+	Logger.getLogger(DroolsResourcesBean.class.getName()).log(Level.INFO, "Rules fired by automatic timer at: " + new Date());
 	ksession.fireAllRules();
     }
 
+    /**
+     * Returns all events representing logging of a customer.
+     * 
+     * @return all events representing logging of a customer
+     */
     @Lock(LockType.READ)
     public SortedSet<CustomerLogInEvent> getAllRecentlyLoggedCustomerEvents() {
 	SortedSet<CustomerLogInEvent> logInEvents = new TreeSet<CustomerLogInEvent>();
@@ -132,6 +162,12 @@ public class DroolsResourcesBean {
 	return logInEvents;
     }
 
+    /**
+     * Returns set of events relating to given username.
+     * 
+     * @param username user of who the events should be returned
+     * @return  set of events relating to given username
+     */
     @Lock(LockType.READ)
     public SortedSet<GeneralUserActionEvent> getAllActionEventsForCustomer(String username) {
 	SortedSet<GeneralUserActionEvent> events = new TreeSet<GeneralUserActionEvent>();
@@ -141,11 +177,18 @@ public class DroolsResourcesBean {
 	return events;
     }
 
+    /**
+     * Disposes the session.
+     */
     @PreDestroy
     public void destroy() {
+	Logger.getLogger(DroolsResourcesBean.class.getName()).log(Level.INFO, "Disposing the session.");
 	ksession.dispose();
     }
 
+    /**
+     * Filter for CustomerLogInEvent event type.
+     */
     private class LoggedCustomerFilter implements ObjectFilter {
 
 	@Override
@@ -155,6 +198,9 @@ public class DroolsResourcesBean {
 
     }
 
+    /**
+     * Filter for GeneralUserActionEvent with given username.
+     */
     private class ActionEventForCutomerFilter implements ObjectFilter {
 
 	private String username;
