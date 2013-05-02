@@ -54,15 +54,15 @@
 		<br />
 		<br />
 		As events meets a defined state, rules consequence is executed and notification can be created.
-		 Notifications in the picture below are the ones created not more than once ha hour. 
+		 Notifications in the picture below are the ones created not more than once an hour. 
 		 You can easily try the situation by registrating 3 times within an hour, or making an order - 
 		 by modyfing the number of items in the shopping cart across one or multiple orders
 		  - for more than 100 products (these numbers are established in rules and are just demonstratory,
-		 real number would originated in application analysis).
+		 real numbers would originated in application analysis).
 		<br />
 		<br />
 		<div align="center">
-			<h:graphicImage library="images" name="notifications.png"
+			<h:graphicImage library="images" name="notificationsS.png"
 				width="720px" />
 		</div>
 		<br />
@@ -73,8 +73,37 @@
 		<h:outputText value="Statistics" styleClass="aboutheader" />
 		<br />
 		<br />
-
-
+		The events are also processed in every hour and day period to generate statistics. Same as notifications, statistics can be filtered by their character and paged from newest to oldest.
+		<br />
+		<br />
+		<div align="center">
+			<h:graphicImage library="images" name="statistics.png" width="720px" />
+		</div>
+		<br />
+		<br />
+		<br />
+		<h:outputText value="Monitoring" styleClass="aboutheader" />
+		<br />
+		<br />
+		Events relating to a certain customer can be observed in a chronological order and present what and how are the user currently brosing the website.
+		 <br />
+		<br />
+		<div align="center">
+			<h:graphicImage library="images" name="monitoring.png" width="720px" />
+		</div>
+		<br />
+		<br />
+		<br />
+		<h:outputText value="Layout" styleClass="aboutheader" />
+		<br />
+		Layout is changed in accordance with defined logic relating to what are users currently doing. 
+		This is demonstrated by changing main product every whole hour (x.00) for the one most visited in the last hour.
+		 <br />
+		<br />
+		<div align="center">
+			<h:graphicImage library="images" name="mainProducts.png"
+				width="500px" />
+		</div>
 	</ui:define>
 
 </ui:composition>
