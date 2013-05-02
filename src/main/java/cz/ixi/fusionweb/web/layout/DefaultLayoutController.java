@@ -37,7 +37,7 @@ public class DefaultLayoutController implements Channel, Serializable {
 
     @Override
     public void send(Object object) {
-	if (object != null) {
+	if (object != null && (Integer) object != -1) {
 	    Logger.getLogger(DefaultLayoutController.class.getName()).log(Level.INFO,
 		    "Setting of new main product, previous was: " + getMainProduct());
 	    setMainProduct(products.find((Integer) object));
